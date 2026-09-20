@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Utility functions for capturing, compressing, and watermarking evidence photos
  */
 
 export function createWatermarkedPhoto(
-  sourceImage: HTMLImageElement | HTMLCanvasElement,
+  sourceImage: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement,
   metadata: {
     officerName: string;
     date: string;
@@ -171,3 +171,4 @@ export function generateSampleIncidentPhoto(title: string, location: string, off
 
   return canvas.toDataURL('image/jpeg', 0.85);
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Shield,
   Play,
@@ -581,7 +581,7 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
           isOpen={isEmergencyReportOpen}
           onClose={() => setIsEmergencyReportOpen(false)}
           currentUser={currentUser}
-          sessionId={activeSession?.id}
+          sessionId={undefined}
           availableCheckpoints={checkpoints}
         />
       </div>
@@ -916,11 +916,7 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
                       <span className="font-semibold text-white leading-relaxed">
                         {idx + 1}. {item.text}
                       </span>
-                      {item.isMandatory && (
-                        <span className="text-[10px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded font-mono shrink-0">
-                          BẮT BUỘC
-                        </span>
-                      )}
+                      
                     </div>
 
                     {/* Status Toggle Buttons */}
@@ -1303,9 +1299,12 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
         isOpen={isEmergencyReportOpen}
         onClose={() => setIsEmergencyReportOpen(false)}
         currentUser={currentUser}
-        sessionId={activeSession?.id}
+        sessionId={undefined}
         availableCheckpoints={checkpoints}
       />
     </div>
   );
 };
+
+
+

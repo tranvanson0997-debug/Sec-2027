@@ -663,17 +663,18 @@ export async function generateAndDownloadPDF(
   config: HotelSystemConfig,
   onProgress?: (message: string) => void
 ): Promise<{ blob: Blob; url: string; dataUri: string; filename: string }> {
-  if (onProgress) onProgress('Đang khởi tạo cấu trúc báo cáo A4...');
+  if (onProgress) onProgress('Dang khoi tao cau truc bao cao A4...');
 
-  // Remove any stale offscreen container
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth < 768;
+
   const oldContainer = document.getElementById('pdf-render-offscreen-container');
   if (oldContainer) {
     oldContainer.remove();
   }
 
-  // Create a visible-to-layout render container with exact A4 portrait pixel width (794px = 210mm at 96dpi)
-  // z-index: 40 ensures it sits beneath the modal backdrop (z-50) so it doesn't flicker on screen,
-  // but opacity: 1 and visibility: visible ensure html2canvas captures full color and text data!
   const container = document.createElement('div');
   container.id = 'pdf-render-offscreen-container';
   container.style.position = 'fixed';
@@ -688,7 +689,6 @@ export async function generateAndDownloadPDF(
   container.style.pointerEvents = 'none';
   container.style.visibility = 'visible';
 
-  // Attach styles and content
   container.innerHTML = `
     <style>
       ${getReportStyles()}
@@ -700,40 +700,66 @@ export async function generateAndDownloadPDF(
 
   document.body.appendChild(container);
 
-  if (onProgress) onProgress('Đang tải và đồng bộ ảnh hiện trường...');
+  if (onProgress) {
+    onProgress(
+      isMobile
+        ? 'Dang tai anh hien truong che do tiet kiem bo nho...'
+        : 'Dang tai va dong bo anh hien truong...'
+    );
+  }
 
-  // Ensure all image elements inside container are loaded safely
   const imgElements = Array.from(container.querySelectorAll('img'));
+
   await Promise.all(
     imgElements.map((img) => {
       return new Promise<void>((resolve) => {
         if (img.src && !img.src.startsWith('data:')) {
           img.crossOrigin = 'anonymous';
         }
+
         if (img.complete && img.naturalHeight !== 0) {
           resolve();
-        } else {
-          img.onload = () => resolve();
-          img.onerror = () => {
-            img.style.display = 'none';
-            resolve();
-          };
-          setTimeout(resolve, 800);
+          return;
         }
+
+        let settled = false;
+
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          resolve();
+        };
+
+        img.onload = finish;
+        img.onerror = () => {
+          img.style.display = 'none';
+          finish();
+        };
+
+        setTimeout(finish, isMobile ? 1200 : 800);
       });
     })
   );
 
-  if (onProgress) onProgress('Đang xử lý kết xuất đồ họa độ nét cao...');
-
-  // Rendering stabilization delay
-  await new Promise((r) => setTimeout(r, 200));
+  await new Promise((resolve) => setTimeout(resolve, isMobile ? 100 : 200));
 
   let canvas: HTMLCanvasElement;
+
   try {
-    const totalHeight = Math.max(container.scrollHeight, container.offsetHeight, 1123);
+    const totalHeight = Math.max(
+      container.scrollHeight,
+      container.offsetHeight,
+      1123
+    );
+
+    /*
+     * Mobile uses scale 1.0 to substantially reduce RAM usage.
+     * Desktop keeps the original 1.5x rendering quality.
+     */
+    const renderScale = isMobile ? 1 : 1.5;
+
     canvas = await html2canvas(container, {
-      scale: 1.5, // 1.5x crisp rendering
+      scale: renderScale,
       useCORS: true,
       allowTaint: false,
       logging: false,
@@ -746,21 +772,33 @@ export async function generateAndDownloadPDF(
       scrollY: 0,
       x: 0,
       y: 0,
+      imageTimeout: isMobile ? 1200 : 3000,
     });
   } finally {
-    // Clean up DOM container
     if (container.parentNode) {
       container.parentNode.removeChild(container);
     }
   }
 
-  if (onProgress) onProgress('Đang chia trang và đóng gói PDF...');
+  if (onProgress) {
+    onProgress(
+      isMobile
+        ? 'Dang dong goi PDF A4 che do tiet kiem bo nho...'
+        : 'Dang chia trang va dong goi PDF...'
+    );
+  }
 
   const a4WidthMm = 210;
   const a4HeightMm = 297;
-  // Calculate page height in canvas pixels matching A4 aspect ratio:
-  const pageCanvasHeight = Math.floor((canvas.width * a4HeightMm) / a4WidthMm);
-  const totalPages = Math.ceil(canvas.height / pageCanvasHeight) || 1;
+
+  const pageCanvasHeight = Math.floor(
+    (canvas.width * a4HeightMm) / a4WidthMm
+  );
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(canvas.height / pageCanvasHeight)
+  );
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -769,19 +807,36 @@ export async function generateAndDownloadPDF(
     compress: true,
   });
 
+  /*
+   * Reuse one page canvas instead of creating a new canvas for every page.
+   * This reduces peak memory usage on Android.
+   */
+  const pageCanvas = document.createElement('canvas');
+  pageCanvas.width = canvas.width;
+  pageCanvas.height = pageCanvasHeight;
+
+  const pageCtx = pageCanvas.getContext('2d');
+
+  if (!pageCtx) {
+    canvas.width = 1;
+    canvas.height = 1;
+    pageCanvas.width = 1;
+    pageCanvas.height = 1;
+    throw new Error('Khong the khoi tao bo nho do hoa de tao PDF.');
+  }
+
   for (let page = 0; page < totalPages; page++) {
-    const pageCanvas = document.createElement('canvas');
-    pageCanvas.width = canvas.width;
-    pageCanvas.height = pageCanvasHeight;
-    const pageCtx = pageCanvas.getContext('2d');
+    pageCtx.clearRect(0, 0, pageCanvas.width, pageCanvas.height);
+    pageCtx.fillStyle = '#ffffff';
+    pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
 
-    if (pageCtx) {
-      pageCtx.fillStyle = '#ffffff';
-      pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+    const sourceY = page * pageCanvasHeight;
+    const sourceHeight = Math.min(
+      canvas.height - sourceY,
+      pageCanvasHeight
+    );
 
-      const sourceY = page * pageCanvasHeight;
-      const sourceHeight = Math.min(canvas.height - sourceY, pageCanvasHeight);
-
+    if (sourceHeight > 0) {
       pageCtx.drawImage(
         canvas,
         0,
@@ -793,29 +848,59 @@ export async function generateAndDownloadPDF(
         canvas.width,
         sourceHeight
       );
-
-      const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.92);
-      if (page > 0) {
-        pdf.addPage('a4', 'portrait');
-      }
-      pdf.addImage(pageImgData, 'JPEG', 0, 0, a4WidthMm, a4HeightMm);
     }
+
+    /*
+     * Slightly lower JPEG quality on mobile.
+     * The report remains readable while reducing PDF memory/file size.
+     */
+    const jpegQuality = isMobile ? 0.78 : 0.92;
+    const pageImgData = pageCanvas.toDataURL('image/jpeg', jpegQuality);
+
+    if (page > 0) {
+      pdf.addPage('a4', 'portrait');
+    }
+
+    pdf.addImage(
+      pageImgData,
+      'JPEG',
+      0,
+      0,
+      a4WidthMm,
+      a4HeightMm
+    );
   }
 
-  if (onProgress) onProgress('Đang tạo tệp PDF tải về...');
+  /*
+   * Release large canvas memory before creating the final PDF outputs.
+   */
+  canvas.width = 1;
+  canvas.height = 1;
+  pageCanvas.width = 1;
+  pageCanvas.height = 1;
+
+  if (onProgress) {
+    onProgress('Dang tao tep PDF tai ve...');
+  }
 
   const filename = `BAO_CAO_TUAN_TRA_${session.id}.pdf`;
   const pdfBlob = pdf.output('blob');
   const blobUrl = URL.createObjectURL(pdfBlob);
+
+  /*
+   * Keep dataUri for the existing preview component.
+   * The public return structure is intentionally unchanged.
+   */
   const dataUri = pdf.output('datauristring');
 
-  // Trigger automatic download
   try {
     const link = document.createElement('a');
     link.href = blobUrl;
     link.download = filename;
+    link.rel = 'noopener';
     document.body.appendChild(link);
     link.click();
+
     setTimeout(() => {
       link.remove();
     }, 1000);
@@ -823,7 +908,9 @@ export async function generateAndDownloadPDF(
     console.warn('Auto download attempt ignored by browser policy:', e);
   }
 
-  if (onProgress) onProgress('Hoàn tất!');
+  if (onProgress) {
+    onProgress('Hoan tat!');
+  }
 
   return {
     blob: pdfBlob,
@@ -832,7 +919,6 @@ export async function generateAndDownloadPDF(
     filename,
   };
 }
-
 /**
  * Share the generated PDF report via native Mobile Share Sheet (Zalo, Gmail, AirDrop, Files)
  */
