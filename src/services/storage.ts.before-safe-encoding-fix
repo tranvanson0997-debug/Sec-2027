@@ -391,7 +391,7 @@ export class StorageService {
           !parsed.address ||
           parsed.address.includes('An Giang') ||
           parsed.address.includes('Vũng Tàu') ||
-          parsed.address.includes('Hoàng Gia')
+          parsed.address.includes('HoÃ ng Gia')
         ) {
           parsed.address = 'ÄÆ°á»ng Tráº§n HÆ°ng Äáº¡o, Cá»­a Láº¥p, DÆ°Æ¡ng TÆ¡, ThÃ nh phá»‘ PhÃº Quá»‘c, Tá»‰nh KiÃªn Giang';
           changed = true;
@@ -562,7 +562,7 @@ export class StorageService {
           userName: 'Lê Văn Cường',
           userRole: 'OFFICER',
           action: 'ÄÄ‚NG NHáº¬P',
-          target: 'Ca ngày (06:00 - 18:00)',
+          target: 'Ca ngÃ y (06:00 - 18:00)',
           details: 'ÄÄƒng nháº­p thÃ nh cÃ´ng tá»« thiáº¿t bá»‹ di Ä‘á»™ng vá»›i tÃ i khoáº£n Gmail levancuong.security@gmail.com.',
         },
         {
@@ -572,7 +572,7 @@ export class StorageService {
           userName: 'Lê Văn Cường',
           userRole: 'OFFICER',
           action: 'BẮT ĐẦU TUẦN TRA',
-          target: 'Phiên SES-20260916-01',
+          target: 'PhiÃªn SES-20260916-01',
           details: 'Báº¯t Ä‘áº§u lÆ°á»£t tuáº§n tra Ä‘áº§u ca: Tuyáº¿n Sáº£nh chÃ­nh, Lá»‘i vÃ o VIP vÃ  Háº§m Ä‘á»— xe B1.',
         },
         {
@@ -591,8 +591,8 @@ export class StorageService {
           userId: 'USR-OFC-01',
           userName: 'Lê Văn Cường',
           userRole: 'OFFICER',
-          action: 'HOìN THìNH TUẦN TRA',
-          target: 'Phiên SES-20260916-01',
+          action: 'HOÃ€N THÃ€NH TUáº¦N TRA',
+          target: 'PhiÃªn SES-20260916-01',
           details: 'HoÃ n táº¥t kiá»ƒm tra 6/6 tráº¡m checkpoint, ghi nháº­n 1 sá»± cá»‘ háº§m B1, Ä‘á»“ng bá»™ dá»¯ liá»‡u vÃ o há»‡ thá»‘ng.',
         },
         {
@@ -675,7 +675,7 @@ export class StorageService {
       date: '2026-09-16',
       startTime: '07:00:00',
       endTime: '08:15:30',
-      shift: 'Ca ngày (06:00 - 18:00)',
+      shift: 'Ca ngÃ y (06:00 - 18:00)',
       patrolRoute: 'Tuyáº¿n Tá»•ng Há»£p ToÃ n KhÃ¡ch Sáº¡n',
       status: 'COMPLETED',
       isLocked: true,
@@ -845,7 +845,7 @@ export class StorageService {
       date: '2026-09-17',
       startTime: '08:00:00',
       endTime: '09:10:00',
-      shift: 'Ca ngày (06:00 - 18:00)',
+      shift: 'Ca ngÃ y (06:00 - 18:00)',
       patrolRoute: 'Tuyến An Ninh Sảnh & Bãi BiỒn Ngoài Trời',
       status: 'COMPLETED',
       isLocked: true,
@@ -1605,7 +1605,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'TẠO CHECKPOINT',
+      'Táº O CHECKPOINT',
       newCp.id,
       `ThÃªm má»›i Ä‘iá»ƒm tuáº§n tra: ${newCp.name} (${newCp.area})`
     );
@@ -1624,7 +1624,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
         currentUser.id,
         currentUser.fullName,
         currentUser.role,
-        'SỬA CHECKPOINT',
+        'Sá»¬A CHECKPOINT',
         checkpoint.id,
         `Cáº­p nháº­t thÃ´ng tin Ä‘iá»ƒm: ${checkpoint.name}`
       );
@@ -1691,7 +1691,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
         currentUser.id,
         currentUser.fullName,
         currentUser.role,
-        'SỬA CHECKLIST',
+        'Sá»¬A CHECKLIST',
         template.name,
         `Cáº­p nháº­t ná»™i dung tiÃªu chÃ­ kiá»ƒm tra cho danh má»¥c ${template.name}`
       );
@@ -2272,7 +2272,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
 
     // Shift with most fails (2 shifts: Ca ngÃ y 06:00-18:00 & Ca Ä‘Ãªm 18:00-06:00)
     const failCountByShift: { [shift: string]: number } = {
-      'Ca ngày (06:00 - 18:00)': 0,
+      'Ca ngÃ y (06:00 - 18:00)': 0,
       'Ca Ä‘Ãªm (18:00 - 06:00)': 0,
     };
     sessions.forEach((s) => {

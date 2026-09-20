@@ -169,12 +169,12 @@ export const DEFAULT_USERS: User[] = [
 export const DEFAULT_CHECKLISTS: ChecklistTemplate[] = [
   {
     id: 'CHK-LOBBY-01',
-    name: 'Checklist Khu vực Sảnh Chính & Đón Khách (5 Sao)',
+    name: 'Checklist Khu vá»±c Sáº£nh ChÃ­nh & ÄÃ³n KhÃ¡ch (5 Sao)',
     description: 'TiÃªu chuáº©n 12 Ä‘iá»ƒm an ninh vÃ  má»¹ quan sáº£nh khÃ¡ch sáº¡n cao cáº¥p',
     items: [
-      { id: 'ITM-01', text: 'Khu vực sạch và thông thoáng', category: 'VE_SINH_MY_QUAN', isRequiredPhotoOnFail: true },
-      { id: 'ITM-02', text: 'Không có người khả nghi lảng vảng', category: 'AN_NINH', isRequiredPhotoOnFail: true },
-      { id: 'ITM-03', text: 'Không có vật thỒ hoặc hành lý vô chủ khả nghi', category: 'AN_NINH', isRequiredPhotoOnFail: true },
+      { id: 'ITM-01', text: 'Khu vá»±c sáº¡ch vÃ  thÃ´ng thoÃ¡ng', category: 'VE_SINH_MY_QUAN', isRequiredPhotoOnFail: true },
+      { id: 'ITM-02', text: 'KhÃ´ng cÃ³ ngÆ°á»i kháº£ nghi láº£ng váº£ng', category: 'AN_NINH', isRequiredPhotoOnFail: true },
+      { id: 'ITM-03', text: 'KhÃ´ng cÃ³ váº­t thá»ƒ hoáº·c hÃ nh lÃ½ vÃ´ chá»§ kháº£ nghi', category: 'AN_NINH', isRequiredPhotoOnFail: true },
       { id: 'ITM-04', text: 'Camera giÃ¡m sÃ¡t (CCTV) hoáº¡t Ä‘á»™ng tá»‘t, gÃ³c quÃ©t rÃµ', category: 'KY_THUAT', isRequiredPhotoOnFail: true },
       { id: 'ITM-05', text: 'Ãnh sÃ¡ng Ä‘áº§y Ä‘á»§, Ä‘Ã¨n chÃ¹m vÃ  Ä‘Ã¨n háº¯t khÃ´ng cháº­p chá»n', category: 'KY_THUAT', isRequiredPhotoOnFail: true },
       { id: 'ITM-06', text: 'Cá»­a xoay vÃ  cá»­a kÃ­nh tá»± Ä‘á»™ng hoáº¡t Ä‘á»™ng an toÃ n', category: 'KY_THUAT', isRequiredPhotoOnFail: true },
@@ -194,7 +194,7 @@ export const DEFAULT_CHECKLISTS: ChecklistTemplate[] = [
       { id: 'ITM-P01', text: 'Phao cá»©u sinh vÃ  sÃ o cá»©u há»™ Ä‘áº§y Ä‘á»§ táº¡i cÃ¡c vá»‹ trÃ­ quy Ä‘á»‹nh', category: 'AN_TOAN_KHACH', isRequiredPhotoOnFail: true },
       { id: 'ITM-P02', text: 'NhÃ¢n viÃªn cá»©u há»™ (Lifeguard) tÃºc trá»±c Ä‘Ãºng vá»‹ trÃ­', category: 'AN_NINH', isRequiredPhotoOnFail: true },
       { id: 'ITM-P03', text: 'Biá»ƒn bÃ¡o Ä‘á»™ sÃ¢u nÆ°á»›c vÃ  biá»ƒn cáº£nh bÃ¡o trÆ¡n trÆ°á»£t rÃµ rÃ ng', category: 'AN_TOAN_KHACH', isRequiredPhotoOnFail: true },
-      { id: 'ITM-P04', text: 'Không có chai thủy tinh vỡ hoặc vật sắc nhọn quanh bỒ bơi', category: 'VE_SINH_MY_QUAN', isRequiredPhotoOnFail: true },
+      { id: 'ITM-P04', text: 'KhÃ´ng cÃ³ chai thá»§y tinh vá»¡ hoáº·c váº­t sáº¯c nhá»n quanh bá»ƒ bÆ¡i', category: 'VE_SINH_MY_QUAN', isRequiredPhotoOnFail: true },
       { id: 'ITM-P05', text: 'Camera gÃ³c quÃ©t máº·t nÆ°á»›c hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng', category: 'KY_THUAT', isRequiredPhotoOnFail: true },
       { id: 'ITM-P06', text: 'Cá» cáº£nh bÃ¡o thá»i tiáº¿t biá»ƒn (Cá» xanh/vÃ ng/Ä‘á») treo Ä‘Ãºng quy Ä‘á»‹nh', category: 'AN_TOAN_KHACH', isRequiredPhotoOnFail: true },
       { id: 'ITM-P07', text: 'Há»™p sÆ¡ cá»©u y táº¿ (First Aid Kit) Ä‘áº§y Ä‘á»§ bÃ´ng bÄƒng thuá»‘c sÃ¡t trÃ¹ng', category: 'AN_TOAN_KHACH', isRequiredPhotoOnFail: true },
@@ -218,10 +218,10 @@ export const DEFAULT_CHECKLISTS: ChecklistTemplate[] = [
   },
   {
     id: 'CHK-ROOFTOP-01',
-    name: 'Checklist Tầng Thượng Sky Bar & Bãi Đáp Trực ThĒng',
+    name: 'Checklist Táº§ng ThÆ°á»£ng Sky Bar & BÃ£i ÄÃ¡p Trá»±c ThÄƒng',
     description: 'An toÃ n lan can cao táº§ng, cá»­a giÃ³ vÃ  há»‡ thá»‘ng thu lÃ´i',
     items: [
-      { id: 'ITM-R01', text: 'Cửa thoát hiểm lên tầng thượng khóa kiỒm soát bằng thẻ từ/chìa an ninh', category: 'AN_NINH', isRequiredPhotoOnFail: true },
+      { id: 'ITM-R01', text: 'Cá»­a thoÃ¡t hiá»ƒm lÃªn táº§ng thÆ°á»£ng khÃ³a kiá»ƒm soÃ¡t báº±ng tháº» tá»«/chÃ¬a an ninh', category: 'AN_NINH', isRequiredPhotoOnFail: true },
       { id: 'ITM-R02', text: 'Lan can kÃ­nh vÃ  rÃ o cháº¯n an toÃ n kiÃªn cá»‘, khÃ´ng lung lay', category: 'AN_TOAN_KHACH', isRequiredPhotoOnFail: true },
       { id: 'ITM-R03', text: 'ÄÃ¨n cáº£nh bÃ¡o mÃ¡y bay (Aviation Beacon) ban Ä‘Ãªm sÃ¡ng Ä‘á» rÃµ rÃ ng', category: 'KY_THUAT', isRequiredPhotoOnFail: true },
       { id: 'ITM-R04', text: 'SÃ n Ä‘Ã¡p trá»±c thÄƒng thÃ´ng thoÃ¡ng, khÃ´ng cÃ³ rÃ¡c hay váº­t thá»ƒ bay', category: 'VE_SINH_MY_QUAN', isRequiredPhotoOnFail: true },
@@ -260,8 +260,8 @@ export const DEFAULT_CHECKPOINTS: Checkpoint[] = [
   {
     id: 'SEC-POOL-01',
     name: 'Há»“ bÆ¡i vÃ´ cá»±c táº§ng 5 & Pool Bar (Infinity Pool)',
-    area: 'Khu Giải Trí & Thể Thao',
-    route: 'Tuyến Thể Thao & Bãi Biển',
+    area: 'Khu Giáº£i TrÃ­ & Thá»ƒ Thao',
+    route: 'Tuyáº¿n Thá»ƒ Thao & BÃ£i Biá»ƒn',
     order: 3,
     status: 'ACTIVE',
     qrCodeValue: 'SEC-POOL-01',
@@ -272,8 +272,8 @@ export const DEFAULT_CHECKPOINTS: Checkpoint[] = [
   {
     id: 'SEC-BCH-01',
     name: 'BÃ£i biá»ƒn riÃªng & Lá»‘i Ä‘i ven biá»ƒn (Private Beachfront)',
-    area: 'Khu Giải Trí & Bãi Biển',
-    route: 'Tuyến Thể Thao & Bãi Biển',
+    area: 'Khu Giáº£i TrÃ­ & BÃ£i Biá»ƒn',
+    route: 'Tuyáº¿n Thá»ƒ Thao & BÃ£i Biá»ƒn',
     order: 4,
     status: 'ACTIVE',
     qrCodeValue: 'SEC-BCH-01',
@@ -284,8 +284,8 @@ export const DEFAULT_CHECKPOINTS: Checkpoint[] = [
   {
     id: 'SEC-PKG-01',
     name: 'Háº§m Ä‘á»— xe B1 & PhÃ²ng biáº¿n Ã¡p ká»¹ thuáº­t (Basement B1)',
-    area: 'Khu Tầng Hầm & Kỹ Thuật',
-    route: 'Tuyến Kỹ Thuật & Hầm',
+    area: 'Khu Táº§ng Háº§m & Ká»¹ Thuáº­t',
+    route: 'Tuyáº¿n Ká»¹ Thuáº­t & Háº§m',
     order: 5,
     status: 'ACTIVE',
     qrCodeValue: 'SEC-PKG-01',
@@ -296,12 +296,12 @@ export const DEFAULT_CHECKPOINTS: Checkpoint[] = [
   {
     id: 'SEC-ROOF-01',
     name: 'Táº§ng thÆ°á»£ng Sky Bar & BÃ£i Ä‘Ã¡p trá»±c thÄƒng (Helipad Rooftop)',
-    area: 'Khu Cao Tầng & Tầng Thượng',
-    route: 'Tuyến Cao Tầng',
+    area: 'Khu Cao Táº§ng & Táº§ng ThÆ°á»£ng',
+    route: 'Tuyáº¿n Cao Táº§ng',
     order: 6,
     status: 'ACTIVE',
     qrCodeValue: 'SEC-ROOF-01',
-    description: 'Cửa thang thoát hiểm sân bay trực thĒng tầng 32',
+    description: 'Cá»­a thang thoÃ¡t hiá»ƒm sÃ¢n bay trá»±c thÄƒng táº§ng 32',
     checklistId: 'CHK-ROOF-01',
     createdAt: '2025-01-01 08:00:00',
   },
@@ -378,7 +378,7 @@ export class StorageService {
         let changed = false;
         if (
           !parsed.hotelName ||
-          parsed.hotelName === 'KHÁCH SẠN QUỐC TẾ & RESORT GRAND PALACE' ||
+          parsed.hotelName === 'KHÃCH Sáº N QUá»C Táº¾ & RESORT GRAND PALACE' ||
           parsed.hotelName.includes('GRAND PALACE') ||
           parsed.hotelName.includes('Grand Palace') ||
           parsed.hotelName.includes('GRAND LUXURY')
@@ -390,8 +390,8 @@ export class StorageService {
         if (
           !parsed.address ||
           parsed.address.includes('An Giang') ||
-          parsed.address.includes('Vũng Tàu') ||
-          parsed.address.includes('Hoàng Gia')
+          parsed.address.includes('VÅ©ng TÃ u') ||
+          parsed.address.includes('HoÃ ng Gia')
         ) {
           parsed.address = 'ÄÆ°á»ng Tráº§n HÆ°ng Äáº¡o, Cá»­a Láº¥p, DÆ°Æ¡ng TÆ¡, ThÃ nh phá»‘ PhÃº Quá»‘c, Tá»‰nh KiÃªn Giang';
           changed = true;
@@ -425,9 +425,9 @@ export class StorageService {
     const keysToSanitize = [STORAGE_KEYS.PATROLS, STORAGE_KEYS.INCIDENTS, STORAGE_KEYS.AUDIT_LOGS];
     keysToSanitize.forEach((key) => {
       const raw = localStorage.getItem(key);
-      if (raw && (raw.includes('KHÁCH SẠN QUỐC LỘ HOÀNG GIA') || raw.includes('114') || raw.includes('115') || raw.includes('Hotline') || raw.includes('An Giang'))) {
+      if (raw && (raw.includes('KHÃCH Sáº N QUá»C Táº¾ & RESORT GRAND PALACE') || raw.includes('GRAND PALACE') || raw.includes('Grand Palace') || raw.includes('GRAND LUXURY') || raw.includes('Äáº¡i Lá»™ HoÃ ng Gia') || raw.includes('114') || raw.includes('115') || raw.includes('Hotline') || raw.includes('An Giang'))) {
         let cleaned = raw;
-        cleaned = cleaned.replace(/KHÁCH SẠN QUỐC LỘ HOÀNG GIA,?\s*BÃI DÃI,?\s*ĐẶC KHU PHÚ QUỐC/g, 'Đường Cửa Lấp, Dương Tơ, Phú Quốc');
+        cleaned = cleaned.replace(/KHÃCH Sáº N QUá»C Táº¾ & RESORT GRAND PALACE/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
         cleaned = cleaned.replace(/GRAND PALACE/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
         cleaned = cleaned.replace(/Grand Palace/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
         cleaned = cleaned.replace(/01 Äáº¡i Lá»™ HoÃ ng Gia,?\s*BÃ£i DÃ i,?\s*Äáº·c Khu PhÃº Quá»‘c/g, 'ÄÆ°á»ng Tráº§n HÆ°ng Äáº¡o, Cá»­a Láº¥p, DÆ°Æ¡ng TÆ¡, PhÃº Quá»‘c');
@@ -436,10 +436,10 @@ export class StorageService {
         cleaned = cleaned.replace(/Hotline:[^|\n,]*/gi, '');
         cleaned = cleaned.replace(/Ext:?\s*114\s*\/?\s*115/gi, '');
         cleaned = cleaned.replace(/114\s*\/\s*115/g, '');
-        cleaned = cleaned.replace(/An Giang/g, 'Kiên Giang');
-        cleaned = cleaned.replace(/â˜…\s*â˜…\s*â˜…\s*â˜…\s*â˜…\s*GRAND LUXURY PALACE HOTEL & RESORT/g, 'Dusit Princess Moonrise Phú Quốc');
-        cleaned = cleaned.replace(/GRAND LUXURY PALACE HOTEL & RESORT/g, 'Dusit Princess Moonrise Phú Quốc');
-        cleaned = cleaned.replace(/GRAND LUXURY PALACE/g, 'Dusit Princess Moonrise Phú Quốc');
+        cleaned = cleaned.replace(/An Giang/g, 'KiÃªn Giang');
+        cleaned = cleaned.replace(/â˜…\s*â˜…\s*â˜…\s*â˜…\s*â˜…\s*GRAND LUXURY PALACE HOTEL & RESORT/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
+        cleaned = cleaned.replace(/GRAND LUXURY PALACE HOTEL & RESORT/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
+        cleaned = cleaned.replace(/GRAND LUXURY PALACE/g, 'Dusit Princess Moonrise PhÃº Quá»‘c');
         localStorage.setItem(key, cleaned);
       }
     });
@@ -453,7 +453,7 @@ export class StorageService {
         usersList = usersList.map((u) => {
           if (!u.fullName || u.fullName.trim() === '') {
             const def = DEFAULT_USERS.find((d) => d.id === u.id || d.username === u.username || d.email === u.email);
-            u.fullName = def ? def.fullName : (u.username === 'manager' ? 'Manager' : u.username || 'Nhân viên an ninh');
+            u.fullName = def ? def.fullName : (u.username === 'manager' ? 'Manager' : u.username || 'NhÃ¢n viÃªn an ninh');
             userRepaired = true;
           }
           return u;
@@ -468,7 +468,7 @@ export class StorageService {
         const curUser: User = JSON.parse(curUserRaw);
         if (!curUser.fullName || curUser.fullName.trim() === '') {
           const def = DEFAULT_USERS.find((d) => d.id === curUser.id || d.username === curUser.username || d.email === curUser.email);
-          curUser.fullName = def ? def.fullName : (curUser.username === 'manager' ? 'Manager' : curUser.username || 'Nhân viên an ninh');
+          curUser.fullName = def ? def.fullName : (curUser.username === 'manager' ? 'Manager' : curUser.username || 'NhÃ¢n viÃªn an ninh');
           localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(curUser));
         }
       }
@@ -476,16 +476,16 @@ export class StorageService {
       console.warn('User repair error', e);
     }
 
-    // Clean up deleted user Lê Viết Sơn / sonllvt99@gmail.com from stored data
+    // Clean up deleted user LÃª Viáº¿t SÆ¡n / sonllvt99@gmail.com from stored data
     const existingUsersRaw = localStorage.getItem(STORAGE_KEYS.USERS);
-    if (existingUsersRaw && (existingUsersRaw.includes('sonllvt99') || existingUsersRaw.includes('Lê Viết Sơn'))) {
+    if (existingUsersRaw && (existingUsersRaw.includes('sonllvt99') || existingUsersRaw.includes('LÃª Viáº¿t SÆ¡n'))) {
       try {
         const parsedList: User[] = JSON.parse(existingUsersRaw);
         const filteredList = parsedList.filter(
           (u) =>
             u.email?.toLowerCase() !== 'sonllvt99@gmail.com' &&
             u.username?.toLowerCase() !== 'sonllvt99' &&
-            u.fullName !== 'Lê Viết Sơn'
+            u.fullName !== 'LÃª Viáº¿t SÆ¡n'
         );
         localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(filteredList));
       } catch {
@@ -494,7 +494,7 @@ export class StorageService {
     }
 
     const currentLoggedInUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-    if (currentLoggedInUser && (currentLoggedInUser.includes('sonllvt99') || currentLoggedInUser.includes('Lê Viết Sơn'))) {
+    if (currentLoggedInUser && (currentLoggedInUser.includes('sonllvt99') || currentLoggedInUser.includes('LÃª Viáº¿t SÆ¡n'))) {
       localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
     }
 
@@ -531,15 +531,15 @@ export class StorageService {
           userId: 'USR-MGR-01',
           userName: 'Manager',
           userRole: 'MANAGER',
-          action: 'KHỞI TẠO HỆ THỐNG',
-          target: 'Hệ thống Tuần Tra An Ninh',
-          details: 'Thiết lập danh mục 6 trạm kiểm soát an ninh tiêu chuẩn 5 sao và quy trình tuần tra PCCC/CCTV.',
+          action: 'KHá»žI Táº O Há»† THá»NG',
+          target: 'Há»‡ thá»‘ng Tuáº§n Tra An Ninh',
+          details: 'Thiáº¿t láº­p danh má»¥c 6 tráº¡m kiá»ƒm soÃ¡t an ninh tiÃªu chuáº©n 5 sao vÃ  quy trÃ¬nh tuáº§n tra PCCC/CCTV.',
         },
         {
           id: 'LOG-002',
           timestamp: '2026-09-15 08:30:00',
           userId: 'USR-MGR-01',
-          userName: 'Trần Văn Sơn',
+          userName: 'Tráº§n VÄƒn SÆ¡n',
           userRole: 'MANAGER',
           action: 'Cáº¤U HÃŒNH Há»† THá»NG',
           target: 'Dusit Princess Moonrise PhÃº Quá»‘c',
@@ -549,7 +549,7 @@ export class StorageService {
           id: 'LOG-003',
           timestamp: '2026-09-15 17:50:00',
           userId: 'USR-SUP-01',
-          userName: 'Lê Đình Tâm',
+          userName: 'LÃª ÄÃ¬nh TÃ¢m',
           userRole: 'SUPERVISOR',
           action: 'PHÃ‚N CÃ”NG CA TRá»°C',
           target: 'Lá»‹ch trá»±c báº£o an',
@@ -559,29 +559,29 @@ export class StorageService {
           id: 'LOG-004',
           timestamp: '2026-09-16 06:00:15',
           userId: 'USR-OFC-01',
-          userName: 'Lê Văn Cường',
+          userName: 'LÃª VÄƒn CÆ°á»ng',
           userRole: 'OFFICER',
           action: 'ÄÄ‚NG NHáº¬P',
-          target: 'Ca ngày (06:00 - 18:00)',
+          target: 'Ca ngÃ y (06:00 - 18:00)',
           details: 'ÄÄƒng nháº­p thÃ nh cÃ´ng tá»« thiáº¿t bá»‹ di Ä‘á»™ng vá»›i tÃ i khoáº£n Gmail levancuong.security@gmail.com.',
         },
         {
           id: 'LOG-005',
           timestamp: '2026-09-16 06:15:30',
           userId: 'USR-OFC-01',
-          userName: 'Lê Văn Cường',
+          userName: 'LÃª VÄƒn CÆ°á»ng',
           userRole: 'OFFICER',
-          action: 'BẮT ĐẦU TUẦN TRA',
-          target: 'Phiên SES-20260916-01',
+          action: 'Báº®T Äáº¦U TUáº¦N TRA',
+          target: 'PhiÃªn SES-20260916-01',
           details: 'Báº¯t Ä‘áº§u lÆ°á»£t tuáº§n tra Ä‘áº§u ca: Tuyáº¿n Sáº£nh chÃ­nh, Lá»‘i vÃ o VIP vÃ  Háº§m Ä‘á»— xe B1.',
         },
         {
           id: 'LOG-006',
           timestamp: '2026-09-16 07:45:10',
           userId: 'USR-OFC-01',
-          userName: 'Lê Văn Cường',
+          userName: 'LÃª VÄƒn CÆ°á»ng',
           userRole: 'OFFICER',
-          action: 'GHI NHẬN SỰ CỐ',
+          action: 'GHI NHáº¬N Sá»° Cá»',
           target: 'Háº§m Ä‘á»— xe B1 (SEC-PKG-01)',
           details: 'Ghi nháº­n lá»—i FAIL: ÄÃ¨n thoÃ¡t hiá»ƒm Exit cháº­p chá»n, chá»¥p hÃ¬nh hiá»‡n trÆ°á»ng cÃ³ Ä‘Ã³ng dáº¥u GPS vÃ  thá»i gian.',
         },
@@ -589,10 +589,10 @@ export class StorageService {
           id: 'LOG-007',
           timestamp: '2026-09-16 08:30:00',
           userId: 'USR-OFC-01',
-          userName: 'Lê Văn Cường',
+          userName: 'LÃª VÄƒn CÆ°á»ng',
           userRole: 'OFFICER',
-          action: 'HOìN THìNH TUẦN TRA',
-          target: 'Phiên SES-20260916-01',
+          action: 'HOÃ€N THÃ€NH TUáº¦N TRA',
+          target: 'PhiÃªn SES-20260916-01',
           details: 'HoÃ n táº¥t kiá»ƒm tra 6/6 tráº¡m checkpoint, ghi nháº­n 1 sá»± cá»‘ háº§m B1, Ä‘á»“ng bá»™ dá»¯ liá»‡u vÃ o há»‡ thá»‘ng.',
         },
         {
@@ -609,10 +609,10 @@ export class StorageService {
           id: 'LOG-009',
           timestamp: '2026-09-16 11:30:00',
           userId: 'USR-SUP-01',
-          userName: 'Trần Văn Bình',
+          userName: 'Tráº§n VÄƒn BÃ¬nh',
           userRole: 'SUPERVISOR',
-          action: 'XUẤT BÁO CÁO',
-          target: 'Báo cáo Ca trực Ngày',
+          action: 'XUáº¤T BÃO CÃO',
+          target: 'BÃ¡o cÃ¡o Ca trá»±c NgÃ y',
           details: 'Xuáº¥t bÃ¡o cÃ¡o PDF vÃ  báº£ng tÃ­nh Excel lÆ°u trá»¯ há»“ sÆ¡ kiá»ƒm toÃ¡n an ninh khÃ¡ch sáº¡n.',
         },
         {
@@ -638,7 +638,7 @@ export class StorageService {
     const samplePhoto = generateSampleIncidentPhoto(
       'ÄÃ¨n thoÃ¡t hiá»ƒm Exit táº§ng háº§m B1 bá»‹ cháº­p chá»n',
       'Háº§m Ä‘á»— xe B1 â€“ SEC-PKG-01',
-      'Lê Văn Cường',
+      'LÃª VÄƒn CÆ°á»ng',
       '16/09/2026',
       '07:45'
     );
@@ -648,9 +648,9 @@ export class StorageService {
       sessionId: 'PTR-20260916-001',
       checkpointId: 'SEC-PKG-01',
       checkpointName: 'Háº§m Ä‘á»— xe B1 & PhÃ²ng biáº¿n Ã¡p ká»¹ thuáº­t (Basement B1)',
-      area: 'Khu Tầng Hầm & Kỹ Thuật',
+      area: 'Khu Táº§ng Háº§m & Ká»¹ Thuáº­t',
       officerId: 'USR-OFC-01',
-      officerName: 'Lê Văn Cường',
+      officerName: 'LÃª VÄƒn CÆ°á»ng',
       checklistText: 'Ãnh sÃ¡ng háº§m xe Ä‘áº§y Ä‘á»§, gÆ°Æ¡ng cáº§u lá»“i khÃ´ng bá»‹ vá»¡ hay lá»‡ch',
       severity: 'MEDIUM',
       description: 'ÄÃ¨n thoÃ¡t hiá»ƒm Exit gÃ³c cua cá»™t B-12 bá»‹ cháº­p chá»n, bÃ³ng Ä‘Ã¨n nháº¥p nhÃ¡y liÃªn tá»¥c cÃ³ nguy cÆ¡ cháº­p Ä‘iá»‡n.',
@@ -658,7 +658,7 @@ export class StorageService {
       department: 'Bá»™ pháº­n Ká»¹ thuáº­t Ä‘iá»‡n (Engineering)',
       photoUrl: samplePhoto,
       photoMetadata: {
-        officerName: 'Lê Văn Cường',
+        officerName: 'LÃª VÄƒn CÆ°á»ng',
         date: '16/09/2026',
         time: '07:45',
         location: 'Háº§m Ä‘á»— xe B1 â€“ SEC-PKG-01',
@@ -670,12 +670,12 @@ export class StorageService {
     const sampleSession1: PatrolSession = {
       id: 'PTR-20260916-001',
       officerId: 'USR-OFC-01',
-      officerName: 'Lê Văn Cường',
+      officerName: 'LÃª VÄƒn CÆ°á»ng',
       badgeNumber: 'SEC-OFC-042',
       date: '2026-09-16',
       startTime: '07:00:00',
       endTime: '08:15:30',
-      shift: 'Ca ngày (06:00 - 18:00)',
+      shift: 'Ca ngÃ y (06:00 - 18:00)',
       patrolRoute: 'Tuyáº¿n Tá»•ng Há»£p ToÃ n KhÃ¡ch Sáº¡n',
       status: 'COMPLETED',
       isLocked: true,
@@ -711,7 +711,7 @@ export class StorageService {
         {
           checkpointId: 'SEC-PKG-01',
           checkpointName: 'Háº§m Ä‘á»— xe B1 & PhÃ²ng biáº¿n Ã¡p ká»¹ thuáº­t (Basement B1)',
-          area: 'Khu Tầng Hầm & Kỹ Thuật',
+          area: 'Khu Táº§ng Háº§m & Ká»¹ Thuáº­t',
           scannedAt: '07:40:15',
           completedAt: '07:55:00',
           status: 'FAIL',
@@ -731,7 +731,7 @@ export class StorageService {
                   department: 'Bá»™ pháº­n Ká»¹ thuáº­t Ä‘iá»‡n (Engineering)',
                   photoUrl: samplePhoto,
                   photoMetadata: {
-                    officerName: 'Lê Văn Cường',
+                    officerName: 'LÃª VÄƒn CÆ°á»ng',
                     officerId: 'USR-OFC-01',
                     date: '16/09/2026',
                     time: '07:45',
@@ -755,7 +755,7 @@ export class StorageService {
         {
           checkpointId: 'SEC-POOL-01',
           checkpointName: 'Há»“ bÆ¡i vÃ´ cá»±c táº§ng 5 & Pool Bar (Infinity Pool)',
-          area: 'Khu Giải Trí & Thể Thao',
+          area: 'Khu Giáº£i TrÃ­ & Thá»ƒ Thao',
           scannedAt: '08:00:20',
           completedAt: '08:12:45',
           status: 'PASS',
@@ -797,7 +797,7 @@ export class StorageService {
         {
           checkpointId: 'SEC-PKG-01',
           checkpointName: 'Háº§m Ä‘á»— xe B1 & PhÃ²ng biáº¿n Ã¡p ká»¹ thuáº­t (Basement B1)',
-          area: 'Khu Tầng Hầm & Kỹ Thuật',
+          area: 'Khu Táº§ng Háº§m & Ká»¹ Thuáº­t',
           scannedAt: '20:05:00',
           completedAt: '20:25:00',
           status: 'PASS',
@@ -840,13 +840,13 @@ export class StorageService {
     const sampleSession3: PatrolSession = {
       id: 'PTR-20260917-001',
       officerId: 'USR-OFC-01',
-      officerName: 'Lê Văn Cường',
+      officerName: 'LÃª VÄƒn CÆ°á»ng',
       badgeNumber: 'SEC-OFC-042',
       date: '2026-09-17',
       startTime: '08:00:00',
       endTime: '09:10:00',
-      shift: 'Ca ngày (06:00 - 18:00)',
-      patrolRoute: 'Tuyến An Ninh Sảnh & Bãi BiỒn Ngoài Trời',
+      shift: 'Ca ngÃ y (06:00 - 18:00)',
+      patrolRoute: 'Tuyáº¿n An Ninh Sáº£nh & BÃ£i Biá»ƒn NgoÃ i Trá»i',
       status: 'COMPLETED',
       isLocked: true,
       checkpoints: [
@@ -950,19 +950,19 @@ export class StorageService {
         (u) => u.email && u.email.trim().toLowerCase() === cleanGmail
       );
 
-      // "KHÔNG ĐÚNG GMAIL ĐĂNG KÝ" - Kick out unregistered Gmail
+      // "KHÃ”NG ÄÃšNG GMAIL ÄÃƒ ÄÄ‚NG KÃ ÄÃ RA" - Kick out unregistered Gmail
       if (!userByGmail) {
         StorageService.recordAudit(
           'ANONYMOUS',
-          'Khách lạ / Chưa cấp phép',
+          'KhÃ¡ch láº¡ / ChÆ°a cáº¥p phÃ©p',
           'OFFICER',
-          'TỪ CHỐI TRUY CẬP (SAI GMAIL)',
+          'Tá»ª CHá»I TRUY Cáº¬P (SAI GMAIL)',
           cleanGmail,
-          `Từ chối đăng nhập: Gmail "${inputGmail}" chưa được cấp quyền trong Quản lý nhân viên.`
+          `Tá»« chá»‘i Ä‘Äƒng nháº­p: Gmail "${inputGmail}" chÆ°a Ä‘Æ°á»£c cáº¥p quyá»n trong Quáº£n lÃ½ nhÃ¢n viÃªn.`
         );
         return {
           success: false,
-          message: `TRUY CẬP BỊ TỪ CHỐI: Gmail "${inputGmail}" chưa được đăng ký trong danh sách Quản lý nhân viên! Bạn không có quyền truy cập hệ thống an ninh.`,
+          message: `TRUY Cáº¬P Bá»Š Tá»ª CHá»I: Äá»‹a chá»‰ Gmail "${inputGmail}" chÆ°a Ä‘Æ°á»£c Ä‘Äƒng kÃ½ trong danh sÃ¡ch Quáº£n lÃ½ nhÃ¢n viÃªn! Báº¡n khÃ´ng cÃ³ quyá»n truy cáº­p há»‡ thá»‘ng an ninh.`,
         };
       }
 
@@ -977,13 +977,13 @@ export class StorageService {
           userByGmail.id,
           userByGmail.fullName,
           userByGmail.role,
-          'TỪ CHỐI TRUY CẬP (SAI USERNAME)',
+          'Tá»ª CHá»I TRUY Cáº¬P (SAI USERNAME)',
           cleanUsername,
-          `Tên đăng nhập "${inputUsername}" không khớp với thông tin đã đăng ký cùng Gmail ${inputGmail}.`
+          `TÃªn Ä‘Äƒng nháº­p "${inputUsername}" khÃ´ng khá»›p vá»›i thÃ´ng tin Ä‘Ã£ Ä‘Äƒng kÃ½ cÃ¹ng Gmail ${inputGmail}.`
         );
         return {
           success: false,
-          message: `TRUY CẬP BỊ TỪ CHỐI: Tài khoản hoặc thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra Username/Gmail và thử lại.`,
+          message: `TRUY Cáº¬P Bá»Š Tá»ª CHá»I: TÃªn Ä‘Äƒng nháº­p "${inputUsername}" khÃ´ng khá»›p vá»›i thÃ´ng tin Ä‘Ã£ Ä‘Äƒng kÃ½ cÃ¹ng Gmail nÃ y trong danh sÃ¡ch Quáº£n lÃ½ nhÃ¢n viÃªn!`,
         };
       }
 
@@ -992,7 +992,7 @@ export class StorageService {
         return {
           success: false,
           message:
-            'TÀI KHOẢN TẠM KHÓA: Tài khoản nhân viên này đang bị tạm khóa an toàn. Vui lòng liên hệ Trưởng bộ phận An ninh để mở khóa.',
+            'TÃ€I KHOáº¢N Táº M KHÃ“A: TÃ i khoáº£n nhÃ¢n viÃªn nÃ y Ä‘ang bá»‹ táº¡m khÃ³a an toÃ n. Vui lÃ²ng liÃªn há»‡ TrÆ°á»Ÿng bá»™ pháº­n An ninh Ä‘á»ƒ má»Ÿ khÃ³a.',
         };
       }
 
@@ -1009,15 +1009,15 @@ export class StorageService {
             userByGmail.id,
             userByGmail.fullName,
             userByGmail.role,
-            'KHÓA TỰ ĐỘNG TÀI KHOẢN',
+            'KHÃ“A Tá»° Äá»˜NG TÃ€I KHOáº¢N',
             userByGmail.username,
-            'Tài khoản bị khóa tự động sau 5 lần nhập sai mật khẩu liên tiếp.'
+            'TÃ i khoáº£n bá»‹ khÃ³a tá»± Ä‘á»™ng sau 5 láº§n nháº­p sai máº­t kháº©u liÃªn tiáº¿p.'
           );
         }
         StorageService.saveUsers(users);
         return {
           success: false,
-          message: `Mật khẩu an ninh không chính xác. Đã nhập sai ${userByGmail.failedLoginAttempts}/5 lần.`,
+          message: `Máº­t kháº©u an ninh khÃ´ng chÃ­nh xÃ¡c. ÄÃ£ nháº­p sai ${userByGmail.failedLoginAttempts}/5 láº§n.`,
         };
       }
 
@@ -1028,27 +1028,27 @@ export class StorageService {
 
       if (!userByGmail.fullName || userByGmail.fullName.trim() === '') {
         const def = DEFAULT_USERS.find((d) => d.id === userByGmail.id || d.username === userByGmail.username || d.email === userByGmail.email);
-        userByGmail.fullName = def ? def.fullName : (userByGmail.username === 'manager' ? 'Manager' : userByGmail.username || 'Nhân viên bảo an');
+        userByGmail.fullName = def ? def.fullName : (userByGmail.username === 'manager' ? 'Manager' : userByGmail.username || 'NhÃ¢n viÃªn báº£o an');
       }
 
       StorageService.saveUsers(users);
       StorageService.setCurrentUser(userByGmail);
-      StorageService.registerOnlineUser(userByGmail, 'Đang trực ban / Tuần tra');
+      StorageService.registerOnlineUser(userByGmail, 'Äang trá»±c ban / Tuáº§n tra');
       StorageService.sendAccessNotification({
         userId: userByGmail.id,
         userName: userByGmail.fullName || userByGmail.username,
         userRole: userByGmail.role,
         email: userByGmail.email,
-        message: `Cán bộ "${userByGmail.fullName || userByGmail.username}" vừa đăng nhập hệ thống an ninh`,
+        message: `CÃ¡n bá»™ "${userByGmail.fullName || userByGmail.username}" vá»«a Ä‘Äƒng nháº­p há»‡ thá»‘ng an ninh`,
         type: 'LOGIN',
       });
       StorageService.recordAudit(
         userByGmail.id,
         userByGmail.fullName,
         userByGmail.role,
-        'ĐĂNG NHẬP THÀNH CÔNG',
+        'ÄÄ‚NG NHáº¬P THÃ€NH CÃ”NG',
         userByGmail.username,
-        `Xác thực thành công Tên đăng nhập "${inputUsername}" và Gmail "${userByGmail.email}". Vai trò: ${userByGmail.role}`
+        `XÃ¡c thá»±c thÃ nh cÃ´ng TÃªn Ä‘Äƒng nháº­p "${inputUsername}" vÃ  Gmail "${userByGmail.email}". Vai trÃ²: ${userByGmail.role}`
       );
 
       return { success: true, user: userByGmail };
@@ -1059,7 +1059,7 @@ export class StorageService {
     if (!cleanCred) {
       return {
         success: false,
-        message: 'Vui lòng nhập Gmail chính chủ hoặc Họ tên nhân viên đã đăng ký với hệ thống an ninh.',
+        message: 'Vui lÃ²ng nháº­p Gmail chÃ­nh chá»§ hoáº·c Há» tÃªn nhÃ¢n viÃªn Ä‘Ã£ Ä‘Äƒng kÃ½ vá»›i há»‡ thá»‘ng an ninh.',
       };
     }
     
@@ -1077,7 +1077,7 @@ export class StorageService {
       return {
         success: false,
         message:
-          'TRUY CẬP BỊ TỪ CHỐI: Tên này chưa được đăng ký trong danh bạ nhân sự của hệ thống. Bạn không phải là nhân viên hoặc chưa được duyệt tài khoản chính chủ.',
+          'TRUY Cáº¬P Bá»Š Tá»ª CHá»I: Gmail hoáº·c Há» tÃªn nÃ y chÆ°a Ä‘Æ°á»£c Ä‘Äƒng kÃ½ trong danh báº¡ nhÃ¢n sá»± cá»§a há»‡ thá»‘ng. Báº¡n khÃ´ng pháº£i lÃ  nhÃ¢n viÃªn hoáº·c chÆ°a Ä‘Æ°á»£c duyá»‡t tÃ i khoáº£n chÃ­nh chá»§.',
       };
     }
 
@@ -1085,7 +1085,7 @@ export class StorageService {
       return {
         success: false,
         message:
-          'TÀI KHOẢN TẠM KHÓA: Tài khoản nhân viên này đang bị tạm khóa an toàn. Vui lòng liên hệ Trưởng bộ phận An ninh.',
+          'TÃ€I KHOáº¢N Táº M KHÃ“A: TÃ i khoáº£n nhÃ¢n viÃªn nÃ y Ä‘ang bá»‹ táº¡m khÃ³a an toÃ n. Vui lÃ²ng liÃªn há»‡ TrÆ°á»Ÿng bá»™ pháº­n An ninh.',
       };
     }
 
@@ -1107,7 +1107,7 @@ export class StorageService {
         );
       }
       StorageService.saveUsers(users);
-      return { success: false, message: `Mật khẩu không chính xác. Đã nhập sai ${user.failedLoginAttempts}/5 lần.` };
+      return { success: false, message: `Máº­t kháº©u khÃ´ng chÃ­nh xÃ¡c. ÄÃ£ nháº­p sai ${user.failedLoginAttempts}/5 láº§n.` };
     }
 
     // Reset failed attempts & record login
@@ -1117,7 +1117,7 @@ export class StorageService {
 
     if (!user.fullName || user.fullName.trim() === '') {
       const def = DEFAULT_USERS.find((d) => d.id === user.id || d.username === user.username || d.email === user.email);
-      user.fullName = def ? def.fullName : (user.username === 'manager' ? 'Manager' : user.username || 'Nhân viên bảo an');
+      user.fullName = def ? def.fullName : (user.username === 'manager' ? 'Manager' : user.username || 'NhÃ¢n viÃªn báº£o an');
     }
 
     StorageService.saveUsers(users);
@@ -1218,7 +1218,7 @@ export class StorageService {
         let resolvedName = currentUser.fullName?.trim();
         if (!resolvedName) {
           const def = DEFAULT_USERS.find((d) => d.id === currentUser.id || d.username === currentUser.username || d.email === currentUser.email);
-          resolvedName = def?.fullName || (currentUser.username === 'manager' ? 'Manager' : currentUser.username || 'Nhân viên bảo an');
+          resolvedName = def?.fullName || (currentUser.username === 'manager' ? 'Manager' : currentUser.username || 'NhÃ¢n viÃªn báº£o an');
         }
 
         const existingIdx = list.findIndex(
@@ -1252,7 +1252,7 @@ export class StorageService {
         if (!hasOfficer) {
           const officerDuty: OnlineUser = {
             userId: 'USR-OFC-01',
-            fullName: 'Lê Văn Cường',
+            fullName: 'LÃª VÄƒn CÆ°á»ng',
             username: 'officer1',
             email: 'levancuong.security@gmail.com',
             role: 'OFFICER',
@@ -1260,7 +1260,7 @@ export class StorageService {
             shift: currentShift,
             loginTime: nowStr,
             lastActiveTime: nowStr,
-            currentAction: 'Đang tuần tra tuyến Sảnh & Bãi xe chính',
+            currentAction: 'Äang tuáº§n tra tuyáº¿n Sáº£nh & BÃ£i xe chÃ­nh',
             status: 'ONLINE',
           };
           list.push(officerDuty);
@@ -1288,7 +1288,7 @@ export class StorageService {
       let resolvedName = user.fullName?.trim();
       if (!resolvedName) {
         const def = DEFAULT_USERS.find((d) => d.id === user.id || d.username === user.username || d.email === user.email);
-        resolvedName = def?.fullName || (user.username === 'manager' ? 'Manager' : user.username || 'Nhân viên bảo an');
+        resolvedName = def?.fullName || (user.username === 'manager' ? 'Manager' : user.username || 'NhÃ¢n viÃªn báº£o an');
       }
 
       const entry: OnlineUser = {
@@ -1431,13 +1431,13 @@ export class StorageService {
       localStorage.setItem(managerMigrationKey, 'done');
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
     }
-    // Filter out deleted user sonllvt99 / Lê Viết Sơn if still in storage
+    // Filter out deleted user sonllvt99 / LÃª Viáº¿t SÆ¡n if still in storage
     const originalLength = users.length;
     users = users.filter(
       (u) =>
         u.email?.toLowerCase() !== 'sonllvt99@gmail.com' &&
         u.username?.toLowerCase() !== 'sonllvt99' &&
-        u.fullName !== 'Lê Viết Sơn'
+        u.fullName !== 'LÃª Viáº¿t SÆ¡n'
     );
     if (users.length !== originalLength) {
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
@@ -1465,7 +1465,7 @@ export class StorageService {
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'TẠO TÀI KHOẢN',
+      'Táº O TÃ€I KHOáº¢N',
       newUser.username,
       `Táº¡o tÃ i khoáº£n nhÃ¢n viÃªn má»›i: ${newUser.fullName} (${newUser.role})`
     );
@@ -1485,9 +1485,9 @@ export class StorageService {
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'CẬP NHẬT TÀI KHOẢN',
+      'Cáº¬P NHáº¬T TÃ€I KHOáº¢N',
       updatedUser.username,
-      `Cập nhật thông tin/phân quyền cho: ${updatedUser.fullName}`
+      `Cáº­p nháº­t thÃ´ng tin/phÃ¢n quyá»n cho: ${updatedUser.fullName}`
     );
   }
 }
@@ -1506,7 +1506,7 @@ static toggleUserStatus(userId: string, currentUser: User): void {
 
   if (user.id === currentUser.id) {
     throw new Error(
-      'Bạn không thể tự khóa tài khoản của chính mình!'
+      'Báº¡n khÃ´ng thá»ƒ tá»± khÃ³a tÃ i khoáº£n cá»§a chÃ­nh mÃ¬nh!'
     );
   }
 
@@ -1526,7 +1526,7 @@ static toggleUserStatus(userId: string, currentUser: User): void {
       ? 'KHÃ“A TÃ€I KHOáº¢N'
       : 'Má»ž KHÃ“A TÃ€I KHOáº¢N',
     user.username,
-    `Trạng thái chuyển sang: ${user.status}`
+    `Tráº¡ng thÃ¡i chuyá»ƒn sang: ${user.status}`
   );
 }
 
@@ -1605,7 +1605,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'TẠO CHECKPOINT',
+      'Táº O CHECKPOINT',
       newCp.id,
       `ThÃªm má»›i Ä‘iá»ƒm tuáº§n tra: ${newCp.name} (${newCp.area})`
     );
@@ -1624,7 +1624,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
         currentUser.id,
         currentUser.fullName,
         currentUser.role,
-        'SỬA CHECKPOINT',
+        'Sá»¬A CHECKPOINT',
         checkpoint.id,
         `Cáº­p nháº­t thÃ´ng tin Ä‘iá»ƒm: ${checkpoint.name}`
       );
@@ -1645,7 +1645,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       currentUser.role,
       cp.status === 'LOCKED' ? 'KHÃ“A CHECKPOINT' : 'Má»ž KHÃ“A CHECKPOINT',
       cp.id,
-      `Điểm kiểm tra chuyển trạng thái: ${cp.status}`
+      `Äiá»ƒm kiá»ƒm tra chuyá»ƒn tráº¡ng thÃ¡i: ${cp.status}`
     );
   }
 
@@ -1691,7 +1691,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
         currentUser.id,
         currentUser.fullName,
         currentUser.role,
-        'SỬA CHECKLIST',
+        'Sá»¬A CHECKLIST',
         template.name,
         `Cáº­p nháº­t ná»™i dung tiÃªu chÃ­ kiá»ƒm tra cho danh má»¥c ${template.name}`
       );
@@ -1773,7 +1773,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       params.officer.id,
       params.officer.fullName,
       params.officer.role,
-      'BẮT ĐẦU TUẦN TRA',
+      'Báº®T Äáº¦U TUáº¦N TRA',
       sessionId,
       `Báº¯t Ä‘áº§u phiÃªn tuáº§n tra ${params.shift}, Tuyáº¿n: ${params.route}`
     );
@@ -1793,7 +1793,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
   static submitPatrolSession(sessionId: string, officer: User): PatrolSession {
     const sessions = StorageService.getPatrolSessions();
     const session = sessions.find((s) => s.id === sessionId);
-    if (!session) throw new Error('Không tìm thấy phiên tuần tra!');
+    if (!session) throw new Error('KhÃ´ng tÃ¬m tháº¥y phiÃªn tuáº§n tra!');
 
     const now = new Date();
     const timeStr = now.toTimeString().split(' ')[0];
@@ -1855,7 +1855,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
   ): PatrolSession {
     const sessions = StorageService.getPatrolSessions();
     const session = sessions.find((s) => s.id === sessionId);
-    if (!session) throw new Error('Không tìm thấy phiên tuần tra!');
+    if (!session) throw new Error('KhÃ´ng tÃ¬m tháº¥y phiÃªn tuáº§n tra!');
 
     session.status = 'IN_PROGRESS';
     session.isLocked = false;
@@ -1914,7 +1914,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
   }): void {
     const sessions = StorageService.getPatrolSessions();
     const session = sessions.find((s) => s.id === params.sessionId);
-    if (!session) throw new Error('Không tìm thấy phiên tuần tra!');
+    if (!session) throw new Error('KhÃ´ng tÃ¬m tháº¥y phiÃªn tuáº§n tra!');
 
     if (params.approver.role !== 'MANAGER' && params.approver.role !== 'SUPERVISOR') {
       throw new Error('Chá»‰ Security Supervisor hoáº·c Manager má»›i cÃ³ quyá»n phÃª duyá»‡t sá»­a dá»¯ liá»‡u Ä‘Ã£ khÃ³a!');
@@ -1982,7 +1982,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       incident.officerId,
       incident.officerName,
       'OFFICER',
-      'TẠO SỰ CỐ / FAIL',
+      'Táº O Sá»° Cá» / FAIL',
       incident.id,
       `Má»©c Ä‘á»™: ${incident.severity} táº¡i ${incident.checkpointName}. Ná»™i dung: ${incident.description}`
     );
@@ -2128,7 +2128,7 @@ static resetUserPassword(userId: string, currentUser: User): string {
       resolver.id,
       resolver.fullName,
       resolver.role,
-      `XÁC NHẬN SỰ CỐ [${status}]`,
+      `XÃC NHáº¬N Sá»° Cá» [${status}]`,
       incident.id,
       `Xá»­ lÃ½ bá»Ÿi: ${resolver.fullName}. Ghi chÃº: ${resolutionNotes || 'ÄÃ£ xÃ¡c nháº­n xá»­ lÃ½.'}`
     );
@@ -2188,8 +2188,8 @@ static resetUserPassword(userId: string, currentUser: User): string {
       currentUser.fullName,
       currentUser.role,
       'Cáº¬P NHáº¬T Cáº¤U HÃŒNH Há»† THá»NG',
-      'Cấu hình khách sạn',
-      `Cập nhật thông tin khách sạn: ${config.hotelName}`
+      'Cáº¥u hÃ¬nh khÃ¡ch sáº¡n',
+      `Cáº­p nháº­t thÃ´ng tin khÃ¡ch sáº¡n: ${config.hotelName}`
     );
   }
 
@@ -2272,11 +2272,11 @@ static resetUserPassword(userId: string, currentUser: User): string {
 
     // Shift with most fails (2 shifts: Ca ngÃ y 06:00-18:00 & Ca Ä‘Ãªm 18:00-06:00)
     const failCountByShift: { [shift: string]: number } = {
-      'Ca ngày (06:00 - 18:00)': 0,
+      'Ca ngÃ y (06:00 - 18:00)': 0,
       'Ca Ä‘Ãªm (18:00 - 06:00)': 0,
     };
     sessions.forEach((s) => {
-      if (s.shift.includes('ngày')) failCountByShift['Ca ngày (06:00 - 18:00)'] += s.summary.failCount;
+      if (s.shift.includes('ngÃ y')) failCountByShift['Ca ngÃ y (06:00 - 18:00)'] += s.summary.failCount;
       if (s.shift.includes('Ä‘Ãªm')) failCountByShift['Ca Ä‘Ãªm (18:00 - 06:00)'] += s.summary.failCount;
     });
 

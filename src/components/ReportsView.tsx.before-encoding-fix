@@ -78,9 +78,9 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'NẠP DỮ LIỆU CƠ SỞ',
+      'Náº P Dá»® LIá»†U CÆ  Sá»ž',
       'BÁO CÁO TUẦN TRA',
-      'Đã khởi tạo/nạp lại dữ liệu báo cáo cơ sở tiêu chuẩn (3 phiên tuần tra 2 ca ngày/đêm).'
+      'ÄÃ£ khá»Ÿi táº¡o náº¡p láº¡i dá»¯ liá»‡u bÃ¡o cÃ¡o cÆ¡ sá»Ÿ tiÃªu chuáº©n (3 phiÃªn tuáº§n tra 2 ca ngÃ y/Ä‘Ãªm).'
     );
   };
 
@@ -105,9 +105,9 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'XUẤT TOÀN BỘ EXCEL',
+      'XUáº¤T TOÃ€N Bá»˜ EXCEL',
       'DATABASE',
-      `Xuất toàn bộ cơ sở dữ liệu Excel (4 sheets)`
+      `Xuáº¥t toÃ n bá»™ cÆ¡ sá»Ÿ dá»¯ liá»‡u Excel (4 sheets)`
     );
 
     await exportHotelPatrolExcel({
@@ -140,10 +140,10 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
             <FileText className="w-5 h-5 text-amber-500" />
-            LỊCH SỬ BÁO CÁO TUẦN TRA & XUẤT DỮ LIỆU
+            Lá»ŠCH Sá»¬ BÃO CÃO TUáº¦N TRA & XUáº¤T Dá»® LIá»†U
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Xem chi tiết, in báo cáo PDF tiêu chuẩn A4 và xuất toàn bộ cơ sở dữ liệu Excel
+            Xem chi tiáº¿t, in bÃ¡o cÃ¡o PDF tiÃªu chuáº©n A4 vÃ  xuáº¥t toÃ n bá»™ cÆ¡ sá»Ÿ dá»¯ liá»‡u Excel
           </p>
         </div>
 
@@ -153,10 +153,10 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             type="button"
             onClick={handleSeedDefaultData}
             className="py-2.5 px-3.5 bg-slate-800 hover:bg-slate-750 text-amber-400 border border-slate-700 font-bold rounded-xl text-xs flex items-center gap-1.5 shadow transition cursor-pointer"
-            title="Khởi tạo hoặc nạp lại 3 phiên tuần tra cơ sở mẫu"
+            title="Khá»Ÿi táº¡o hoáº·c náº¡p láº¡i 3 phiÃªn tuáº§n tra cÆ¡ sá»Ÿ máº«u"
           >
             <Database className="w-4 h-4" />
-            <span>[ NẠP DỮ LIỆU CƠ SỞ ]</span>
+            <span>[ Náº P Dá»® LIá»†U CÆ  Sá»ž ]</span>
           </button>
 
           <button
@@ -189,9 +189,9 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             onChange={(e) => setShiftFilter(e.target.value)}
             className="w-full py-2 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
           >
-            <option value="ALL">Tất cả các ca (Ca ngày & Ca đêm)</option>
+            <option value="ALL">Táº¥t cáº£ cÃ¡c ca (Ca ngÃ y & Ca Ä‘Ãªm)</option>
             <option value="ngày">Ca ngày (06:00 - 18:00)</option>
-            <option value="đêm">Ca đêm (18:00 - 06:00)</option>
+            <option value="Ä‘Ãªm">Ca Ä‘Ãªm (18:00 - 06:00)</option>
           </select>
         </div>
 
@@ -202,7 +202,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             className="w-full py-2 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
           >
             <option value="ALL">Tất cả trạng thái ({sessions.length})</option>
-            <option value="COMPLETED">Đã hoàn thành & Khóa dữ liệu</option>
+            <option value="COMPLETED">ÄÃ£ hoÃ n thÃ nh & KhÃ³a dá»¯ liá»‡u</option>
             <option value="IN_PROGRESS">Đang tuần tra thực tế</option>
           </select>
         </div>
@@ -216,7 +216,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
             <div className="py-12 px-4 text-center space-y-3">
               <Database className="w-10 h-10 text-amber-500/60 mx-auto" />
               <p className="text-slate-300 text-xs font-semibold">
-                Chưa có dữ liệu báo cáo cơ sở hoặc không khớp bộ lọc.
+                ChÆ°a cÃ³ dá»¯ liá»‡u bÃ¡o cÃ¡o cÆ¡ sá»Ÿ hoáº·c khÃ´ng khá»›p bá»™ lá»c.
               </p>
               <button
                 type="button"
@@ -224,7 +224,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                 className="py-2 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs inline-flex items-center gap-1.5 shadow"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Nạp Dữ Liệu Cơ Sở Mẫu Ngay</span>
+                <span>Náº¡p Dá»¯ Liá»‡u CÆ¡ Sá»Ÿ Máº«u Ngay</span>
               </button>
             </div>
           ) : (
@@ -236,7 +236,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                   </span>
                   {s.isLocked ? (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
-                      <Lock className="w-2.5 h-2.5" /> ĐÃ KHÓA
+                      <Lock className="w-2.5 h-2.5" /> ÄÃƒ KHÃ“A
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800">
@@ -259,7 +259,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                 {/* Progress bar and results */}
                 <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                   <div>
-                    <span className="text-[10px] text-slate-400 block">Tiến độ tuần tra</span>
+                    <span className="text-[10px] text-slate-400 block">Tiáº¿n Ä‘á»™ tuáº§n tra</span>
                     <span className="font-mono font-bold text-white text-xs">
                       {s.summary.checkedCount}/{s.summary.totalCheckpoints} ({s.summary.completionRate}%)
                     </span>
@@ -284,7 +284,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                     className="flex-1 py-2 bg-slate-800 hover:bg-slate-750 active:bg-slate-700 text-amber-400 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-700 transition"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>[ Xem Chi Tiết ]</span>
+                    <span>[ Xem Chi Tiáº¿t ]</span>
                   </button>
                   <button
                     id={`print-pdf-report-mobile-${s.id}`}
@@ -309,10 +309,10 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                 <th className="py-3 px-4 font-bold">Ngày & Ca Trực</th>
                 <th className="py-3 px-4 font-bold">Nhân Viên Tuần Tra</th>
                 <th className="py-3 px-4 font-bold">Tuyến Phân Công</th>
-                <th className="py-3 px-4 font-bold text-center">Tiến Độ</th>
+                <th className="py-3 px-4 font-bold text-center">Tiáº¿n Äá»™</th>
                 <th className="py-3 px-4 font-bold text-center">Kết Quả</th>
                 <th className="py-3 px-4 font-bold text-center">Trạng Thái Khóa</th>
-                <th className="py-3 px-4 font-bold text-right">Thao Tác</th>
+                <th className="py-3 px-4 font-bold text-right">Thao TÃ¡c</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/80">
@@ -321,14 +321,14 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
                   <td colSpan={8} className="py-12 text-center text-slate-400">
                     <div className="space-y-3">
                       <Database className="w-10 h-10 text-amber-500/60 mx-auto" />
-                      <p className="font-semibold text-sm">Chưa có dữ liệu báo cáo tuần tra cơ sở.</p>
+                      <p className="font-semibold text-sm">ChÆ°a cÃ³ dá»¯ liá»‡u bÃ¡o cÃ¡o tuáº§n tra cÆ¡ sá»Ÿ.</p>
                       <button
                         type="button"
                         onClick={handleSeedDefaultData}
                         className="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs inline-flex items-center gap-1.5 shadow cursor-pointer"
                       >
                         <RotateCcw className="w-4 h-4" />
-                        <span>Nạp Ngay Dữ Liệu Báo Cáo Cơ Sở Mẫu</span>
+                        <span>Náº¡p Ngay Dá»¯ Liá»‡u BÃ¡o CÃ¡o CÆ¡ Sá»Ÿ Máº«u</span>
                       </button>
                     </div>
                   </td>

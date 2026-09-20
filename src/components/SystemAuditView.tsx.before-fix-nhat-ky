@@ -231,7 +231,7 @@ export const SystemAuditView: React.FC<SystemAuditViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-amber-500" />
-            NHẬT KÝ Há»† THá»NG / AUDIT LOG & Cáº¤U HÃŒNH AN NINH
+            NHáº¬T KÃ Há»† THá»NG / AUDIT LOG & Cáº¤U HÃŒNH AN NINH
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
             LÆ°u váº¿t báº¥t biáº¿n toÃ n bá»™ hoáº¡t Ä‘á»™ng: Ä‘Äƒng nháº­p, quÃ©t checkpoint, ghi nháº­n sá»± cá»‘, xuáº¥t file vÃ  duyá»‡t sá»­a dá»¯ liá»‡u

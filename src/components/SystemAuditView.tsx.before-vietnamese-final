@@ -231,7 +231,7 @@ export const SystemAuditView: React.FC<SystemAuditViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-amber-500" />
-            NHẬT KÝ Há»† THá»NG / AUDIT LOG & Cáº¤U HÃŒNH AN NINH
+            NHáº¬T KÃ Há»† THá»NG / AUDIT LOG & Cáº¤U HÃŒNH AN NINH
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
             LÆ°u váº¿t báº¥t biáº¿n toÃ n bá»™ hoáº¡t Ä‘á»™ng: Ä‘Äƒng nháº­p, quÃ©t checkpoint, ghi nháº­n sá»± cá»‘, xuáº¥t file vÃ  duyá»‡t sá»­a dá»¯ liá»‡u
@@ -355,14 +355,14 @@ export const SystemAuditView: React.FC<SystemAuditViewProps> = ({
               className={`w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500 ${
                 !canEditConfig ? 'opacity-80 cursor-not-allowed bg-slate-900/60' : ''
               }`}
-              placeholder="Đường Cửa Lấp, Dương Tơ, Thành phố Phú Quốc, Tỉnh Kiên Giang"
+              placeholder="ÄÆ°á»ng Tráº§n HÆ°ng Äáº¡o, Cá»­a Láº¥p, DÆ°Æ¡ng TÆ¡, ThÃ nh phá»‘ PhÃº Quá»‘c, Tá»‰nh KiÃªn Giang"
               required
             />
           </div>
 
           <div>
             <label className="block text-slate-300 font-semibold mb-1">
-              Thời gian lưu trữ dữ liệu kiểm toán (Ngày):
+              Thá»i gian lÆ°u trá»¯ dá»¯ liá»‡u kiá»ƒm toÃ¡n (NgÃ y):
             </label>
             <input
               type="number"
@@ -386,7 +386,7 @@ export const SystemAuditView: React.FC<SystemAuditViewProps> = ({
                 disabled={!canEditConfig}
                 className="rounded border-slate-700 text-amber-500 focus:ring-amber-500 w-4 h-4 bg-slate-950"
               />
-              <span className="font-semibold">Bắt buộc chụp hình kèm đóng dấu khi Checkpoint có lỗi FAIL</span>
+              <span className="font-semibold">Báº¯t buá»™c chá»¥p hÃ¬nh kÃ¨m Ä‘Ã³ng dáº¥u khi Checkpoint cÃ³ lá»—i FAIL</span>
             </label>
 
             <label className={`flex items-center space-x-2 text-slate-200 ${canEditConfig ? 'cursor-pointer' : 'cursor-default'}`}>

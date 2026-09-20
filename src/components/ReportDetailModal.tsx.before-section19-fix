@@ -122,7 +122,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
         approver: currentUser,
         reason: editReason.trim(),
         beforeSummary: `Tổng: ${session.summary.checkedCount} điểm. Pass: ${session.summary.passCount}, Fail: ${session.summary.failCount}`,
-        afterSummary: `Đã bổ sung ghi chú giám sát: ${editNote.trim()}`,
+        afterSummary: `ÄÃ£ bá»• sung ghi chÃº giÃ¡m sÃ¡t: ${editNote.trim()}`,
       });
 
       setShowEditModal(false);
@@ -143,7 +143,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
         <div className="bg-slate-850 px-3.5 sm:px-6 py-3 sm:py-4 border-b border-slate-700 shrink-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
+              Xem chi tiết, in báo cáo PDF tiêu chuẩn A4 và xuất toàn bộ cơ sở dữ liệu Excel
                 <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
@@ -153,15 +153,15 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                   </h3>
                   <span className="font-mono text-[11px] sm:text-xs bg-slate-800 text-amber-300 px-2 py-0.5 rounded border border-slate-700 font-bold">
                     {session.id}
-                  </span>
+                  title="Khởi tạo hoặc nạp lại 3 phiên tuần tra cơ sở mẫu"
                   {session.isLocked && (
                     <span className="bg-emerald-950/90 text-emerald-300 text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded border border-emerald-700 flex items-center gap-1">
-                      <Lock className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> ĐÃ KHÓA
+                      <Lock className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> ÄÃƒ KHÃ“A
                     </span>
                   )}
                 </div>
                 <p className="text-[11px] sm:text-xs text-slate-400 truncate mt-0.5">
-                  {config.hotelName ? `${config.hotelName} – ` : ''}{config.departmentName}
+                  {config.hotelName ? `${config.hotelName} â€“ ` : ''}{config.departmentName}
                 </p>
               </div>
             </div>
@@ -185,50 +185,51 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
               title="Xuất file PDF tiêu chuẩn A4"
             >
               <Printer className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>[ XUẤT PDF ]</span>
+              <span>[ XUáº¤T PDF ]</span>
             </button>
             <button
               id="export-excel-action-btn"
-
+                    <option value="ALL">Tất cả các ca (Ca ngày & Ca đêm)</option>
               className="flex-1 sm:flex-none justify-center px-3.5 py-2 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition"
-              title="Xuất file Excel .xlsx"
+              title="Xuáº¥t file Excel .xlsx"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>[ XUẤT EXCEL ]</span>
+              <span>[ XUáº¤T EXCEL ]</span>
             </button>
-            {/* Reopen Session to continue patrolling */}
+
+            {/* Reopen Session to continue patrolling (addresses user issue) */}
             <button
               id="reopen-patrol-btn"
               onClick={handleReopenSession}
               className="flex-1 sm:flex-none justify-center px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition"
-              title="Mở lại phiên tuần tra này để tiếp tục quét các điểm kiểm soát chưa hoàn thành"
+                      <option value="COMPLETED">Đã hoàn thành & Khóa dữ liệu</option>
             >
               <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>[ TIẾP TỤC QUÉT ĐIỂM ]</span>
+              <span>[ TIáº¾P Tá»¤C QUÃ‰T ÄIá»‚M ]</span>
             </button>
+          </div>
         </div>
 
-        {/* Modal Body */}
         {/* Modal Body */}
         <div className="p-3 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 text-xs flex-1">
           {/* Metadata Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 bg-slate-950 p-3 sm:p-4 rounded-xl border border-slate-800">
             <div>
               <span className="text-slate-400 block text-[11px] mb-0.5">Nhân viên:</span>
-              <strong className="text-white text-xs sm:text-sm block truncate">{session.officerName}</strong>
-              <div className="text-slate-400 text-[10px] sm:text-[11px] font-mono">Thẻ: {session.badgeNumber || 'SEC-042'}</div>
+              Chưa có dữ liệu báo cáo cơ sở hoặc không khớp bộ lọc.
+              <div className="text-slate-400 text-[10px] sm:text-[11px] font-mono">Tháº»: {session.badgeNumber || 'SEC-042'}</div>
             </div>
             <div>
-              <span className="text-slate-400 block text-[11px] mb-0.5">Ca trực:</span>
+              <span className="text-slate-400 block text-[11px] mb-0.5">Ca trá»±c:</span>
               <strong className="text-amber-300 text-xs sm:text-sm block">{session.shift}</strong>
-              <div className="text-slate-400 text-[10px] sm:text-[11px]">Ngày: {session.date}</div>
+              <div className="text-slate-400 text-[10px] sm:text-[11px]">NgÃ y: {session.date}</div>
             </div>
             <div>
               <span className="text-slate-400 block text-[11px] mb-0.5">Tuyến tuần tra:</span>
               <strong className="text-white text-xs sm:text-sm block truncate">{session.patrolRoute}</strong>
             </div>
             <div>
-              <span className="text-slate-400 block text-[11px] mb-0.5">Thời gian:</span>
+              <span className="text-slate-400 block text-[11px] mb-0.5">Thá»i gian:</span>
               <div className="text-white font-mono text-[11px] sm:text-xs">{session.startTime} - {session.endTime || '...'}</div>
               <div className="text-slate-400 text-[10px] sm:text-[11px] truncate">{session.submittedAt ? `Gửi: ${session.submittedAt.substring(11, 16)}` : 'Chưa gửi'}</div>
             </div>
@@ -274,14 +275,14 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
           {/* Checkpoint table / Mobile Card List */}
           <div>
             <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-              II. Danh sách điểm kiểm soát & Kết quả ({session.checkpoints.length} điểm)
+              II. Danh sÃ¡ch Ä‘iá»ƒm kiá»ƒm soÃ¡t & Káº¿t quáº£ ({session.checkpoints.length} Ä‘iá»ƒm)
             </h4>
 
             {/* Mobile View: High-density touch cards */}
             <div className="block sm:hidden space-y-2">
               {session.checkpoints.length === 0 ? (
                 <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center text-slate-500">
-              Chưa có điểm kiểm soát nào được ghi nhận.
+                  ChÆ°a cÃ³ Ä‘iá»ƒm kiá»ƒm soÃ¡t nÃ o Ä‘Æ°á»£c ghi nháº­n.
                 </div>
               ) : (
                 session.checkpoints.map((cp, idx) => (
@@ -313,24 +314,24 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-red-950 border border-red-700 text-red-300">
-                          <XCircle className="w-3 h-3 text-red-400" /> LỖI
+                          <XCircle className="w-3 h-3 text-red-400" /> Lá»–I
                         </span>
                       )}
                     </div>
                   </div>
                 ))
               )}
-            </div>
+          <p className="font-semibold text-sm">Chưa có dữ liệu báo cáo tuần tra cơ sở.</p>
 
             {/* Desktop / Tablet View: Full Spreadsheet Table */}
             <div className="hidden sm:block bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="bg-slate-800/80 text-slate-400 text-[11px] border-b border-slate-800">
+            <span>Nạp Ngay Dữ Liệu Báo Cáo Cơ Sở Mẫu</span>
                       <th className="py-2.5 px-3 w-12 text-center">STT</th>
-                      <th className="py-2.5 px-3">Khu vực</th>
-                      <th className="py-2.5 px-3">Tên Checkpoint / Vị trí</th>
+                      <th className="py-2.5 px-3">Khu vá»±c</th>
+                      <th className="py-2.5 px-3">TÃªn Checkpoint / Vá»‹ trÃ­</th>
                       <th className="py-2.5 px-3 text-center w-28">Kết quả</th>
                       <th className="py-2.5 px-3 text-center w-28">Thời gian quét</th>
                     </tr>
@@ -339,7 +340,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                     {session.checkpoints.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="py-6 text-center text-slate-500">
-                          Chưa có điểm kiểm soát nào được ghi nhận.
+                          ChÆ°a cÃ³ Ä‘iá»ƒm kiá»ƒm soÃ¡t nÃ o Ä‘Æ°á»£c ghi nháº­n.
                         </td>
                       </tr>
                     ) : (
@@ -358,7 +359,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                               </span>
                             ) : (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-950 border border-red-700 text-red-300">
-                                <XCircle className="w-3 h-3" /> KHÔNG ĐẠT
+                                <XCircle className="w-3 h-3" /> KHÃ”NG Äáº T
                               </span>
                             )}
                           </td>
@@ -377,6 +378,8 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldAlert className="w-4 h-4 text-red-400" />
+                  III. Sá»± cá»‘ FAIL & Báº±ng chá»©ng hiá»‡n trÆ°á»ng
                 </h4>
                 <span className="text-red-400 font-bold text-[11px] bg-red-950/80 px-2 py-0.5 rounded border border-red-800">
                   {failCheckpoints.length} Ä‘iá»ƒm cÃ³ lá»—i
@@ -444,7 +447,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
             </div>
           )}
 
-        {/* Section XIX: Yêu cầu chỉnh sửa dữ liệu đã submit */}
+          {/* Section XIX: YÃªu cáº§u chá»‰nh sá»­a dá»¯ liá»‡u Ä‘Ã£ submit */}
           {session.isLocked && (
             <div className="border border-slate-800 rounded-xl p-3.5 sm:p-4 bg-slate-950/60">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -454,7 +457,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                     IV. KhÃ³a dá»¯ liá»‡u & Lá»‹ch sá»­ chá»‰nh sá»­a
                   </h4>
                   <p className="text-slate-400 text-[11px] mt-0.5">
-              Dữ liệu đã khóa sau khi gửi. Nghiêm cấm nhân viên tự ý sửa đổi.
+                    Dá»¯ liá»‡u Ä‘Ã£ khÃ³a sau khi gá»­i. NghiÃªm cáº¥m nhÃ¢n viÃªn tá»± Ã½ sá»­a Ä‘á»•i.
                   </p>
                 </div>
 
@@ -472,7 +475,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
 
               {session.editAuditHistory && session.editAuditHistory.length > 0 ? (
                 <div className="mt-3 space-y-2">
-              <span className="text-[11px] text-slate-400 font-semibold">Nhật ký các lần chỉnh sửa đã phê duyệt:</span>
+                  <span className="text-[11px] text-slate-400 font-semibold">Nháº­t kÃ½ cÃ¡c láº§n chá»‰nh sá»­a Ä‘Ã£ phÃª duyá»‡t:</span>
                   {session.editAuditHistory.map((audit) => (
                     <div key={audit.id} className="bg-slate-900 border border-slate-800 p-2.5 rounded-lg text-[11px]">
                       <div className="flex flex-wrap items-center justify-between gap-1 text-slate-400 mb-1">
@@ -487,7 +490,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                 </div>
               ) : (
                 <div className="text-[11px] text-slate-500 italic mt-2">
-              Dữ liệu nguyên bản chưa qua bất kỳ chỉnh sửa nào.
+                  Dá»¯ liá»‡u nguyÃªn báº£n chÆ°a qua báº¥t ká»³ chá»‰nh sá»­a nÃ o.
                 </div>
               )}
             </div>
@@ -507,17 +510,17 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+
       {/* Edit Request Modal for Section XIX */}
       {showEditModal && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-900 border border-amber-600/60 w-full max-w-md rounded-2xl shadow-2xl p-5">
             <h4 className="text-base font-bold text-white mb-1 flex items-center gap-2">
               <Edit3 className="w-5 h-5 text-amber-400" />
-              YÊU CẦU CHỈNH SỬA DỮ LIỆU ĐÃ KHÓA
+              YÃŠU Cáº¦U CHá»ˆNH Sá»¬A Dá»® LIá»†U ÄÃƒ KHÃ“A
             </h4>
             <p className="text-xs text-slate-400 mb-3">
-              Quy trình kiểm soát theo Mục XIX: Lưu vết yêu cầu chỉnh sửa và ghi chú giám sát.
+              Quy trÃ¬nh kiá»ƒm soÃ¡t theo Má»¥c XIX: LÆ°u ngÆ°á»i yÃªu cáº§u, ngÆ°á»i phÃª duyá»‡t, lÃ½ do vÃ  thá»i gian.
             </p>
 
             {editError && (
@@ -529,7 +532,7 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
             <form onSubmit={handleApproveEditSubmit} className="space-y-3 text-xs">
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">
-                  Lý do yêu cầu chỉnh sửa: <span className="text-red-400">*</span>
+                  LÃ½ do yÃªu cáº§u chá»‰nh sá»­a: <span className="text-red-400">*</span>
                 </label>
                 <textarea
                   rows={2}
