@@ -86,12 +86,12 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
     setErrorMsg(null);
 
     if (!formUsername.trim() || !formFullName.trim()) {
-      setErrorMsg('Vui lÃ²ng nháº­p Ä‘áº§y Ä‘á»§ TÃªn Ä‘Äƒng nháº­p vÃ  Há» tÃªn nhÃ¢n viÃªn!');
+      setErrorMsg('Vui lòng nhập đầy đủ Tên đăng nhập và Họ tên nhân viên!');
       return;
     }
 
     if (!formEmail.trim()) {
-      setErrorMsg('Vui lÃ²ng nháº­p Ä‘á»‹a chá»‰ Gmail chÃ­nh chá»§ cá»§a nhÃ¢n viÃªn (DÃ¹ng Ä‘á»ƒ xÃ¡c thá»±c Ä‘Äƒng nháº­p)!');
+      setErrorMsg('Vui lòng nhập địa chỉ Gmail chính chủ của nhân viên (Dùng để xác thực đăng nhập)!');
       return;
     }
 
@@ -106,7 +106,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
         u.email.trim().toLowerCase() === cleanEmail
     );
     if (emailExists) {
-      setErrorMsg(`Äá»‹a chá»‰ Gmail "${formEmail.trim()}" Ä‘Ã£ Ä‘Æ°á»£c Ä‘Äƒng kÃ½ cho má»™t nhÃ¢n viÃªn khÃ¡c!`);
+      setErrorMsg(`Địa chỉ Gmail "${formEmail.trim()}" đã được đăng ký cho một nhân viên khác!`);
       return;
     }
 
@@ -123,12 +123,12 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
           passwordHash: formPassword.trim() || editingUser.passwordHash,
         };
         StorageService.updateUser(updated, currentUser);
-        setSuccessMsg(`ÄÃ£ cáº­p nháº­t thÃ´ng tin nhÃ¢n viÃªn ${updated.fullName} (Gmail: ${updated.email})`);
+        setSuccessMsg(`Đã cập nhật thông tin nhân viên ${updated.fullName} (Gmail: ${updated.email})`);
       } else {
         // Add
         const exists = users.some((u) => u.username.toLowerCase() === cleanUsername);
         if (exists) {
-          setErrorMsg('TÃªn Ä‘Äƒng nháº­p nÃ y Ä‘Ã£ tá»“n táº¡i!');
+          setErrorMsg('Tên đăng nhập này đã tồn tại!');
           return;
         }
 
@@ -145,7 +145,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
           },
           currentUser
         );
-        setSuccessMsg(`ÄÃ£ táº¡o tÃ i khoáº£n cho nhÃ¢n viÃªn ${newUser.fullName} (Gmail: ${newUser.email} - Máº­t kháº©u: ${formPassword.trim() || '123456'})`);
+        setSuccessMsg(`Đã tạo tài khoản cho nhân viên ${newUser.fullName} (Gmail: ${newUser.email} - Mật khẩu: ${formPassword.trim() || '123456'})`);
       }
 
       setIsModalOpen(false);
@@ -160,7 +160,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
     try {
       StorageService.toggleUserStatus(u.id, currentUser);
       refreshUsers();
-      setSuccessMsg(`ÄÃ£ Ä‘á»•i tráº¡ng thÃ¡i tÃ i khoáº£n ${u.fullName} thÃ nh ${u.status === 'ACTIVE' ? 'ÄÃƒ KHÃ“A' : 'HOáº T Äá»˜NG'}`);
+      setSuccessMsg(`Đã đổi trạng thái tài khoản ${u.fullName} thành ${u.status === 'ACTIVE' ? 'KHÓA' : 'HOẠT ĐỘNG'}`);
       setTimeout(() => setSuccessMsg(null), 3000);
     } catch (err: any) {
       alert(err.message);
@@ -168,11 +168,11 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
   };
 
   const handleResetPassword = (u: User) => {
-    if (!confirm(`Báº¡n cÃ³ cháº¯c muá»‘n Ä‘áº·t láº¡i máº­t kháº©u cho ${u.fullName} vá» máº·c Ä‘á»‹nh "123456"?`)) return;
+    if (!confirm(`Bạn có chắc muốn đặt lại mật khẩu cho ${u.fullName}?`)) return;
     try {
       const pin = StorageService.resetUserPassword(u.id, currentUser);
       refreshUsers();
-      alert(`ÄÃ£ Ä‘áº·t láº¡i máº­t kháº©u cho ${u.fullName}. Máº­t kháº©u má»›i lÃ : ${pin}`);
+      alert(`Đã đặt lại mật khẩu cho ${u.fullName}. Mật khẩu mới là: ${pin}`);
     } catch (err: any) {
       alert(err.message);
     }
@@ -197,10 +197,10 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
         <div>
           <h2 className="text-xl font-black text-white tracking-wide uppercase flex items-center gap-2">
             <Users className="w-5 h-5 text-amber-500" />
-            QUáº¢N LÃ NHÃ‚N VIÃŠN AN NINH & PHÃ‚N QUYá»€N
+      'QUẢN LÝ KHỞI TẠO / NẠP LẠI DỮ LIỆU BÁO CÁO CƠ SỞ TIÊU CHUẨN (3 PHIÊN TUẦN TRA 2 CA NGÀY/ĐÊM).'
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Quáº£n lÃ½ danh sÃ¡ch nhÃ¢n sá»±, phÃ¢n cáº¥p 4 cáº¥p quyá»n, khÃ³a tÃ i khoáº£n vÃ  kiá»ƒm tra lá»‹ch sá»­ tuáº§n tra
+        Quản lý danh sách nhân sự, phân cấp 4 cấp quyền, khóa tài khoản và kiểm tra lịch sử tuần tra
           </p>
         </div>
 
@@ -211,7 +211,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
             className="py-2.5 px-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-600/20 text-xs flex items-center gap-2 transition"
           >
             <Plus className="w-4 h-4" />
-            [ + THÃŠM NHÃ‚N VIÃŠN ]
+            [ + THÊM NHÂN VIÊN ]
           </button>
         )}
       </div>
@@ -231,7 +231,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="TÃ¬m theo há» tÃªn, username, mÃ£ tháº»..."
+            placeholder="Tìm theo họ tên, username, mã thẻ..."
             className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
           />
         </div>
@@ -242,7 +242,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
             onChange={(e) => setSelectedRole(e.target.value)}
             className="w-full py-2 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
           >
-            <option value="ALL">Táº¥t cáº£ vai trÃ² ({users.length})</option>
+            <option value="ALL">Tất cả vai trò ({users.length})</option>
             <option value="MANAGER">Security Manager</option>
             <option value="SUPERVISOR">Security Supervisor</option>
             <option value="OFFICER">Security Officer</option>
@@ -257,13 +257,13 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="bg-slate-850 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
-                <th className="py-3 px-4 font-bold">Há» & TÃªn / Tháº»</th>
-                <th className="py-3 px-4 font-bold">TÃªn ÄÄƒng Nháº­p</th>
-                <th className="py-3 px-4 font-bold">PhÃ¢n Quyá»n</th>
-                <th className="py-3 px-4 font-bold">LiÃªn Há»‡</th>
-                <th className="py-3 px-4 font-bold text-center">Tráº¡ng ThÃ¡i</th>
-                <th className="py-3 px-4 font-bold">ÄÄƒng Nháº­p Gáº§n Nháº¥t</th>
-                <th className="py-3 px-4 font-bold text-right">Thao TÃ¡c</th>
+                <th className="py-3 px-4 font-bold">Họ & Tên / Thẻ</th>
+                <th className="py-3 px-4 font-bold">Tên ĐĒng Nhập</th>
+                <th className="py-3 px-4 font-bold">Phân Quyền</th>
+                <th className="py-3 px-4 font-bold">Liên Hệ</th>
+                <th className="py-3 px-4 font-bold text-center">Trạng Thái</th>
+                <th className="py-3 px-4 font-bold">ĐĒng Nhập Gần Nhất</th>
+                <th className="py-3 px-4 font-bold text-right">Thao Tác</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/80">
@@ -281,7 +281,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                           </span>
                         )}
                       </div>
-                      <div className="font-mono text-[10px] text-amber-400">MÃ£: {u.badgeNumber || 'SEC-000'}</div>
+                      <div className="font-mono text-[10px] text-amber-400">Mã: {u.badgeNumber || 'SEC-000'}</div>
                     </td>
 
                     <td className="py-3 px-4 font-mono text-slate-300 font-semibold">
@@ -319,28 +319,28 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                     <td className="py-3 px-4 text-center">
                       {u.status === 'ACTIVE' ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700">
-                          <CheckCircle className="w-3 h-3" /> Hoáº¡t Ä‘á»™ng
+                          <CheckCircle className="w-3 h-3" /> Hoạt động
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-950 text-red-300 border border-red-800">
-                          <Lock className="w-3 h-3" /> ÄÃ£ khÃ³a
+                          <Lock className="w-3 h-3" /> Đã khóa
                         </span>
                       )}
                     </td>
 
                     <td className="py-3 px-4 text-slate-400 text-[11px] font-mono">
-                      {u.lastLogin || 'ChÆ°a Ä‘Äƒng nháº­p'}
+                      {u.lastLogin || 'Chưa đăng nhập'}
                     </td>
 
-                    {/* Actions: Sá»­a, KhÃ³a, Äáº·t láº¡i máº­t kháº©u, Lá»‹ch sá»­ tuáº§n tra */}
+          {/* Actions: Sửa, Khóa, Đặt lại mật khẩu, Lịch sử tuần tra */}
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end space-x-1.5">
-                        {/* Lá»‹ch sá»­ tuáº§n tra */}
+                        {/* Lịch sử tuần tra */}
                         <button
                           id={`history-user-${u.id}`}
                           onClick={() => setViewHistoryUser(u)}
                           className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition"
-                          title="Xem lá»‹ch sá»­ tuáº§n tra"
+                          title="Xem lịch sử tuần tra"
                         >
                           <History className="w-4 h-4" />
                         </button>
@@ -351,25 +351,25 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                             id={`edit-user-${u.id}`}
                             onClick={() => openEditUser(u)}
                             className="p-1.5 bg-slate-800 hover:bg-blue-600/30 text-blue-300 rounded-lg transition"
-                            title="Chá»‰nh sá»­a thÃ´ng tin / phÃ¢n quyá»n"
+                            title="Chỉnh sửa thông tin / phân quyền"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                         )}
 
-                        {/* Äáº·t láº¡i máº­t kháº©u */}
+                        {/* Đặt lại mật khẩu */}
                         {(currentUser.role === 'MANAGER' || currentUser.role === 'ADMIN') && (
                           <button
                             id={`reset-pwd-${u.id}`}
                             onClick={() => handleResetPassword(u)}
                             className="p-1.5 bg-slate-800 hover:bg-amber-600/30 text-amber-300 rounded-lg transition"
-                            title="Äáº·t láº¡i máº­t kháº©u (vá» 123456)"
+                            title="Đặt lại mật khẩu (về 123456)"
                           >
                             <KeyRound className="w-4 h-4" />
                           </button>
                         )}
 
-                        {/* KhÃ³a / Má»Ÿ khÃ³a */}
+                        {/* Khóa / Mở khóa */}
                         {(currentUser.role === 'MANAGER' || currentUser.role === 'ADMIN') && u.id !== currentUser.id && (
                           <button
                             id={`lock-user-${u.id}`}
@@ -379,7 +379,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                                 ? 'bg-slate-800 hover:bg-red-950 text-slate-400 hover:text-red-400'
                                 : 'bg-red-950 text-red-300 hover:bg-slate-800'
                             }`}
-                            title={u.status === 'ACTIVE' ? 'KhÃ³a tÃ i khoáº£n' : 'Má»Ÿ khÃ³a tÃ i khoáº£n'}
+                    title={u.status === 'ACTIVE' ? 'Khóa tài khoản' : 'Mở khóa tài khoản'}
                           >
                             {u.status === 'ACTIVE' ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
                           </button>
@@ -399,9 +399,9 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl p-6 text-xs">
             <h3 className="text-base font-bold text-white mb-1 uppercase tracking-wide">
-              {editingUser ? 'Sá»¬A THÃ”NG TIN NHÃ‚N VIÃŠN' : 'THÃŠM NHÃ‚N VIÃŠN Má»šI'}
+                  {editingUser ? 'SỬA THÔNG TIN NHÂN VIÊN' : 'THÊM NHÂN VIÊN MỚI'}
             </h3>
-            <p className="text-slate-400 mb-4">Cáº¥u hÃ¬nh há»“ sÆ¡ an ninh vÃ  cáº¥p quyá»n truy cáº­p há»‡ thá»‘ng</p>
+                <p className="text-slate-400 mb-4">Cấu hình hồ sơ an ninh và cấp quyền truy cập hệ thống</p>
 
             {errorMsg && (
               <div className="p-3 mb-3 bg-red-950 border border-red-800 rounded-xl text-red-200">
@@ -411,7 +411,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
 
             <form onSubmit={handleSaveUser} className="space-y-3">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">TÃªn Ä‘Äƒng nháº­p: *</label>
+                <label className="block text-slate-300 font-semibold mb-1">Tên đăng nhập: *</label>
                 <input
                   type="text"
                   value={formUsername}
@@ -424,12 +424,12 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Há» vÃ  tÃªn Ä‘áº§y Ä‘á»§: *</label>
+                  <label className="block text-slate-300 font-semibold mb-1">Họ và tên đầy đủ: *</label>
                 <input
                   type="text"
                   value={formFullName}
                   onChange={(e) => setFormFullName(e.target.value)}
-                  placeholder="Nguyá»…n VÄƒn A..."
+                  placeholder="Nguyễn Văn A..."
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white focus:outline-none focus:border-amber-500"
                   required
                 />
@@ -437,7 +437,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">PhÃ¢n quyá»n:</label>
+                  <label className="block text-slate-300 font-semibold mb-1">Phân quyền:</label>
                   <select
                     value={formRole}
                     onChange={(e) => setFormRole(e.target.value as UserRole)}
@@ -450,7 +450,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">MÃ£ sá»‘ tháº» báº£o an:</label>
+                  <label className="block text-slate-300 font-semibold mb-1">Mã số thẻ bảo an:</label>
                   <input
                     type="text"
                     value={formBadgeNumber}
@@ -463,7 +463,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Sá»‘ Ä‘iá»‡n thoáº¡i:</label>
+                  <label className="block text-slate-300 font-semibold mb-1">Số điện thoại:</label>
                   <input
                     type="text"
                     value={formPhone}
@@ -474,7 +474,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                 </div>
                 <div>
                   <label className="block text-slate-300 font-semibold mb-1">
-                    Gmail chÃ­nh chá»§ (* Báº¯t buá»™c):
+                    Gmail chính chủ (* Bắt buộc):
                   </label>
                   <input
                     type="email"
@@ -489,17 +489,17 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
 
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">
-                  Máº­t kháº©u Ä‘Äƒng nháº­p (Äá»ƒ trá»‘ng náº¿u dÃ¹ng máº·c Ä‘á»‹nh: 123456):
+                  Mật khẩu đăng nhập (để trống nếu không muốn thay đổi):
                 </label>
                 <input
                   type="text"
                   value={formPassword}
                   onChange={(e) => setFormPassword(e.target.value)}
-                  placeholder="Nháº­p máº­t kháº©u (Máº·c Ä‘á»‹nh: 123456)..."
+                  placeholder="Nhập mật khẩu mới..."
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500"
                 />
                 <p className="text-[10px] text-amber-400/90 mt-1">
-                  * NhÃ¢n viÃªn báº¯t buá»™c pháº£i nháº­p Ä‘Ãºng TÃªn Ä‘Äƒng nháº­p vÃ  Gmail chÃ­nh chá»§ nÃ y Ä‘á»ƒ Ä‘Äƒng nháº­p vÃ o há»‡ thá»‘ng.
+                  * Nhân viên bắt buộc phải nhập đúng Tên đăng nhập và Gmail chính chủ này để đăng nhập vào hệ thống.
                 </p>
               </div>
 
@@ -509,13 +509,13 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl"
                 >
-                  Há»§y
+                  Hủy
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow"
                 >
-                  {editingUser ? 'LÆ°u cáº­p nháº­t' : 'Táº¡o tÃ i khoáº£n'}
+                  {editingUser ? 'Lưu cập nhật' : 'Tạo tài khoản'}
                 </button>
               </div>
             </form>
@@ -529,16 +529,16 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
           <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl p-6 text-xs max-h-[85vh] flex flex-col">
             <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
               <History className="w-5 h-5 text-amber-500" />
-              Lá»ŠCH Sá»¬ TUáº¦N TRA - {viewHistoryUser.fullName}
+              LỊCH SỬ TUẦN TRA - {viewHistoryUser.fullName}
             </h3>
             <p className="text-slate-400 mb-4">
-              MÃ£ tháº»: <strong className="text-amber-400 font-mono">{viewHistoryUser.badgeNumber}</strong> | Vai trÃ²: {viewHistoryUser.role}
+              Mã thẻ: <strong className="text-amber-400 font-mono">{viewHistoryUser.badgeNumber}</strong> | Vai trò: {viewHistoryUser.role}
             </p>
 
             <div className="flex-1 overflow-y-auto space-y-2">
               {allPatrolSessions.filter((s) => s.officerId === viewHistoryUser.id).length === 0 ? (
                 <div className="text-center py-8 text-slate-500">
-                  NhÃ¢n viÃªn nÃ y chÆ°a cÃ³ phiÃªn tuáº§n tra nÃ o Ä‘Æ°á»£c lÆ°u trá»¯.
+                  Nhân viên này chưa có phiên tuần tra nào được lưu trữ.
                 </div>
               ) : (
                 allPatrolSessions
@@ -548,15 +548,15 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                       <div>
                         <div className="font-bold text-white text-xs">{s.id}</div>
                         <div className="text-slate-400 text-[11px]">
-                          {s.date} | {s.shift} ({s.startTime} - {s.endTime || 'Äang thá»±c hiá»‡n'})
+                          {s.date} | {s.shift} ({s.startTime} - {s.endTime || 'N/A'}) | Đạt: {s.summary.passCount} | Lỗi: {s.summary.failCount}
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="text-emerald-400 font-bold">
-                          {s.summary.checkedCount}/{s.summary.totalCheckpoints} Äiá»ƒm
+                          {s.summary.checkedCount}/{s.summary.totalCheckpoints} | Đạt: {s.summary.passCount} | Lỗi: {s.summary.failCount}
                         </div>
                         <div className="text-[10px] text-slate-400">
-                          Äáº¡t: {s.summary.passCount} | Lá»—i: {s.summary.failCount}
+                          Đạt: {s.summary.passCount} | Lỗi: {s.summary.failCount}
                         </div>
                       </div>
                     </div>
@@ -569,7 +569,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                 onClick={() => setViewHistoryUser(null)}
                 className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl"
               >
-                ÄÃ³ng
+                Đóng
               </button>
             </div>
           </div>
