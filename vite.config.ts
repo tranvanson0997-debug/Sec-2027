@@ -13,7 +13,8 @@ export default defineConfig(() => {
     fs.existsSync(keyPath);
 
   return {
-    plugins: [react(), tailwindcss()],
+      base: '/Sec-2027/',
+      plugins: [react(), tailwindcss()],
 
     resolve: {
       alias: {
@@ -39,3 +40,4 @@ export default defineConfig(() => {
     },
   };
 });
+
