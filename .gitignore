@@ -4,6 +4,9 @@ dist/
 *.key
 _BACKUP_*/
 *.BACKUP_*
+*.backup
+*.backup.*
+*.before-*
 .env
 .env.*
 !.env.example
