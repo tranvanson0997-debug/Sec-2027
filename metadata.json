@@ -1,0 +1,10 @@
+{
+  "name": "Hệ Thống Tuần Tra An Ninh Khách Sạn 5 Sao",
+  "description": "Hệ thống quản lý tuần tra an ninh tiêu chuẩn khách sạn 5 sao với QR Code, Checklist, Bằng chứng hình ảnh, Quản lý sự cố, Báo cáo PDF, Excel và Phân quyền.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

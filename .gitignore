@@ -1,0 +1,9 @@
+﻿node_modules/
+dist/
+*.pem
+*.key
+_BACKUP_*/
+*.BACKUP_*
+.env
+.env.*
+!.env.example
