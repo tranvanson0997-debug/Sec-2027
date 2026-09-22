@@ -48,7 +48,12 @@ export const FailIncidentModal: React.FC<FailIncidentModalProps> = ({
       setErrorMessage(null);
       setIsCapturingLive(true);
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 1280 },
+          height: { ideal: 1280 },
+          aspectRatio: { ideal: 1 },
+        },
       });
       mediaStreamRef.current = stream;
       if (videoRef.current) {
@@ -290,8 +295,8 @@ const handleSubmit = (e: React.FormEvent) => {
 
               {/* Live Camera View if active */}
               {isCapturingLive && (
-                <div className="relative bg-black rounded-xl overflow-hidden flex flex-col items-center">
-                  <video ref={videoRef} className="w-full max-h-64 object-cover" autoPlay playsInline muted />
+                <div className="relative w-full aspect-square max-h-[70vh] bg-black rounded-xl overflow-hidden flex flex-col items-center">
+                  <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />
                   <div className="absolute bottom-3 flex gap-2 w-full px-3 justify-center">
                     <button
                       type="button"
@@ -371,4 +376,5 @@ const handleSubmit = (e: React.FormEvent) => {
     </div>
   );
 };
+
 
