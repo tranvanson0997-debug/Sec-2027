@@ -215,6 +215,22 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
 
   // Trigger QR scanning for a checkpoint
   const handleRequestScan = (cp: Checkpoint) => {
+    // Không cho mở QR mới khi checkpoint hiện tại chưa được hoàn tất và lưu.
+    if (activeCheckpoint && activeSession) {
+      const currentInspection = activeSession.checkpoints.find(
+        (c) => c.checkpointId === activeCheckpoint.id
+      );
+
+      if (!currentInspection) {
+        alert(
+          '⚠️ CHƯA HOÀN TẤT CHECKPOINT\n\n' +
+          'Vui lòng hoàn thành checklist và bấm "HOÀN TẤT ĐIỂM NÀY & LƯU TIẾN ĐỘ" ' +
+          'trước khi quét mã QR tiếp theo.'
+        );
+        return;
+      }
+    }
+
     setTargetCheckpointToScan(cp);
     setIsScannerOpen(true);
   };
@@ -417,7 +433,29 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
   };
 
   // Open Confirmation Modal to Submit & Lock Patrol Data
-  const handleOpenLockModal = () => {
+    // Prevent leaving an unsaved checkpoint inspection.
+    const handleExitCheckpoint = () => {
+      if (!activeCheckpoint || !activeSession) {
+        setActiveCheckpoint(null);
+        return;
+      }
+
+      const currentInspection = activeSession.checkpoints.find(
+        (c) => c.checkpointId === activeCheckpoint.id
+      );
+
+      if (!currentInspection) {
+        alert(
+          '⚠️ CHECKPOINT CHƯA HOÀN TẤT\n\n' +
+          'Vui lòng hoàn thành checklist và bấm "HOÀN TẤT ĐIỂM NÀY & LƯU TIẾN ĐỘ" ' +
+          'trước khi quay lại danh sách.'
+        );
+        return;
+      }
+
+      setActiveCheckpoint(null);
+    };
+    const handleOpenLockModal = () => {
     if (!activeSession) return;
     if (activeSession.checkpoints.length === 0) {
       alert(
@@ -893,7 +931,7 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
             </div>
 
             <button
-              onClick={() => setActiveCheckpoint(null)}
+              onClick={handleExitCheckpoint}
               className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold shrink-0 flex items-center gap-1 transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -1056,7 +1094,7 @@ export const PatrolExecutionView: React.FC<PatrolExecutionViewProps> = ({
 
             <button
               type="button"
-              onClick={() => setActiveCheckpoint(null)}
+              onClick={handleExitCheckpoint}
               className="h-12 px-4 bg-slate-800 hover:bg-slate-750 text-slate-300 rounded-xl text-xs font-semibold transition"
             >
               Quay lại danh sách

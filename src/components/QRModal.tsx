@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { X, Download, Printer, QrCode, Shield, Check } from 'lucide-react';
 import { Checkpoint, HotelSystemConfig } from '../types';
 import { generateQRCodeDataUrl, downloadQRCodePNG, printQRCodeCard } from '../utils/qrUtils';
@@ -43,7 +43,7 @@ export const QRModal: React.FC<QRModalProps> = ({
       area: checkpoint.area,
       route: checkpoint.route,
       hotelName: config.hotelName,
-      department: config.departmentName,
+      department: 'BỘ PHẬN AN NINH',
     });
   };
 
@@ -86,7 +86,7 @@ export const QRModal: React.FC<QRModalProps> = ({
               {config.hotelName}
             </div>
             <div className="text-[10px] text-slate-600 font-semibold mt-0.5">
-              {config.departmentName}
+              BỘ PHẬN AN NINH
             </div>
 
             <div className="my-2.5 sm:my-3 p-1.5 sm:p-2 bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg">
