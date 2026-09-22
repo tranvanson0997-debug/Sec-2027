@@ -241,7 +241,7 @@ export function getReportStyles(): string {
     }
     .fail-content-grid {
       display: grid;
-      grid-template-columns: 1fr 220px;
+      grid-template-columns: 1fr 280px;
       gap: 14px;
     }
     .fail-desc-box {
@@ -265,8 +265,9 @@ export function getReportStyles(): string {
     }
     .fail-img {
       width: 100%;
-      height: 130px;
-      object-fit: cover;
+      aspect-ratio: 4 / 3;
+      height: auto;
+      object-fit: contain;
       display: block;
     }
     .photo-caption-box {
