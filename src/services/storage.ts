@@ -1,4 +1,4 @@
-import {
+﻿import {
   User,
   Checkpoint,
   ChecklistTemplate,
@@ -56,6 +56,7 @@ export const DEFAULT_USERS: User[] = [
     username: 'tranvanson',
     fullName: 'Trần Văn Sơn',
     role: 'MANAGER',
+    shift: 'DAY',
     badgeNumber: 'SEC-MGR-01',
     phone: '0908 997 001',
     email: 'tranvanson0997@gmail.com',
@@ -404,15 +405,7 @@ export class StorageService {
       if (existingUsersRaw) {
         let usersList: User[] = JSON.parse(existingUsersRaw);
         let userRepaired = false;
-        usersList = usersList.map((u) => {
-          if (!u.fullName || u.fullName.trim() === '') {
-            const def = DEFAULT_USERS.find((d) => d.id === u.id || d.username === u.username || d.email === u.email);
-            u.fullName = def ? def.fullName : (u.username === 'manager' ? 'Nguyễn Văn An' : u.username || 'Nhân viên an ninh');
-            userRepaired = true;
-          }
-          return u;
-        });
-        if (userRepaired) {
+          if (userRepaired) {
           localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(usersList));
         }
       }
@@ -420,12 +413,7 @@ export class StorageService {
       const curUserRaw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
       if (curUserRaw) {
         const curUser: User = JSON.parse(curUserRaw);
-        if (!curUser.fullName || curUser.fullName.trim() === '') {
-          const def = DEFAULT_USERS.find((d) => d.id === curUser.id || d.username === curUser.username || d.email === curUser.email);
-          curUser.fullName = def ? def.fullName : (curUser.username === 'manager' ? 'Nguyễn Văn An' : curUser.username || 'Nhân viên an ninh');
-          localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(curUser));
-        }
-      }
+}
     } catch (e) {
       console.warn('User repair error', e);
     }
@@ -466,13 +454,12 @@ export class StorageService {
               u.username?.toLowerCase() === 'tranvanson' ||
               u.fullName === 'Trần Văn Sơn' ||
               u.id === 'USR-MGR-01'
-          );
-
-          const sonUser: User = {
+          );          const sonUser: User = {
             id: 'USR-MGR-01',
             username: 'tranvanson',
             fullName: 'Trần Văn Sơn',
             role: 'MANAGER',
+            shift: 'DAY',
             badgeNumber: 'SEC-MGR-01',
             phone: '0908 997 001',
             email: 'tranvanson0997@gmail.com',
@@ -491,6 +478,65 @@ export class StorageService {
           } else {
             uList.unshift(sonUser);
           }
+
+          const newAccounts: User[] = [
+            {
+              id: 'USR-SUP-02',
+              username: 'Security-SUP',
+              fullName: 'Security Supervisor',
+              role: 'SUPERVISOR',
+              shift: 'DAY',
+              badgeNumber: 'SEC-SUP-03',
+              phone: '',
+              email: 'Sup.security@gmail.com',
+              status: 'ACTIVE',
+              failedLoginAttempts: 0,
+              passwordHash: '080808',
+              createdAt: '2026-09-22 00:00:00',
+            },
+            {
+              id: 'USR-OFC-03',
+              username: 'Security-Staff',
+              fullName: 'Security Staff',
+              role: 'OFFICER',
+              shift: 'DAY',
+              badgeNumber: 'SEC-OFC-046',
+              phone: '',
+              email: 'Staff.security@gmail.com',
+              status: 'ACTIVE',
+              failedLoginAttempts: 0,
+              passwordHash: '070707',
+              createdAt: '2026-09-22 00:00:00',
+            },
+            {
+              id: 'USR-MGR-02',
+              username: 'Security-Manager',
+              fullName: 'Security Manager',
+              role: 'MANAGER',
+              shift: 'DAY',
+              badgeNumber: 'SEC-MGR-02',
+              phone: '',
+              email: 'MGR.security@gmail.com',
+              status: 'ACTIVE',
+              failedLoginAttempts: 0,
+              passwordHash: '090909',
+              createdAt: '2026-09-22 00:00:00',
+            },
+          ];
+
+          for (const account of newAccounts) {
+            const exists = uList.some(
+              (u) =>
+                u.id === account.id ||
+                u.username?.toLowerCase() === account.username.toLowerCase() ||
+                u.email?.toLowerCase() === account.email.toLowerCase()
+            );
+
+            if (!exists) {
+              uList.push(account);
+            }
+          }
+
           localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(uList));
         }
       } catch (err) {
@@ -525,7 +571,7 @@ export class StorageService {
           id: 'LOG-001',
           timestamp: '2026-09-15 08:00:00',
           userId: 'USR-MGR-01',
-          userName: 'Nguyễn Văn An',
+          userName: 'Trần Văn Sơn',
           userRole: 'MANAGER',
           action: 'KHỞI TẠO HỆ THỐNG',
           target: 'Hệ thống Tuần Tra An Ninh',
@@ -535,7 +581,7 @@ export class StorageService {
           id: 'LOG-002',
           timestamp: '2026-09-15 08:30:00',
           userId: 'USR-MGR-01',
-          userName: 'Nguyễn Văn An',
+          userName: 'Trần Văn Sơn',
           userRole: 'MANAGER',
           action: 'CẤU HÌNH HỆ THỐNG',
           target: 'Dusit Princess Moonrise Phú Quốc',
@@ -595,7 +641,7 @@ export class StorageService {
           id: 'LOG-008',
           timestamp: '2026-09-16 08:45:00',
           userId: 'USR-MGR-01',
-          userName: 'Nguyễn Văn An',
+          userName: 'Trần Văn Sơn',
           userRole: 'MANAGER',
           action: 'DUYỆT & CHỈ ĐẠO',
           target: 'Sự cố INC-20260916-01',
@@ -948,10 +994,7 @@ export class StorageService {
       const userByGmail = users.find((u) => {
         if (!u.email) return false;
         const e = u.email.trim().toLowerCase();
-        return (
-          e === cleanGmail ||
-          (cleanGmail.includes('tranvanson') && e.includes('tranvanson'))
-        );
+        return e === cleanGmail;
       });
 
       // "KHÔNG ĐÚNG GMAIL ĐÃ ĐĂNG KÝ ĐÁ RA" - Kick out unregistered Gmail
@@ -970,19 +1013,9 @@ export class StorageService {
         };
       }
 
-      // 2. Check if Username matches the registered user for that Gmail
+      // 2. Username must exactly match the registered account
       const usernameMatches =
-        userByGmail.username.toLowerCase() === cleanUsername ||
-        userByGmail.fullName.toLowerCase() === cleanUsername ||
-        (userByGmail.badgeNumber && userByGmail.badgeNumber.toLowerCase() === cleanUsername) ||
-        (userByGmail.email &&
-          userByGmail.email.toLowerCase().includes('tranvanson') &&
-          (cleanUsername === 'tranvanson' ||
-            cleanUsername === 'tranvanson0997' ||
-            cleanUsername === 'tran van son' ||
-            cleanUsername === 'trần văn sơn' ||
-            cleanUsername === 'manager'));
-
+        userByGmail.username.trim().toLowerCase() === cleanUsername;
       if (!usernameMatches) {
         StorageService.recordAudit(
           userByGmail.id,
@@ -1008,17 +1041,10 @@ export class StorageService {
       }
 
       // 4. Password verification logic
+      // 3. Password must exactly match the password registered for this account
       const valid =
-        (userByGmail.passwordHash && inputPassword === userByGmail.passwordHash) ||
-        (userByGmail.email && userByGmail.email.toLowerCase().includes('tranvanson') && (inputPassword === '010492' || inputPassword === '123456')) ||
-        inputPassword === '123456' || // standard master testing PIN
-        (userByGmail.username === 'manager' && (inputPassword === 'Manager@123' || inputPassword === 'manager123' || inputPassword === '010492')) ||
-        (userByGmail.username === 'supervisor' && (inputPassword === 'Supervisor@123' || inputPassword === 'supervisor123')) ||
-        (userByGmail.username === 'officer1' && (inputPassword === 'Officer@123' || inputPassword === 'officer123')) ||
-        (userByGmail.username.startsWith('officer') && (inputPassword === 'Officer@123' || inputPassword === 'officer123')) ||
-        (userByGmail.username === 'admin' && (inputPassword === 'Admin@123' || inputPassword === 'admin123')) ||
-        inputPassword === `${userByGmail.username}123`;
-
+        !!userByGmail.passwordHash &&
+        inputPassword === userByGmail.passwordHash;
       if (!valid) {
         userByGmail.failedLoginAttempts = (userByGmail.failedLoginAttempts || 0) + 1;
         if (userByGmail.failedLoginAttempts >= 5) {
@@ -1043,13 +1069,7 @@ export class StorageService {
       const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
       userByGmail.failedLoginAttempts = 0;
       userByGmail.lastLogin = now;
-
-      if (!userByGmail.fullName || userByGmail.fullName.trim() === '') {
-        const def = DEFAULT_USERS.find((d) => d.id === userByGmail.id || d.username === userByGmail.username || d.email === userByGmail.email);
-        userByGmail.fullName = def ? def.fullName : (userByGmail.username === 'manager' ? 'Nguyễn Văn An' : userByGmail.username || 'Nhân viên bảo an');
-      }
-
-      StorageService.saveUsers(users);
+StorageService.saveUsers(users);
       StorageService.setCurrentUser(userByGmail);
       StorageService.registerOnlineUser(userByGmail, 'Đang trực ban / Tuần tra');
       StorageService.sendAccessNotification({
@@ -1072,111 +1092,15 @@ export class StorageService {
       return { success: true, user: userByGmail };
     }
 
-    // Fallback for single credential
-    let cleanCred = inputGmail.toLowerCase();
-    if (cleanCred.endsWith('@gmai.com')) {
-      cleanCred = cleanCred.replace('@gmai.com', '@gmail.com');
-    }
-    if (!cleanCred) {
-      return {
-        success: false,
-        message: 'Vui lòng nhập Gmail chính chủ hoặc Họ tên nhân viên đã đăng ký với hệ thống an ninh.',
-      };
-    }
-    
-    // Support login via either full Gmail, username, or registered employee full name
-    const user = users.find(
-      (u) =>
-        (u.email && u.email.toLowerCase() === cleanCred) ||
-        (cleanCred.includes('tranvanson') && u.email?.toLowerCase().includes('tranvanson')) ||
-        u.username.toLowerCase() === cleanCred ||
-        u.fullName.toLowerCase() === cleanCred ||
-        (u.badgeNumber && u.badgeNumber.toLowerCase() === cleanCred)
-    );
-
-    // Strict access denial for non-employees or unregistered users
-    if (!user) {
-      return {
-        success: false,
-        message:
-          'TRUY CẬP BỊ TỪ CHỐI: Gmail hoặc Họ tên này chưa được đăng ký trong danh bạ nhân sự của hệ thống. Bạn không phải là nhân viên hoặc chưa được duyệt tài khoản chính chủ.',
-      };
-    }
-
-    if (user.status === 'LOCKED') {
-      return {
-        success: false,
-        message:
-          'TÀI KHOẢN TẠM KHÓA: Tài khoản nhân viên này đang bị tạm khóa an toàn. Vui lòng liên hệ Trưởng bộ phận An ninh.',
-      };
-    }
-
-    const valid =
-      (user.passwordHash && inputPassword === user.passwordHash) ||
-      (user.email && user.email.toLowerCase().includes('tranvanson') && (inputPassword === '010492' || inputPassword === '123456')) ||
-      inputPassword === '123456' || // standard master testing PIN
-      (user.username === 'manager' && (inputPassword === 'Manager@123' || inputPassword === 'manager123' || inputPassword === '010492')) ||
-      (user.username === 'supervisor' && (inputPassword === 'Supervisor@123' || inputPassword === 'supervisor123')) ||
-      (user.username === 'officer1' && (inputPassword === 'Officer@123' || inputPassword === 'officer123')) ||
-      (user.username.startsWith('officer') && (inputPassword === 'Officer@123' || inputPassword === 'officer123')) ||
-      (user.username === 'admin' && (inputPassword === 'Admin@123' || inputPassword === 'admin123')) ||
-      inputPassword === `${user.username}123`;
-
-    if (!valid) {
-      user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
-      if (user.failedLoginAttempts >= 5) {
-        user.status = 'LOCKED';
-        StorageService.recordAudit(
-          user.id,
-          user.fullName,
-          user.role,
-          'KHÓA TỰ ĐỘNG TÀI KHOẢN',
-          user.username,
-          'Tài khoản bị khóa tự động sau 5 lần đăng nhập sai liên tiếp.'
-        );
-      }
-      StorageService.saveUsers(users);
-      return { success: false, message: `Mật khẩu không chính xác. Đã nhập sai ${user.failedLoginAttempts}/5 lần.` };
-    }
-
-    // Reset failed attempts & record login
-    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    user.failedLoginAttempts = 0;
-    user.lastLogin = now;
-
-    if (!user.fullName || user.fullName.trim() === '') {
-      const def = DEFAULT_USERS.find((d) => d.id === user.id || d.username === user.username || d.email === user.email);
-      user.fullName = def ? def.fullName : (user.username === 'manager' ? 'Nguyễn Văn An' : user.username || 'Nhân viên bảo an');
-    }
-
-    StorageService.saveUsers(users);
-    StorageService.setCurrentUser(user);
-
-    // Register user as active online for Manager and Supervisor monitoring
-    StorageService.registerOnlineUser(user, 'Đang truy cập hệ thống');
-
-    // Broadcast Real-time Access Notification: "Nguyễn Văn A" Đang truy cập
-    StorageService.sendAccessNotification({
-      userId: user.id,
-      userName: user.fullName || user.username,
-      userRole: user.role,
-      email: user.email,
-      message: `Cán bộ "${user.fullName || user.username}" vừa đăng nhập hệ thống an ninh`,
-      type: 'LOGIN',
-    });
-
-    StorageService.recordAudit(
-      user.id,
-      user.fullName,
-      user.role,
-      'ĐĂNG NHẬP XÁC THỰC GMAIL',
-      'Phiên làm việc',
-      `Đăng nhập thành công với tài khoản ${user.email}. Vai trò: ${user.role}`
-    );
-
-    return { success: true, user };
+    // Legacy single-credential login is permanently disabled.
+    // Tất cả tài khoản phải đăng nhập bằng:
+    // Username đã đăng ký + Gmail đã đăng ký + mật khẩu riêng đã cài.
+    return {
+      success: false,
+      message:
+        'TRUY CẬP BỊ TỪ CHỐI: Hệ thống yêu cầu đầy đủ Tên đăng nhập, Gmail đã đăng ký và mật khẩu riêng của tài khoản.',
+    };
   }
-
   static logout(): void {
     const user = StorageService.getCurrentUser();
     if (user) {
@@ -1247,7 +1171,7 @@ export class StorageService {
         let resolvedName = currentUser.fullName?.trim();
         if (!resolvedName) {
           const def = DEFAULT_USERS.find((d) => d.id === currentUser.id || d.username === currentUser.username || d.email === currentUser.email);
-          resolvedName = def?.fullName || (currentUser.username === 'manager' ? 'Nguyễn Văn An' : currentUser.username || 'Nhân viên bảo an');
+          resolvedName = def?.fullName || currentUser.username || 'Nhân viên bảo an';
         }
 
         const existingIdx = list.findIndex(
@@ -1317,7 +1241,7 @@ export class StorageService {
       let resolvedName = user.fullName?.trim();
       if (!resolvedName) {
         const def = DEFAULT_USERS.find((d) => d.id === user.id || d.username === user.username || d.email === user.email);
-        resolvedName = def?.fullName || (user.username === 'manager' ? 'Nguyễn Văn An' : user.username || 'Nhân viên bảo an');
+        resolvedName = def?.fullName || user.username || 'Nhân viên bảo an';
       }
 
       const entry: OnlineUser = {
@@ -1432,6 +1356,88 @@ export class StorageService {
     if (users.length !== originalLength) {
       localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
     }
+    
+    // Ensure required security accounts are always registered
+    const requiredAccounts: User[] = [
+      {
+        id: 'USR-SUP-02',
+        username: 'Security-SUP',
+        fullName: 'Security Supervisor',
+        role: 'SUPERVISOR',
+        shift: 'DAY',
+        badgeNumber: 'SEC-SUP-03',
+        phone: '',
+        email: 'Sup.security@gmail.com',
+        status: 'ACTIVE',
+        failedLoginAttempts: 0,
+        passwordHash: '080808',
+        createdAt: '2026-09-22 00:00:00',
+      },
+      {
+        id: 'USR-OFC-03',
+        username: 'Security-Staff',
+        fullName: 'Security Staff',
+        role: 'OFFICER',
+        shift: 'DAY',
+        badgeNumber: 'SEC-OFC-046',
+        phone: '',
+        email: 'Staff.security@gmail.com',
+        status: 'ACTIVE',
+        failedLoginAttempts: 0,
+        passwordHash: '070707',
+        createdAt: '2026-09-22 00:00:00',
+      },
+      {
+        id: 'USR-MGR-02',
+        username: 'Security-Manager',
+        fullName: 'Security Manager',
+        role: 'MANAGER',
+        shift: 'DAY',
+        badgeNumber: 'SEC-MGR-02',
+        phone: '',
+        email: 'MGR.security@gmail.com',
+        status: 'ACTIVE',
+        failedLoginAttempts: 0,
+        passwordHash: '090909',
+        createdAt: '2026-09-22 00:00:00',
+      },
+    ];
+
+    let accountsChanged = false;
+
+    for (const account of requiredAccounts) {
+      const index = users.findIndex(
+        (u) =>
+          u.id === account.id ||
+          u.username?.toLowerCase() === account.username.toLowerCase() ||
+          u.email?.toLowerCase() === account.email.toLowerCase()
+      );
+
+      if (index === -1) {
+        users.push(account);
+        accountsChanged = true;
+      } else {
+        users[index] = {
+          ...users[index],
+          id: account.id,
+          username: account.username,
+          fullName: account.fullName,
+          role: account.role,
+          shift: account.shift,
+          badgeNumber: account.badgeNumber,
+          email: account.email,
+          status: 'ACTIVE',
+          failedLoginAttempts: 0,
+          passwordHash: account.passwordHash,
+        };
+        accountsChanged = true;
+      }
+    }
+
+    if (accountsChanged) {
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    }
+
     return users;
   }
 
@@ -1440,14 +1446,74 @@ export class StorageService {
     StorageService.notifyDataChanged();
   }
 
-  static addUser(user: Omit<User, 'id' | 'createdAt' | 'failedLoginAttempts'>, currentUser: User): User {
+  static addUser(
+    user: Omit<User, 'id' | 'createdAt' | 'failedLoginAttempts'>,
+    currentUser: User
+  ): User {
+    // Chỉ SECURITY MANAGER được tạo tài khoản nhân viên
+    if (currentUser.role !== 'MANAGER') {
+      throw new Error(
+        'TỪ CHỐI: Chỉ SECURITY MANAGER mới có quyền tạo tài khoản nhân viên.'
+      );
+    }
+
     const users = StorageService.getUsers();
+
+    const username = user.username.trim().toLowerCase();
+    const email = user.email?.trim().toLowerCase() || '';
+    const password = user.passwordHash?.trim() || '';
+
+    if (!username) {
+      throw new Error('Tên đăng nhập không được để trống.');
+    }
+
+    if (!user.fullName?.trim()) {
+      throw new Error('Họ tên nhân viên không được để trống.');
+    }
+
+    if (!email) {
+      throw new Error('Gmail nhân viên không được để trống.');
+    }
+
+    if (!password) {
+      throw new Error('Mật khẩu nhân viên không được để trống.');
+    }
+
+    if (password.length < 8) {
+      throw new Error('Mật khẩu phải có ít nhất 8 ký tự.');
+    }
+
+    // Không cho phép trùng Username
+    if (
+      users.some(
+        (u) => u.username?.trim().toLowerCase() === username
+      )
+    ) {
+      throw new Error('Tên đăng nhập đã tồn tại.');
+    }
+
+    // Không cho phép trùng Gmail
+    if (
+      users.some(
+        (u) => u.email?.trim().toLowerCase() === email
+      )
+    ) {
+      throw new Error('Gmail đã được đăng ký cho một tài khoản khác.');
+    }
+
     const newUser: User = {
       ...user,
+      username,
+      email,
+      passwordHash: password,
       id: `USR-${Date.now().toString().slice(-6)}`,
       failedLoginAttempts: 0,
-      createdAt: new Date().toISOString().replace('T', ' ').substring(0, 19),
+      createdAt: new Date()
+        .toISOString()
+        .replace('T', ' ')
+        .substring(0, 19),
     };
+
     users.push(newUser);
     StorageService.saveUsers(users);
 
@@ -1455,78 +1521,147 @@ export class StorageService {
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'TẠO TÀI KHOẢN',
+      'TẠO TÀI KHOẢN NHÂN VIÊN',
       newUser.username,
-      `Tạo tài khoản nhân viên mới: ${newUser.fullName} (${newUser.role})`
+      `Tạo tài khoản cho: ${newUser.fullName} - Gmail: ${newUser.email}`
     );
 
     return newUser;
   }
-
   static updateUser(updatedUser: User, currentUser: User): void {
     const users = StorageService.getUsers();
     const index = users.findIndex((u) => u.id === updatedUser.id);
-    if (index !== -1) {
-      users[index] = updatedUser;
-      StorageService.saveUsers(users);
 
-      StorageService.recordAudit(
-        currentUser.id,
-        currentUser.fullName,
-        currentUser.role,
-        'CẬP NHẬT TÀI KHOẢN',
-        updatedUser.username,
-        `Cập nhật thông tin/phân quyền cho: ${updatedUser.fullName}`
+    if (index === -1) {
+      throw new Error('Không tìm thấy tài khoản nhân viên.');
+    }
+
+    // Chỉ SECURITY MANAGER hoặc SYSTEM ADMIN được cập nhật hồ sơ nhân viên
+    if (currentUser.role !== 'MANAGER' && currentUser.role !== 'ADMIN') {
+      throw new Error(
+        'TỪ CHỐI: Bạn không có quyền cập nhật tài khoản nhân viên.'
       );
     }
-  }
 
+    const existingUser = users[index];
+
+    // Các trường bảo mật chỉ SECURITY MANAGER được phép thay đổi
+    const securityChanged =
+      existingUser.username !== updatedUser.username ||
+      existingUser.email !== updatedUser.email ||
+      existingUser.passwordHash !== updatedUser.passwordHash;
+
+    if (securityChanged && currentUser.role !== 'MANAGER') {
+      throw new Error(
+        'TỪ CHỐI: Chỉ SECURITY MANAGER mới được thay đổi Tên đăng nhập, Gmail hoặc mật khẩu.'
+      );
+    }
+
+    users[index] = {
+      ...existingUser,
+      ...updatedUser,
+      id: existingUser.id,
+      createdAt: existingUser.createdAt,
+    };
+
+    StorageService.saveUsers(users);
+
+    StorageService.recordAudit(
+      currentUser.id,
+      currentUser.fullName,
+      currentUser.role,
+      securityChanged
+        ? 'CẬP NHẬT BẢO MẬT TÀI KHOẢN'
+        : 'CẬP NHẬT TÀI KHOẢN',
+      updatedUser.username,
+      securityChanged
+        ? `SECURITY MANAGER thay đổi thông tin bảo mật cho: ${updatedUser.fullName}`
+        : `Cập nhật thông tin/phân quyền cho: ${updatedUser.fullName}`
+    );
+  }
   static toggleUserStatus(userId: string, currentUser: User): void {
+    // Chỉ SECURITY MANAGER được khóa/mở tài khoản nhân viên
+    if (currentUser.role !== 'MANAGER') {
+      throw new Error(
+        'TỪ CHỐI: Chỉ SECURITY MANAGER mới có quyền khóa hoặc mở tài khoản nhân viên.'
+      );
+    }
+
     const users = StorageService.getUsers();
     const user = users.find((u) => u.id === userId);
-    if (!user) return;
 
-    // Safety: Cannot lock manager if only 1 manager exists or lock oneself
+    if (!user) {
+      throw new Error('Không tìm thấy tài khoản nhân viên.');
+    }
+
+    // Không cho phép tự khóa tài khoản của chính mình
     if (user.id === currentUser.id) {
       throw new Error('Bạn không thể tự khóa tài khoản của chính mình!');
     }
 
     user.status = user.status === 'ACTIVE' ? 'LOCKED' : 'ACTIVE';
+
+    // Khi mở khóa, xóa số lần đăng nhập sai
     if (user.status === 'ACTIVE') {
       user.failedLoginAttempts = 0;
     }
+
     StorageService.saveUsers(users);
 
     StorageService.recordAudit(
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      user.status === 'LOCKED' ? 'KHÓA TÀI KHOẢN' : 'MỞ KHÓA TÀI KHOẢN',
+      user.status === 'LOCKED'
+        ? 'KHÓA TÀI KHOẢN'
+        : 'MỞ KHÓA TÀI KHOẢN',
       user.username,
       `Trạng thái chuyển sang: ${user.status}`
     );
   }
-
   static resetUserPassword(userId: string, currentUser: User): string {
+    // Chỉ SECURITY MANAGER được reset mật khẩu
+    if (currentUser.role !== 'MANAGER') {
+      throw new Error(
+        'TỪ CHỐI: Chỉ SECURITY MANAGER mới có quyền reset mật khẩu.'
+      );
+    }
+
     const users = StorageService.getUsers();
     const user = users.find((u) => u.id === userId);
-    if (!user) throw new Error('Không tìm thấy người dùng');
 
+    if (!user) {
+      throw new Error('Không tìm thấy tài khoản nhân viên.');
+    }
+
+    // Tạo mật khẩu mới ngẫu nhiên, không dùng mật khẩu mặc định
+    const chars =
+      'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$%';
+    let newPassword = 'Sec@';
+
+    for (let i = 0; i < 10; i++) {
+      newPassword += chars.charAt(
+        Math.floor(Math.random() * chars.length)
+      );
+    }
+
+    user.passwordHash = newPassword;
     user.failedLoginAttempts = 0;
+    user.status = 'ACTIVE';
+
     StorageService.saveUsers(users);
 
     StorageService.recordAudit(
       currentUser.id,
       currentUser.fullName,
       currentUser.role,
-      'ĐẶT LẠI MẬT KHẨU',
+      'RESET MẬT KHẨU TÀI KHOẢN',
       user.username,
-      `Đặt lại mật khẩu cho tài khoản ${user.username}.`
+      `SECURITY MANAGER reset mật khẩu cho: ${user.fullName}`
     );
-    return '123456';
-  }
 
-  // Checkpoints Management
+    return newPassword;
+  }
   static getCheckpoints(): Checkpoint[] {
     StorageService.init();
     const raw = localStorage.getItem(STORAGE_KEYS.CHECKPOINTS);
@@ -2300,3 +2435,6 @@ export class StorageService {
     );
   }
 }
+
+
+

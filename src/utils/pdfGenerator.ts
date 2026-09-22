@@ -1,4 +1,4 @@
-import { PatrolSession, HotelSystemConfig, FailRecord } from '../types';
+﻿import { PatrolSession, HotelSystemConfig, FailRecord } from '../types';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -379,11 +379,11 @@ export function generatePatrolReportInnerBody(
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'CRITICAL':
-        return '<span style="background-color:#fee2e2; color:#b91c1c; border:1px solid #ef4444; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">NGHIÊM TRỌNG</span>';
+        return '<span style="background-color:#fee2e2; color:#b91c1c; border:1px solid #ef4444; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">NGHI�SM TR�ONG</span>';
       case 'HIGH':
         return '<span style="background-color:#ffedd5; color:#c2410c; border:1px solid #f97316; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">CAO</span>';
       case 'MEDIUM':
-        return '<span style="background-color:#fef9c3; color:#854d0e; border:1px solid #eab308; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">TRUNG BÌNH</span>';
+        return '<span style="background-color:#fef9c3; color:#854d0e; border:1px solid #eab308; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">TRUNG B�ONH</span>';
       default:
         return '<span style="background-color:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:2px 6px; border-radius:4px; font-weight:700; font-size:11px;">THẤP</span>';
     }
@@ -394,25 +394,25 @@ export function generatePatrolReportInnerBody(
       case 'PASS':
         return '<span style="color:#15803d; font-weight:700;">ĐẠT (PASS)</span>';
       case 'FAIL':
-        return '<span style="color:#b91c1c; font-weight:700;">KHÔNG ĐẠT (FAIL)</span>';
+        return '<span style="color:#b91c1c; font-weight:700;">KH�"NG ĐẠT (FAIL)</span>';
       default:
-        return '<span style="color:#64748b;">CHƯA KIỂM TRA</span>';
+        return '<span style="color:#64748b;">CHƯA KI�,M TRA</span>';
     }
   };
 
   return `
-    <!-- HEADER / TRANG BÌA -->
+    <!-- HEADER / TRANG B�OA -->
     <table class="header-table">
       <tr>
         <td>
           <div class="hotel-title">${displayHotelName}</div>
-          <div class="dept-title">${config.departmentName || 'BỘ PHẬN AN NINH & BẢO VỆ'}</div>
+          <div class="dept-title">${config.departmentName || 'B�~ PHẬN AN NINH & BẢO V�?'}</div>
           ${displayAddress ? `<div class="hotel-contact">${displayAddress}</div>` : ''}
         </td>
         <td class="report-id-box">
-          <div class="report-id-label">MÃ BÁO CÁO</div>
+          <div class="report-id-label">M�f BÁO CÁO</div>
           <div class="report-id-val">${session.id}</div>
-          <div class="report-id-status">Trạng thái: <strong>${session.isLocked ? 'ĐÃ KHÓA SUBMIT' : 'ĐANG THỰC HIỆN'}</strong></div>
+          <div class="report-id-status">Trạng thái: <strong>${session.isLocked ? 'Đ�f KH�"A SUBMIT' : 'ĐANG THỰC HI�?N'}</strong></div>
         </td>
       </tr>
     </table>
@@ -422,10 +422,10 @@ export function generatePatrolReportInnerBody(
       <div class="report-sub-title">SECURITY PATROL INSPECTION & INCIDENT REPORT</div>
     </div>
 
-    <!-- THÔNG TIN PHIÊN TUẦN TRA -->
+    <!-- TH�"NG TIN PHI�SN TUẦN TRA -->
     <div class="meta-grid">
       <div class="meta-item">
-        <span class="meta-label">Ngày thực hiện:</span>
+        <span class="meta-label">Ngày thực hi�?n:</span>
         <span class="meta-val">${session.date}</span>
       </div>
       <div class="meta-item">
@@ -445,7 +445,7 @@ export function generatePatrolReportInnerBody(
         <span class="meta-val">${session.patrolRoute}</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Giờ bắt đầu:</span>
+        <span class="meta-label">Giờ bắt �'ầu:</span>
         <span class="meta-val">${session.startTime}</span>
       </div>
       <div class="meta-item">
@@ -454,18 +454,18 @@ export function generatePatrolReportInnerBody(
       </div>
       <div class="meta-item">
         <span class="meta-label">Thời gian gửi báo cáo:</span>
-        <span class="meta-val">${session.submittedAt || 'Chưa khóa dữ liệu'}</span>
+        <span class="meta-val">${session.submittedAt || 'Chưa khóa dữ li�?u'}</span>
       </div>
     </div>
 
-    <!-- TỔNG QUAN THỐNG KÊ (7 CHỈ SỐ) -->
+    <!-- T�"NG QUAN THỐNG K�S (7 CH�^ SỐ) -->
     <div class="section-header">
-      <span>I. TỔNG QUAN KẾT QUẢ TUẦN TRA</span>
+      <span>I. T�"NG QUAN KẾT QUẢ TUẦN TRA</span>
     </div>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-val">${session.summary.totalCheckpoints}</div>
-        <div class="stat-label">Tổng Checkpoint</div>
+        <div class="stat-label">T�.ng Checkpoint</div>
       </div>
       <div class="stat-card">
         <div class="stat-val">${session.summary.checkedCount}</div>
@@ -473,7 +473,7 @@ export function generatePatrolReportInnerBody(
       </div>
       <div class="stat-card">
         <div class="stat-val">${session.summary.uncheckedCount}</div>
-        <div class="stat-label">Chưa kiểm tra</div>
+        <div class="stat-label">Chưa ki�fm tra</div>
       </div>
       <div class="stat-card pass">
         <div class="stat-val">${session.summary.passCount}</div>
@@ -481,28 +481,28 @@ export function generatePatrolReportInnerBody(
       </div>
       <div class="stat-card fail">
         <div class="stat-val">${session.summary.failCount}</div>
-        <div class="stat-label">FAIL (Không đạt)</div>
+        <div class="stat-label">FAIL (Không �'ạt)</div>
       </div>
       <div class="stat-card">
         <div class="stat-val">${session.summary.completionRate}%</div>
-        <div class="stat-label">Tỷ lệ hoàn thành</div>
+        <div class="stat-label">Tỷ l�? hoàn thành</div>
       </div>
       <div class="stat-card">
         <div class="stat-val">${session.summary.passRate}%</div>
-        <div class="stat-label">Tỷ lệ đạt</div>
+        <div class="stat-label">Tỷ l�? �'ạt</div>
       </div>
     </div>
 
     <!-- CHI TIẾT TUẦN TRA -->
     <div class="section-header">
-      <span>II. BẢNG CHI TIẾT TIẾN ĐỘ CHECKPOINT</span>
+      <span>II. BẢNG CHI TIẾT TIẾN Đ�~ CHECKPOINT</span>
     </div>
     <table class="patrol-table">
       <thead>
         <tr>
           <th style="width:40px; text-align:center;">STT</th>
           <th style="width:160px;">Khu vực</th>
-          <th>Checkpoint / Vị trí</th>
+          <th>Checkpoint / V�< trí</th>
           <th style="width:120px; text-align:center;">Kết quả</th>
           <th style="width:85px; text-align:center;">Thời gian</th>
         </tr>
@@ -523,7 +523,7 @@ export function generatePatrolReportInnerBody(
               ${cp.notes ? `<div style="font-size:10.5px; color:#334155; margin-top:2px;"><em>Ghi chú: ${cp.notes}</em></div>` : ''}
             </td>
             <td style="text-align:center;">${getStatusBadge(cp.status)}</td>
-            <td style="text-align:center; font-family:monospace;">${cp.scannedAt || '—'}</td>
+            <td style="text-align:center; font-family:monospace;">${cp.scannedAt || '�?"'}</td>
           </tr>
         `
                 )
@@ -532,15 +532,15 @@ export function generatePatrolReportInnerBody(
       </tbody>
     </table>
 
-    <!-- CÁC VẤN ĐỀ FAIL & BẰNG CHỨNG HÌNH ẢNH -->
+    <!-- CÁC VẤN Đ�? FAIL & BẰNG CHỨNG H�ONH ẢNH -->
     <div class="section-header">
-      <span>III. CÁC VẤN ĐỀ KHÔNG ĐẠT (FAIL ISSUES & PHOTO EVIDENCE)</span>
-      <span style="font-size:11px; font-weight:600; color:#b91c1c;">${failItems.length} sự cố ghi nhận</span>
+      <span>III. CÁC VẤN Đ�? KH�"NG ĐẠT (FAIL ISSUES & PHOTO EVIDENCE)</span>
+      <span style="font-size:11px; font-weight:600; color:#b91c1c;">${failItems.length} sự c�' ghi nhận</span>
     </div>
 
     ${
       failItems.length === 0
-        ? '<div style="border:1px solid #bbf7d0; background-color:#f0fdf4; padding:14px; border-radius:6px; color:#166534; font-weight:600; text-align:center;">✓ KHÔNG CÓ SỰ CỐ HOẶC VẤN ĐỀ FAIL TRONG PHIÊN TUẦN TRA NÀY. TOÀN BỘ ĐIỂM KIỂM SOÁT ĐẠT TIÊU CHUẨN AN NINH.</div>'
+        ? '<div style="border:1px solid #bbf7d0; background-color:#f0fdf4; padding:14px; border-radius:6px; color:#166534; font-weight:600; text-align:center;">�o" KH�"NG C�" SỰ CỐ HOẶC VẤN Đ�? FAIL TRONG PHI�SN TUẦN TRA N�?Y. TO�?N B�~ ĐI�,M KI�,M SOÁT ĐẠT TI�SU CHUẨN AN NINH.</div>'
         : failItems
             .map(
               (f, i) => `
@@ -560,7 +560,7 @@ export function generatePatrolReportInnerBody(
                 <strong>Khu vực:</strong> ${f.area}
               </div>
               <div class="fail-field">
-                <strong>Tiêu chí không đạt:</strong> <span style="color:#b91c1c; font-weight:700;">${f.failRecord.itemText}</span>
+                <strong>Tiêu chí không �'ạt:</strong> <span style="color:#b91c1c; font-weight:700;">${f.failRecord.itemText}</span>
               </div>
               <div class="fail-field">
                 <strong>Mô tả chi tiết:</strong> ${f.failRecord.description}
@@ -569,21 +569,21 @@ export function generatePatrolReportInnerBody(
                 <strong>Hành động xử lý tại chỗ:</strong> ${f.failRecord.actionTaken || 'Đã khoanh vùng cảnh báo và báo cáo'}
               </div>
               <div class="fail-field">
-                <strong>Bộ phận phối hợp:</strong> <span style="background-color:#e2e8f0; padding:2px 6px; border-radius:3px; font-weight:600;">${f.failRecord.department}</span>
+                <strong>B�T phận ph�'i hợp:</strong> <span style="background-color:#e2e8f0; padding:2px 6px; border-radius:3px; font-weight:600;">${f.failRecord.department}</span>
               </div>
               <div class="fail-field">
                 <strong>Trạng thái xử lý:</strong> <strong style="color:${f.failRecord.status === 'RESOLVED' ? '#15803d' : '#ea580c'};">${f.failRecord.status}</strong>
               </div>
             </div>
 
-            <!-- ẢNH FAIL VỚI THÔNG TIN BẢO AN -->
+            <!-- ẢNH FAIL V�sI TH�"NG TIN BẢO AN -->
             <div>
               <div class="fail-photo-wrapper">
-                <img class="fail-img" src="${f.failRecord.photoUrl}" alt="Bằng chứng sự cố ${f.checkpointId}" />
+                <img class="fail-img" src="${f.failRecord.photoUrl}" alt="Bằng chứng sự c�' ${f.checkpointId}" />
                 <div class="photo-caption-box">
                   <div class="photo-caption-line">${cleanReportText(f.failRecord.photoMetadata.officerName) ? `Tên: ${cleanReportText(f.failRecord.photoMetadata.officerName)}` : `Tên: ${displayOfficer}`}</div>
                   <div class="photo-caption-line">Ngày: ${f.failRecord.photoMetadata.date} | Giờ: ${f.failRecord.photoMetadata.time}</div>
-                  <div class="photo-caption-line photo-caption-location">Vị trí: ${f.failRecord.photoMetadata.location}</div>
+                  <div class="photo-caption-line photo-caption-location">V�< trí: ${f.failRecord.photoMetadata.location}</div>
                 </div>
               </div>
             </div>
@@ -594,31 +594,28 @@ export function generatePatrolReportInnerBody(
             .join('')
     }
 
-    <!-- CHỮ KÝ VÀ PHÊ DUYỆT -->
+    <!-- CHỮ KÝ V�? PH�S DUY�?T -->
     <div class="signatures">
       <div>
-        <div class="sign-title">NHÂN VIÊN TUẦN TRA</div>
+        <div class="sign-title">NH�,N VI�SN TUẦN TRA</div>
         <div class="sign-note">(Ký & ghi rõ họ tên)</div>
         <div class="sign-space"></div>
         <div class="sign-name">${displayOfficer}</div>
       </div>
       <div>
         <div class="sign-title">GIÁM SÁT AN NINH</div>
-        <div class="sign-note">(Xác nhận & kiểm tra)</div>
+        <div class="sign-note">(Xác nhận & ki�fm tra)</div>
         <div class="sign-space"></div>
-        <div class="sign-name">Trần Văn Bình</div>
+        <div class="sign-name">Trần V�fn Bình</div>
       </div>
       <div>
-        <div class="sign-title">TRƯỞNG BỘ PHẬN AN NINH</div>
-        <div class="sign-note">(Phê duyệt báo cáo)</div>
+        <div class="sign-title">TRƯ�zNG B�~ PHẬN AN NINH</div>
+        <div class="sign-note">(Phê duy�?t báo cáo)</div>
         <div class="sign-space"></div>
-        <div class="sign-name">Nguyễn Văn An</div>
+        <div class="sign-name">Nguy�.n V�fn An</div>
       </div>
     </div>
-
-    <div class="footer-note">
-      <div>Báo cáo điện tử tự động - Hệ thống Quản lý Tuần tra An ninh Dusit Princess Moonrise Phú Quốc</div>
-      <div>Thời gian trích xuất: ${new Date().toLocaleString('vi-VN')}</div>
+<div>Thời gian trích xuất: ${new Date().toLocaleString('vi-VN')}</div>
     </div>
   `;
 }
@@ -686,7 +683,7 @@ export async function generateAndDownloadPDF(
   config: HotelSystemConfig,
   onProgress?: (message: string) => void
 ): Promise<{ blob: Blob; url: string; dataUri: string; filename: string }> {
-  if (onProgress) onProgress('Đang khởi tạo cấu trúc báo cáo A4...');
+  if (onProgress) onProgress('Đang kh�Yi tạo cấu trúc báo cáo A4...');
 
   // Remove any stale offscreen container
   const oldContainer = document.getElementById('pdf-render-offscreen-container');
@@ -738,7 +735,7 @@ export async function generateAndDownloadPDF(
 
   document.body.appendChild(container);
 
-  if (onProgress) onProgress('Đang đồng bộ hình ảnh và chuẩn bị kết xuất...');
+    if (onProgress) onProgress('Đang đồng bộ hình ảnh và chuẩn bị kết xuất...');
 
   // Ensure all image elements inside container are loaded safely
   const imgElements = Array.from(container.querySelectorAll('img'));
@@ -761,9 +758,7 @@ export async function generateAndDownloadPDF(
       });
     })
   );
-
-  if (onProgress) onProgress('Đang xử lý kết xuất đồ họa độ nét cao...');
-
+  if (onProgress) onProgress('Đang xử lý kết xuất hình ảnh nét cao...');
   // Rendering stabilization delay
   await new Promise((r) => setTimeout(r, 200));
 
@@ -809,9 +804,7 @@ export async function generateAndDownloadPDF(
       window.scrollTo(prevScrollX, prevScrollY);
     }
   }
-
   if (onProgress) onProgress('Đang chia trang và đóng gói PDF...');
-
   const a4WidthMm = 210;
   const a4HeightMm = 297;
   // Calculate page height in canvas pixels matching A4 aspect ratio:
@@ -858,19 +851,44 @@ export async function generateAndDownloadPDF(
     }
   }
 
-  if (onProgress) onProgress('Đang hoàn thiện tệp PDF...');
+  if (onProgress) onProgress('Đang hoàn thi�?n t�?p PDF...');
 
   const filename = `BAO_CAO_TUAN_TRA_${session.id}.pdf`;
   const pdfBlob = pdf.output('blob');
   const blobUrl = URL.createObjectURL(pdfBlob);
   const dataUri = pdf.output('datauristring');
-
-  // Trigger automatic download on desktop devices only (mobile triggers via explicit user tap to prevent popup blocking)
+  // Desktop: tự động tải PDF
   if (!isMobile) {
     try {
       triggerFileDownload(pdfBlob, filename);
     } catch (e) {
       console.warn('Desktop auto-download caught:', e);
+    }
+  }
+
+  // Mobile: mở PDF trực tiếp trên trình duyệt
+  if (isMobile) {
+    try {
+      const mobilePdfUrl = URL.createObjectURL(pdfBlob);
+
+      setTimeout(() => {
+        try {
+          const opened = window.open(mobilePdfUrl, '_blank');
+
+          if (!opened) {
+            window.location.href = mobilePdfUrl;
+          }
+        } catch (openError) {
+          console.warn('Không thể mở PDF trên mobile:', openError);
+          window.location.href = mobilePdfUrl;
+        }
+
+        setTimeout(() => {
+          URL.revokeObjectURL(mobilePdfUrl);
+        }, 60000);
+      }, 100);
+    } catch (mobileError) {
+      console.warn('Mobile PDF fallback failed:', mobileError);
     }
   }
 
@@ -913,7 +931,7 @@ export async function sharePatrolReportPDF(
       await navigator.share({
         files: [file],
         title: `Báo cáo tuần tra an ninh ${session.id}`,
-        text: `Báo cáo ca tuần tra an ninh ngày ${session.date} - ${session.shift}. Người thực hiện: ${session.officerName}`,
+        text: `Báo cáo ca tuần tra an ninh ngày ${session.date} - ${session.shift}. Người thực hi�?n: ${session.officerName}`,
       });
       return true;
     } else {
@@ -1016,3 +1034,10 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
     }
   });
 }
+
+
+
+
+
+
+

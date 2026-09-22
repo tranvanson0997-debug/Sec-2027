@@ -63,7 +63,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
     setFormBadgeNumber(`SEC-${String(Math.floor(100 + Math.random() * 900))}`);
     setFormPhone('');
     setFormEmail('');
-    setFormPassword('123456');
+    setFormPassword('');
     setErrorMsg(null);
     setIsModalOpen(true);
   };
@@ -76,7 +76,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
     setFormBadgeNumber(u.badgeNumber);
     setFormPhone(u.phone);
     setFormEmail(u.email);
-    setFormPassword(u.passwordHash || '123456');
+    setFormPassword('');
     setErrorMsg(null);
     setIsModalOpen(true);
   };
@@ -95,6 +95,15 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
       return;
     }
 
+    if (!formPassword.trim()) {
+      setErrorMsg('Vui lòng cài mật khẩu riêng cho tài khoản nhân viên!');
+      return;
+    }
+
+    if (formPassword.trim().length < 8) {
+      setErrorMsg('Mật khẩu phải có ít nhất 8 ký tự!');
+      return;
+    }
     const cleanEmail = formEmail.trim().toLowerCase();
     const cleanUsername = formUsername.trim().toLowerCase();
 
@@ -115,12 +124,13 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
         // Edit
         const updated: User = {
           ...editingUser,
+            username: cleanUsername,
           fullName: formFullName.trim(),
           role: formRole,
           badgeNumber: formBadgeNumber.trim(),
           phone: formPhone.trim(),
-          email: formEmail.trim(),
-          passwordHash: formPassword.trim() || editingUser.passwordHash || '123456',
+          email: cleanEmail,
+          passwordHash: formPassword.trim(),
         };
         StorageService.updateUser(updated, currentUser);
         setSuccessMsg(`Đã cập nhật thông tin nhân viên ${updated.fullName} (Gmail: ${updated.email})`);
@@ -139,13 +149,13 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
             role: formRole,
             badgeNumber: formBadgeNumber.trim(),
             phone: formPhone.trim(),
-            email: formEmail.trim(),
-            passwordHash: formPassword.trim() || '123456',
+            email: cleanEmail,
+            passwordHash: formPassword.trim(),
             status: 'ACTIVE',
           },
           currentUser
         );
-        setSuccessMsg(`Đã tạo tài khoản cho nhân viên ${newUser.fullName} (Gmail: ${newUser.email} - Mật khẩu: ${formPassword.trim() || '123456'})`);
+        setSuccessMsg(`Đã tạo tài khoản cho nhân viên ${newUser.fullName} (Gmail: ${newUser.email})`);
       }
 
       setIsModalOpen(false);
@@ -168,7 +178,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
   };
 
   const handleResetPassword = (u: User) => {
-    if (!confirm(`Bạn có chắc muốn đặt lại mật khẩu cho ${u.fullName} về mặc định "123456"?`)) return;
+    if (!confirm(`Bạn có chắc muốn SECURITY MANAGER đặt lại mật khẩu cho ${u.fullName}?`)) return;
     try {
       const pin = StorageService.resetUserPassword(u.id, currentUser);
       refreshUsers();
@@ -363,7 +373,7 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
                             id={`reset-pwd-${u.id}`}
                             onClick={() => handleResetPassword(u)}
                             className="p-1.5 bg-slate-800 hover:bg-amber-600/30 text-amber-300 rounded-lg transition"
-                            title="Đặt lại mật khẩu (về 123456)"
+                            title="SECURITY MANAGER: Đặt lại mật khẩu"
                           >
                             <KeyRound className="w-4 h-4" />
                           </button>
@@ -489,13 +499,13 @@ export const EmployeeManagement: React.FC<EmployeeManagementProps> = ({
 
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">
-                  Mật khẩu đăng nhập (Để trống nếu dùng mặc định: 123456):
+                  Mật khẩu đăng nhập (Bắt buộc cài mật khẩu riêng):
                 </label>
                 <input
                   type="text"
                   value={formPassword}
                   onChange={(e) => setFormPassword(e.target.value)}
-                  placeholder="Nhập mật khẩu (Mặc định: 123456)..."
+                  placeholder="Nhập mật khẩu riêng, tối thiểu 8 ký tự..."
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-white font-mono focus:outline-none focus:border-amber-500"
                 />
                 <p className="text-[10px] text-amber-400/90 mt-1">

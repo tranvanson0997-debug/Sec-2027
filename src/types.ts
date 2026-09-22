@@ -1,6 +1,7 @@
-export type UserRole = 'MANAGER' | 'SUPERVISOR' | 'OFFICER' | 'ADMIN';
+﻿export type UserRole = 'MANAGER' | 'SUPERVISOR' | 'OFFICER' | 'ADMIN';
 
 export interface User {
+  shift: 'DAY' | 'NIGHT'; // Ca ngày 06:00-18:00 / Ca đêm 18:00-06:00
   id: string;
   username: string;
   fullName: string;
