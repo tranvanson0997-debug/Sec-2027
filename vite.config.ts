@@ -13,7 +13,7 @@ export default defineConfig(() => {
     fs.existsSync(keyPath);
 
   return {
-      base: '/vanson/security/070922/',
+      base: '/Sec-2027/',
       plugins: [react(), tailwindcss()],
 
     resolve: {
@@ -40,5 +40,6 @@ export default defineConfig(() => {
     },
   };
 });
+
 
 
