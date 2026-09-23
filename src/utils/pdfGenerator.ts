@@ -797,13 +797,29 @@ export async function generateAndDownloadPDF(
     }
 
     // Đảm bảo Noto Sans đã tải xong trước khi html2canvas render PDF
-    if (document.fonts) {
-      await Promise.all([
-        document.fonts.load('400 12px "Noto Sans"'),
-        document.fonts.load('700 12px "Noto Sans"'),
-      ]);
-      await document.fonts.ready;
-    }
+    try {
+        const regularFont = new FontFace("Noto Sans", `url(${notoSansRegular})`, {
+          weight: "400",
+          style: "normal"
+        });
+
+        const boldFont = new FontFace("Noto Sans", `url(${notoSansBold})`, {
+          weight: "700",
+          style: "normal"
+        });
+
+        await Promise.all([
+          regularFont.load(),
+          boldFont.load()
+        ]);
+
+        document.fonts.add(regularFont);
+        document.fonts.add(boldFont);
+
+        await document.fonts.ready;
+      } catch (fontError) {
+        console.error("Không thể tải Noto Sans:", fontError);
+      }
 
     // Chỉ áp dụng font cho báo cáo PDF
     container.style.fontFamily = '"Noto Sans", sans-serif';
@@ -1069,6 +1085,7 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
     }
   });
 }
+
 
 
 
