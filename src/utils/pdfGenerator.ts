@@ -622,13 +622,13 @@ export function generatePatrolReportInnerBody(
         <div class="sign-title">GIÁM SÁT AN NINH</div>
         <div class="sign-note">(Xác nhận & kiểm tra)</div>
         <div class="sign-space"></div>
-        <div class="sign-name">Trần Văn Bình</div>
+        <div class="sign-name"></div>
       </div>
       <div>
         <div class="sign-title">TRƯỞNG BỘ PHẬN AN NINH</div>
         <div class="sign-note">(Phê duyệt báo cáo)</div>
         <div class="sign-space"></div>
-        <div class="sign-name">Nguyễn Văn An</div>
+        <div class="sign-name">Trần Văn Sơn</div>
       </div>
     </div>
 <div>Thời gian trích xuất: ${new Date().toLocaleString('vi-VN')}</div>
@@ -1085,6 +1085,7 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
     }
   });
 }
+
 
 
 
