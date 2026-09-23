@@ -616,7 +616,7 @@ export function generatePatrolReportInnerBody(
         <div class="sign-title">NHÂN VIÊN TUẦN TRA</div>
         <div class="sign-note">(Ký & ghi rõ họ tên)</div>
         <div class="sign-space"></div>
-        <div class="sign-name">${displayOfficer}</div>
+        <div class="sign-name"></div>
       </div>
       <div>
         <div class="sign-title">GIÁM SÁT AN NINH</div>
@@ -1085,6 +1085,7 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
     }
   });
 }
+
 
 
 
