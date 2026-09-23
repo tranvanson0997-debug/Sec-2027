@@ -806,10 +806,10 @@ export async function generateAndDownloadPDF(
     }
 
     // Chỉ áp dụng font cho báo cáo PDF
-    container.style.fontFamily = "Arial, 'Segoe UI', sans-serif";
+    container.style.fontFamily = '"Noto Sans", sans-serif';
 
     container.querySelectorAll('*').forEach((el) => {
-      (el as HTMLElement).style.fontFamily = "Arial, 'Segoe UI', sans-serif";
+      (el as HTMLElement).style.fontFamily = '"Noto Sans", sans-serif';
     });
 
     await new Promise<void>((resolve) => {
@@ -1069,6 +1069,7 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
     }
   });
 }
+
 
 
 
