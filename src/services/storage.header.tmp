@@ -1,0 +1,129 @@
+﻿import {
+  User,
+  Checkpoint,
+  ChecklistTemplate,
+  PatrolSession,
+  Incident,
+  AuditLog,
+  HotelSystemConfig,
+  EditAuditRecord,
+  DashboardStats,
+  OnlineUser,
+  AccessNotification,
+} from '../types';
+import { generateSampleIncidentPhoto } from '../utils/photoUtils';
+
+const STORAGE_KEYS = {
+  CURRENT_USER: 'hotel_patrol_current_user',
+  USERS: 'hotel_patrol_users',
+  CHECKPOINTS: 'hotel_patrol_checkpoints',
+  CHECKLISTS: 'hotel_patrol_checklists',
+  PATROLS: 'hotel_patrol_sessions',
+  INCIDENTS: 'hotel_patrol_incidents',
+  AUDIT_LOGS: 'hotel_patrol_audit_logs',
+  CONFIG: 'hotel_patrol_config',
+  ONLINE_USERS: 'hotel_patrol_online_users',
+  ACCESS_NOTIFICATIONS: 'hotel_patrol_access_notifications',
+};
+
+const SYNC_EVENT_NAME = 'hotel_patrol_data_changed';
+let patrolBroadcastChannel: BroadcastChannel | null = null;
+try {
+  if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+    patrolBroadcastChannel = new BroadcastChannel('hotel_patrol_channel');
+  }
+} catch {
+  // Fallback to Window events and localStorage storage event
+}
+
+// Initial default configuration
+export const DEFAULT_CONFIG: HotelSystemConfig = {
+  hotelName: 'Dusit Princess Moonrise Phú Quốc',
+  departmentName: 'BỘ PHẬN AN NINH & BẢO VỆ (SECURITY DEPT)',
+  address: 'Đường Trần Hưng Đạo, Cửa Lấp, Dương Tơ, Thành phố Phú Quốc, Tỉnh Kiên Giang',
+  hotline: '',
+  requireQrScan: true,
+  allowSupervisorOverride: true,
+  retentionDays: 365,
+  requirePhotoOnFail: true,
+  watermarkHotelName: true,
+};
+
+// Danh sách tài khoản mặc định
+export const DEFAULT_USERS: User[] = [
+  {
+    id: 'USR-MGR-01',
+    username: 'tranvanson',
+    fullName: 'Trần Văn Sơn',
+    role: 'MANAGER',
+    shift: 'DAY',
+    badgeNumber: 'SEC-MGR-01',
+    phone: '0908 997 001',
+    email: 'tranvanson0997@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '010492',
+    lastLogin: '2026-09-18 08:00:00',
+    createdAt: '2025-01-01 00:00:00',
+  },
+  {
+    id: 'USR-SEC-03',
+    username: 'SEC-03',
+    fullName: 'Huỳnh Văn Phúc',
+    role: 'OFFICER',
+    badgeNumber: 'SEC-03',
+    email: 'sec03.security@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '030303',
+    createdAt: '2026-09-23 00:00:00',
+  },
+  {
+    id: 'USR-SEC-04',
+    username: 'SEC-04',
+    fullName: 'Phạm Minh Thanh',
+    role: 'OFFICER',
+    badgeNumber: 'SEC-04',
+    email: 'sec04.security@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '040404',
+    createdAt: '2026-09-23 00:00:00',
+  },
+  {
+    id: 'USR-SEC-05',
+    username: 'SEC-05',
+    fullName: 'Phạm Duy Linh',
+    role: 'OFFICER',
+    badgeNumber: 'SEC-05',
+    email: 'sec05.security@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '050505',
+    createdAt: '2026-09-23 00:00:00',
+  },
+  {
+    id: 'USR-SEC-06',
+    username: 'SEC-06',
+    fullName: 'Nguyễn Văn Hùng',
+    role: 'OFFICER',
+    badgeNumber: 'SEC-06',
+    email: 'sec06.security@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '060606',
+    createdAt: '2026-09-23 00:00:00',
+  },
+  {
+    id: 'USR-SEC-07',
+    username: 'SEC-07',
+    fullName: 'Tranh Hoàng Dũng',
+    role: 'OFFICER',
+    badgeNumber: 'SEC-07',
+    email: 'sec07.security@gmail.com',
+    status: 'ACTIVE',
+    failedLoginAttempts: 0,
+    passwordHash: '070707',
+    createdAt: '2026-09-23 00:00:00',
+  },
+];

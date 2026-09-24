@@ -1,0 +1,85 @@
+﻿        scale = 1.25;
+      }
+    } else {
+      if (totalHeight * 1.5 > 5500) {
+        scale = Math.max(1.0, 5500 / totalHeight);
+      }
+    }
+
+    // Đảm bảo Noto Sans đã tải xong trước khi html2canvas render PDF
+    try {
+        const regularFont = new FontFace("Noto Sans", `url(${notoSansRegular})`, {
+          weight: "400",
+          style: "normal"
+        });
+
+        const boldFont = new FontFace("Noto Sans", `url(${notoSansBold})`, {
+          weight: "700",
+          style: "normal"
+        });
+
+        await Promise.all([
+          regularFont.load(),
+          boldFont.load()
+        ]);
+
+        document.fonts.add(regularFont);
+        document.fonts.add(boldFont);
+
+        await document.fonts.ready;
+      } catch (fontError) {
+        console.error("Không thể tải Noto Sans:", fontError);
+      }
+
+    // Chỉ áp dụng font cho báo cáo PDF
+    container.style.fontFamily = '"Noto Sans", sans-serif';
+
+    container.querySelectorAll('*').forEach((el) => {
+      (el as HTMLElement).style.fontFamily = '"Noto Sans", sans-serif';
+    });
+
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
+    canvas = await html2canvas(container, {
+      scale,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      width: 794,
+      height: totalHeight,
+      windowWidth: 794,
+      windowHeight: totalHeight,
+      scrollX: 0,
+      scrollY: 0,
+      x: 0,
+      y: 0,
+    });
+  } finally {
+    // Clean up DOM container and restore scroll
+    if (container.parentNode) {
+      container.parentNode.removeChild(container);
+    }
+    if (typeof window !== 'undefined' && (prevScrollX !== 0 || prevScrollY !== 0)) {
+      window.scrollTo(prevScrollX, prevScrollY);
+    }
+  }
+  if (onProgress) onProgress('Đang chia trang và đóng gói PDF...');
+  const a4WidthMm = 210;
+  const a4HeightMm = 297;
+  // Calculate page height in canvas pixels matching A4 aspect ratio:
+  const pageCanvasHeight = Math.floor((canvas.width * a4HeightMm) / a4WidthMm);
+  const totalPages = Math.ceil(canvas.height / pageCanvasHeight) || 1;
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4',
+    compress: true,
+  });
+
+  pdf.addFileToVFS('NotoSans-Regular.ttf', notoSansRegular);
+  pdf.addFont('NotoSans-Regular.ttf', 'NotoSans', 'normal');
+  pdf.addFileToVFS('NotoSans-Bold.ttf', notoSansBold);
+  pdf.addFont('NotoSans-Bold.ttf', 'NotoSans', 'bold');
+  pdf.setFont('NotoSans', 'normal');
