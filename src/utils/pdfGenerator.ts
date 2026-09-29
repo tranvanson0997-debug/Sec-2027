@@ -1,4 +1,4 @@
-﻿import { PatrolSession, HotelSystemConfig, FailRecord } from '../types';
+﻿import { PatrolSession, HotelSystemConfig, FailRecord, AnimalControlReport } from '../types';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import notoSansRegular from '../assets/fonts/NotoSans-Regular.ttf';
@@ -26,7 +26,7 @@ export function cleanReportText(text: string | undefined | null): string {
  * Fully scoped to .report-container and global body so no dark-theme CSS leaks in
  */
 export function getReportStyles(): string {
-  return `r
+  return `
     @font-face {
       font-family: "Noto Sans";
       src: url("${notoSansRegular}") format("truetype");
@@ -51,7 +51,7 @@ export function getReportStyles(): string {
       print-color-adjust: exact !important;
     }
     body, #pdf-render-offscreen-container, .report-container {
-      font-family: Arial, 'Segoe UI', sans-serif !important;
+      font-family: "Noto Sans", Arial, "Segoe UI", sans-serif !important;
       color: #0f172a !important;
       background-color: #ffffff !important;
       margin: 0;
@@ -1104,6 +1104,935 @@ export function printViaIframe(session: PatrolSession, config: HotelSystemConfig
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * ============================================================
+ * PDF RIÊNG - BẮT / KIỂM SOÁT ĐỘNG VẬT
+ * ============================================================
+ * Module độc lập với PDF tuần tra hiện có.
+ */
+
+function animalPdfSafeText(value: unknown): string {
+  if (value === undefined || value === null) return '';
+  return String(value);
+}
+
+function animalPdfFilename(report: AnimalControlReport): string {
+  const number = animalPdfSafeText(report.reportNumber || report.id)
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, '_');
+
+  return `BAO_CAO_BAT_DONG_VAT_${number}.pdf`;
+}
+
+export async function generateAnimalControlPDF(
+  report: AnimalControlReport
+): Promise<void> {
+  const safe = (value: unknown): string => {
+    if (value === undefined || value === null) return '';
+    return String(value);
+  };
+
+  const values = (value: unknown): string[] => {
+    return safe(value)
+      .split('||')
+      .map(v => v.trim())
+      .filter(Boolean);
+  };
+
+  const hasValue = (value: unknown, item: string): boolean => {
+    return values(value).includes(item);
+  };
+
+  const esc = (value: unknown): string => {
+    return safe(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  const check = (condition: boolean): string => {
+    return `
+      <span class="check-box ${condition ? 'checked' : ''}">
+        ${condition ? '<span class="check-mark"></span>' : ''}
+      </span>
+    `;
+  };
+
+  const line = (label: string, value: unknown): string => `
+    <div class="line-row">
+      <div class="line-label">${esc(label)}</div>
+      <div class="line-value">${esc(value) || 'Chưa ghi nhận'}</div>
+    </div>
+  `;
+
+  const checkboxRow = (
+    label: string,
+    items: string[],
+    selected: unknown,
+    multi = false
+  ): string => `
+    <div class="option-row">
+      <div class="option-label">${esc(label)}</div>
+      <div class="options">
+        ${items.map(item => `
+          <span class="option">
+            ${check(multi ? hasValue(selected, item) : safe(selected) === item)}
+            <span>${esc(item)}</span>
+          </span>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  try {
+    const animalTypes = [
+      'Chó/Mèo thả rông',
+      'Bò sát / Rắn',
+      'Rết / Bọ cạp / Ong',
+      'Chim / Dơi',
+      'Khỉ / Động vật hoang dã',
+      'Khác'
+    ];
+
+    const dangerLevels = [
+      'Cấp 1 (An toàn)',
+      'Cấp 2 (Cảnh báo)',
+      'Cấp 3 (Nguy hiểm)'
+    ];
+
+    const initialConditions = [
+      'Bình thường / Khỏe mạnh',
+      'Bị thương / Kiệt sức',
+      'Hung dữ / Kích động',
+      'Đã chết'
+    ];
+
+    const guestImpacts = [
+      'Không gây ảnh hưởng',
+      'Gây hoảng loạn / Phàn nàn',
+      'Đã gây va chạm / Cắn / Đốt (Tấn công)'
+    ];
+
+    const captureTools = [
+      'Lưới / Vợt',
+      'Gậy bắt rắn chuyên dụng',
+      'Lồng bẫy',
+      'Găng tay bảo hộ dày',
+      'Thùng chứa chuyên dụng'
+    ];
+
+    const postActions = [
+      'Bàn giao lại cho chủ sở hữu (Khách/Dân địa phương)',
+      'Thả về môi trường tự nhiên xa khu vực Resort (Rừng/Khu bảo tồn)',
+      'Bàn giao cho Kiểm lâm / Chi cục Bảo vệ Môi trường / Trạm Thú y',
+      'Tiêu hủy theo quy định an toàn sinh học (Đối với vật nguy hiểm/bệnh)'
+    ];
+
+    const causes = [
+      'Hàng rào hở',
+      'Cửa ra vào mở',
+      'Khu vực cây rậm rạp chưa phát quang',
+      'Mùi thức ăn'
+    ];
+
+    const departments = [
+      'An ninh',
+      'Cảnh quan',
+      'Bảo trì'
+    ];
+
+    const photos = Array.isArray(report.photos) ? report.photos : [];
+
+    const photoHtml = photos.length
+      ? `
+        <div class="photo-grid">
+          ${photos.map((photo, index) => `
+            <div class="photo-card">
+              <div class="photo-title">ẢNH MINH CHỨNG ${index + 1}</div>
+              <img src="${esc(photo.dataUrl)}" />
+            </div>
+          `).join('')}
+        </div>
+      `
+      : `
+        <div class="no-photo">
+          Chưa có ảnh minh chứng
+        </div>
+      `;
+
+    const html = `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans", Arial, sans-serif;
+    color: #17202a;
+    background: #ffffff;
+  }
+
+  .report {
+    width: 794px;
+    margin: 0 auto;
+    padding: 28px 34px 26px;
+    background: #ffffff;
+    font-family: "Noto Sans", Arial, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .header {
+    text-align: center;
+    border: 1px solid #b8c7d9;
+    border-top: 7px solid #17365d;
+    background: #f4f8fc;
+    padding: 14px 18px 13px;
+    margin-bottom: 14px;
+  }
+
+  .hotel {
+    font-size: 23px;
+    font-weight: 800;
+    color: #17365d;
+    letter-spacing: 0.2px;
+    line-height: 1.2;
+  }
+
+  .hotel-sub {
+    display: none;
+  }
+
+  .title {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #17365d;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #566573;
+    letter-spacing: 0.3px;
+  }
+
+  .safety {
+    margin-top: 10px;
+    padding: 7px 10px;
+    border: 1px solid #c5d5e6;
+    background: #eaf2f8;
+    color: #24445f;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid #aebdca;
+    margin-bottom: 12px;
+    background: #ffffff;
+  }
+
+  .meta-row {
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 6px 9px;
+    border-bottom: 1px solid #d7e0e8;
+    font-size: 12.5px;
+  }
+
+  .meta-row:nth-child(odd) {
+    border-right: 1px solid #d7e0e8;
+  }
+
+  .meta-label {
+    min-width: 115px;
+    font-weight: 800;
+    color: #17365d;
+  }
+
+  .section {
+    border: 1px solid #b8c7d9;
+    margin-top: 11px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .section-title {
+    background: #17365d;
+    color: #ffffff;
+    padding: 8px 11px;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  .section-body {
+    padding: 10px 11px;
+  }
+
+  .line-row {
+    display: flex;
+    align-items: flex-start;
+    min-height: 28px;
+    padding: 5px 7px;
+    border-bottom: 1px solid #e2e8ee;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .line-row:nth-child(even) {
+    background: #f7f9fb;
+  }
+
+  .line-label {
+    width: 190px;
+    min-width: 190px;
+    padding-right: 10px;
+    font-weight: 800;
+    color: #243b53;
+  }
+
+  .line-value {
+    flex: 1;
+    color: #17202a;
+    font-weight: 700;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 14px;
+    padding: 5px 7px 7px;
+  }
+
+  .option {
+    display: inline-flex;
+    align-items: center; vertical-align: middle; gap: 7px; min-height: 18px; line-height: 18px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #17202a;
+    white-space: nowrap;
+  }
+
+  .check-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px; height: 15px; min-width: 15px; max-width: 15px;
+    border: 1.7px solid #17365d;
+    border-radius: 2px;
+    background: #ffffff;
+    vertical-align: middle;
+    flex: 0 0 15px;
+  }
+
+  .check-mark {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    left: 3px;
+    top: 1px;
+    border-right: 2px solid #17365d;
+    border-bottom: 2px solid #17365d;
+    transform: rotate(42deg);
+  }
+
+  .text-block {
+    margin-top: 7px;
+    padding: 9px 10px;
+    min-height: 48px;
+    border: 1px solid #c6d2dd;
+    border-left: 4px solid #5b9bd5;
+    background: #f8fafc;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: #17202a;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-top: 9px;
+  }
+
+  .photo-item {
+    border: 1px solid #aebdca;
+    background: #f7f9fb;
+    padding: 5px;
+  }
+
+  .photo-item img {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .signature-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    table-layout: fixed;
+  }
+
+  .signature-table td {
+    width: 50%;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid #b8c7d9;
+    padding: 10px 8px;
+    height: 145px;
+    background: #f8fafc;
+  }
+
+  .signature-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #17365d;
+    line-height: 1.35;
+  }
+
+  .signature-space {
+    height: 75px;
+  }
+
+  .signature-name {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #17202a;
+  }
+
+  .footer {
+    margin-top: 12px;
+    padding-top: 7px;
+    border-top: 2px solid #17365d;
+    text-align: center;
+    color: #566573;
+    font-size: 9px;
+    font-weight: 700;
+  }
+</style>
+</head>
+
+<body>
+<div class="report">
+
+  <div class="header">
+    <div class="hotel">Dusit Princess Moonrise Phú Quốc</div>
+
+
+    <div class="title">BÁO CÁO BẮT / KIỂM SOÁT ĐỘNG VẬT</div>
+    <div class="subtitle">ANIMAL CAPTURE &amp; CONTROL INCIDENT REPORT</div>
+    <div class="safety">AN TOÀN NỘI BỘ &amp; BẢO VỆ ĐỘNG VẬT</div>
+  </div>
+
+  <div class="meta">
+    <div class="meta-grid">
+      <div class="meta-cell">
+        <span class="meta-label">Mã số báo cáo:</span>
+        ${esc(report.reportNumber) || 'Chưa xác định'}
+      </div>
+
+      <div class="meta-cell">
+        <span class="meta-label">Ngày lập báo cáo:</span>
+        ${esc(report.date)}
+        ${report.time ? ' - ' + esc(report.time) : ''}
+      </div>
+
+      <div class="meta-cell">
+        <span class="meta-label">Thời gian phát hiện:</span>
+        ${esc(report.detectionTime || report.time)}
+      </div>
+
+      <div class="meta-cell">
+        <span class="meta-label">Người báo cáo:</span>
+        ${esc(report.reporterName || 'Chưa xác định')}
+      </div>
+
+      <div class="meta-cell">
+        <span class="meta-label">Khu vực phát hiện:</span>
+        ${esc(report.location)}
+      </div>
+
+      <div class="meta-cell">
+        <span class="meta-label">Bộ phận phản ứng:</span>
+        ${esc(report.responseDepartments || 'Chưa xác định')}
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      I. ĐẶC ĐIỂM ĐỘNG VẬT &amp; TÌNH HUỐNG PHÁT HIỆN
+    </div>
+
+    <div class="section-body">
+
+      ${checkboxRow(
+        'Loại động vật',
+        animalTypes,
+        report.animalType,
+        false
+      )}
+
+      ${line('Chủng loại / Chủng loài', report.animalSpecies)}
+
+      ${line('Màu sắc / Kích thước', report.animalColorSize)}
+
+      ${line('Trọng lượng ước tính', report.estimatedWeight ? report.estimatedWeight + ' kg' : '')}
+
+      ${line('Ngoại hình', report.animalAppearance)}
+
+      ${checkboxRow(
+        'Tình trạng ban đầu',
+        initialConditions,
+        report.initialCondition,
+        false
+      )}
+
+      ${checkboxRow(
+        'Mức độ nguy hiểm',
+        dangerLevels,
+        report.dangerLevel,
+        false
+      )}
+
+      ${checkboxRow(
+        'Ảnh hưởng đến Khách',
+        guestImpacts,
+        report.guestImpactType || report.guestImpact,
+        false
+      )}
+
+      ${line('Ảnh hưởng đến Nhân viên', report.employeeImpact)}
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      II. DIỄN BIẾN QUÁ TRÌNH BẮT / XỬ LÝ
+    </div>
+
+    <div class="section-body">
+
+      ${checkboxRow(
+        'Dụng cụ / Thiết bị sử dụng',
+        captureTools,
+        report.captureTools,
+        true
+      )}
+
+      <div class="option-row">
+        <div class="option-label">Nhân sự tham gia xử lý</div>
+        <div class="text-block">${esc(
+          (report as any).capturePersonnel ||
+          report.captureProcess ||
+          'Chưa ghi nhận'
+        )}</div>
+      </div>
+
+      <div class="option-row">
+        <div class="option-label">Diễn biến quá trình bắt</div>
+        <div class="text-block">${esc(
+          report.captureProcess || 'Chưa ghi nhận'
+        )}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      III. PHƯƠNG ÁN XỬ LÝ SAU KHI BẮT
+    </div>
+
+    <div class="section-body">
+
+      ${checkboxRow(
+        'Phương án xử lý',
+        postActions,
+        report.postCaptureAction,
+        false
+      )}
+
+      ${line('Họ tên / Đơn vị tiếp nhận', report.receivingPerson)}
+
+      ${line('Số điện thoại', report.receivingPhone)}
+
+      <div class="option-row">
+        <div class="option">
+          ${check(report.receivingConfirmation === true)}
+          <span>Xác nhận ký nhận</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      IV. ĐÁNH GIÁ LỖ HỔNG &amp; ĐỀ XUẤT NGUYÊN TẮC PHÒNG NGỪA
+    </div>
+
+    <div class="section-body">
+
+      ${checkboxRow(
+        'Nguyên nhân xâm nhập',
+        causes,
+        report.cause,
+        true
+      )}
+
+      <div class="option-row">
+        <div class="option-label">Biện pháp phòng ngừa đề xuất</div>
+        <div class="text-block">${esc(
+          report.proposedMeasures || 'Chưa ghi nhận'
+        )}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      V. HÌNH ẢNH HIỆN TRƯỜNG
+    </div>
+
+    <div class="section-body">
+      ${photoHtml}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      VI. XÁC NHẬN
+    </div>
+
+    <div class="section-body" style="padding:0;">
+      <table class="signature-table">
+  <tr>
+    <td>
+      <div class="signature-title">NGƯỜI LẬP BÁO CÁO</div>
+      <div class="signature-space"></div>
+      <div class="signature-name"></div>
+    </td>
+    <td>
+      <div class="signature-title">TRƯỞNG BỘ PHẬN AN NINH</div>
+      <div class="signature-space"></div>
+      <div class="signature-name">TRẦN VĂN SƠN</div>
+    </td>
+  </tr>
+</table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Dusit Princess Moonrise Phú Quốc -
+    ANIMAL CONTROL &amp; RESCUE PROTOCOL
+  </div>
+
+</div>
+</body>
+</html>
+`;
+
+    const container = document.createElement('div');
+
+    container.style.position = 'fixed';
+    container.style.left = '-10000px';
+    container.style.top = '0';
+    container.style.width = '794px';
+    container.style.background = '#ffffff';
+    container.style.fontFamily = '"Noto Sans", sans-serif';
+
+    container.innerHTML = html;
+
+    document.body.appendChild(container);
+
+    try {
+      /*
+       * PDF BẮT ĐỘNG VẬT:
+       * HTML được browser render trước.
+       * Không dùng jsPDF setFont() cho tiếng Việt.
+       * Không nhúng TTF trực tiếp vào PDF.
+       */
+
+      container.style.fontFamily =
+        'Arial, "Noto Sans", sans-serif';
+
+      container.style.fontKerning = 'normal';
+      container.style.textRendering = 'geometricPrecision';
+
+      container.querySelectorAll('*').forEach((el) => {
+        const element = el as HTMLElement;
+
+        element.style.fontFamily =
+          'Arial, "Noto Sans", sans-serif';
+
+        element.style.fontKerning = 'normal';
+        element.style.textRendering = 'geometricPrecision';
+      });
+
+      await document.fonts.ready;
+
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
+
+      const scale = 3;
+
+      const canvas = await html2canvas(container, {
+        scale,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        width: 794,
+        height: Math.max(container.scrollHeight, 1123),
+        windowWidth: 794,
+        windowHeight: Math.max(container.scrollHeight, 1123),
+        scrollX: 0,
+        scrollY: 0,
+        x: 0,
+        y: 0
+      });
+
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true
+      });
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const pagePixelHeight = Math.floor(
+        canvas.width * (pageHeight / pageWidth)
+      );
+
+      let offsetY = 0;
+      let pageIndex = 0;
+
+      while (offsetY < canvas.height) {
+        if (pageIndex > 0) {
+          pdf.addPage();
+        }
+
+        const sliceHeight = Math.min(
+          pagePixelHeight,
+          canvas.height - offsetY
+        );
+
+        const pageCanvas = document.createElement('canvas');
+
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = sliceHeight;
+
+        const ctx = pageCanvas.getContext('2d');
+
+        if (!ctx) {
+          throw new Error('Không thể tạo canvas PDF.');
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(
+          0,
+          0,
+          pageCanvas.width,
+          pageCanvas.height
+        );
+
+        ctx.drawImage(
+          canvas,
+          0,
+          offsetY,
+          canvas.width,
+          sliceHeight,
+          0,
+          0,
+          canvas.width,
+          sliceHeight
+        );
+
+        const imageData = pageCanvas.toDataURL(
+          'image/jpeg',
+          0.95
+        );
+
+        const renderedHeight =
+          (sliceHeight / canvas.width) * pageWidth;
+
+        pdf.addImage(
+          imageData,
+          'JPEG',
+          0,
+          0,
+          pageWidth,
+          renderedHeight,
+          undefined,
+          'FAST'
+        );
+
+        offsetY += sliceHeight;
+        pageIndex++;
+      }
+
+      pdf.save(
+        `Bao-Cao-Bat-Dong-Vat-${report.reportNumber || report.id}.pdf`
+      );
+    } finally {
+      container.remove();
+    }
+
+  } catch (error) {
+    console.error(
+      'Lỗi xuất PDF báo cáo bắt động vật:',
+      error
+    );
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : String(error);
+
+    alert(
+      `Không thể xuất PDF báo cáo bắt động vật.\n\n${message}`
+    );
+  }
+}
+async function animalPhotoToJpeg(
+  dataUrl: string
+): Promise<string> {
+  if (!dataUrl) {
+    throw new Error('Ảnh không có dữ liệu.');
+  }
+
+  return await new Promise<string>((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = () => {
+      try {
+        const maxWidth = 1200;
+        const maxHeight = 900;
+
+        let width = img.naturalWidth || img.width;
+        let height = img.naturalHeight || img.height;
+
+        if (!width || !height) {
+          reject(
+            new Error('Không đọc được kích thước ảnh.')
+          );
+          return;
+        }
+
+        const ratio = Math.min(
+          1,
+          maxWidth / width,
+          maxHeight / height
+        );
+
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+
+        const canvas =
+          document.createElement('canvas');
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const context =
+          canvas.getContext('2d');
+
+        if (!context) {
+          reject(
+            new Error(
+              'Không tạo được Canvas để xử lý ảnh.'
+            )
+          );
+          return;
+        }
+
+        context.fillStyle = '#ffffff';
+        context.fillRect(
+          0,
+          0,
+          width,
+          height
+        );
+
+        context.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
+        );
+
+        const jpeg =
+          canvas.toDataURL(
+            'image/jpeg',
+            0.82
+          );
+
+        if (!jpeg || jpeg === 'data:,') {
+          reject(
+            new Error(
+              'Không chuyển được ảnh sang JPEG.'
+            )
+          );
+          return;
+        }
+
+        resolve(jpeg);
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    img.onerror = () => {
+      reject(
+        new Error(
+          'Trình duyệt không thể đọc ảnh báo cáo.'
+        )
+      );
+    };
+
+    img.src = dataUrl;
+  });
+}
 
 
 

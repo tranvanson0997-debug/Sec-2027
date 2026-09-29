@@ -1,0 +1,168 @@
+import React, { useMemo, useState } from 'react';
+import {
+  LostFoundReport,
+  LostFoundStatus,
+} from '../types';
+import { LostFoundStorage } from '../services/specialReportsStorage';
+import { generateLostFoundPdf } from '../utils/lostFoundPdfGenerator';
+
+interface LostFoundViewProps {
+  currentUser: any;
+}
+
+const STATUS_LABELS: Record<LostFoundStatus, string> = {
+  DRAFT: 'Bản nháp',
+  FOUND: 'Đã tiếp nhận',
+  IN_CUSTODY: 'Đang lưu giữ',
+  RETURNED: 'Đã trả',
+  CLOSED: 'Đã đóng',
+  CANCELLED: 'Đã hủy',
+};
+
+const EMPTY_FORM: LostFoundReport = {
+  id: '',
+  reportNumber: '',
+  type: 'FOUND',
+  date: new Date().toISOString().slice(0, 10),
+  time: new Date().toTimeString().slice(0, 5),
+  location: '',
+  area: '',
+
+  reporterName: '',
+  reporterPhone: '',
+  reporterEmail: '',
+
+  officerId: '',
+  officerName: 'Chưa xác định',
+  badgeNumber: '',
+
+  itemName: '',
+  itemCategory: '',
+  itemDescription: '',
+  itemColor: '',
+  itemBrand: '',
+  itemSerialNumber: '',
+  itemQuantity: 1,
+
+  itemCondition: '',
+
+  photos: [],
+
+  storageLocation: '',
+  receivedBy: '',
+  receivedAt: '',
+
+  returnedTo: '',
+  returnedPhone: '',
+  returnedAt: '',
+  returnNotes: '',
+
+  status: 'DRAFT',
+
+  notes: '',
+
+  createdAt: '',
+  updatedAt: '',
+  closedAt: '',
+};
+
+export default function LostFoundView({ currentUser }: LostFoundViewProps) {
+  const [reports, setReports] = useState<LostFoundReport[]>(
+    () => LostFoundStorage.getAll()
+  );
+
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | LostFoundStatus>('ALL');
+
+  const [editing, setEditing] = useState<LostFoundReport | null>(null);
+  const [form, setForm] = useState<LostFoundReport>(EMPTY_FORM);
+  const [showForm, setShowForm] = useState(false);
+
+  const filteredReports = useMemo(() => {
+    const keyword = search.trim().toLowerCase();
+
+    return reports.filter((report) => {
+      const matchesStatus =
+        statusFilter === 'ALL' || report.status === statusFilter;
+
+      if (!keyword) return matchesStatus;
+
+      const text = [
+        report.reportNumber,
+        report.itemName,
+        report.itemCategory,
+        report.location,
+        report.reporterName,
+        report.officerName,
+        report.returnedTo,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return matchesStatus && text.includes(keyword);
+    });
+  }, [reports, search, statusFilter]);
+
+  const refresh = () => {
+    setReports(LostFoundStorage.getAll());
+  };
+
+  const startCreate = () => {
+    const now = new Date();
+
+    setEditing(null);
+    setForm({
+      ...EMPTY_FORM,
+      id: '',
+      date: now.toISOString().slice(0, 10),
+      time: now.toTimeString().slice(0, 5),
+      officerId: currentUser?.id || '',
+      officerName:
+        currentUser?.name ||
+        currentUser?.fullName ||
+        'Chưa xác định',
+    });
+    setShowForm(true);
+  };
+
+  const startEdit = (report: LostFoundReport) => {
+    setEditing(report);
+    setForm({ ...report });
+    setShowForm(true);
+  };
+
+  const updateField = <K extends keyof LostFoundReport>(
+    field: K,
+    value: LostFoundReport[K]
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const saveReport = () => {
+    if (!form.reportNumber.trim()) {
+      alert('Vui lòng nhập SỐ BÁO CÁO.');
+      return;
+    }
+
+    if (!form.itemName.trim()) {
+      alert('Vui lòng nhập TÊN TÀI SẢN / ĐỒ VẬT.');
+      return;
+    }
+
+    const now = new Date().toISOString();
+
+    const report: LostFoundReport = {
+      ...form,
+      id: form.id || `LF-${Date.now()}`,
+      officerId: form.officerId || currentUser?.id || '',
+      officerName:
+        form.officerName ||
+        currentUser?.name ||
+        currentUser?.fullName ||
+        'Chưa xác định',
+      createdAt: form.createdAt || now,
+      updatedAt:

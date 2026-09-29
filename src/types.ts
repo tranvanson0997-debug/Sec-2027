@@ -1,4 +1,4 @@
-﻿export type UserRole = 'MANAGER' | 'SUPERVISOR' | 'OFFICER' | 'ADMIN';
+export type UserRole = 'MANAGER' | 'SUPERVISOR' | 'OFFICER' | 'ADMIN';
 
 export interface User {
   shift: 'DAY' | 'NIGHT'; // Ca ngày 06:00-18:00 / Ca đêm 18:00-06:00
@@ -256,3 +256,137 @@ export interface AccessNotification {
     | 'DIRECTIVE_ACKNOWLEDGED';
 }
 
+
+// ============================================================
+// ANIMAL CONTROL / CAPTURE REPORT
+// ============================================================
+
+export type AnimalControlStatus =
+  | 'DRAFT'
+  | 'COMPLETED'
+  | 'CANCELLED';
+
+export interface AnimalControlPhoto {
+  id: string;
+  dataUrl: string;
+  fileName: string;
+  capturedAt: string;
+}
+
+export interface AnimalControlReport {
+  id: string;
+  reportNumber: string;
+
+  date: string;
+  time: string;
+  detectionTime?: string;
+
+  location: string;
+  area?: string;
+
+  reporterName: string;
+
+  officerId: string;
+  officerName: string;
+  badgeNumber?: string;
+
+  responseDepartments?: string;
+
+  animalType: string;
+  animalSpecies?: string;
+  animalColorSize?: string;
+  estimatedWeight?: string;
+
+  animalAppearance: string;
+  initialCondition: string;
+
+  guestImpact: string;
+  employeeImpact: string;
+  guestImpactType?: string;
+
+  captureProcess: string;
+  captureTools: string;
+
+  postCaptureAction: string;
+  receivingPerson?: string;
+  receivingPhone?: string;
+  receivingConfirmation?: boolean;
+
+  cause: string;
+  proposedMeasures: string;
+
+  dangerLevel?: string;
+
+  photos: AnimalControlPhoto[];
+
+  status: AnimalControlStatus;
+
+  createdAt: string;
+  updatedAt: string;
+  completedAt?: string;
+}
+
+// LOST & FOUND REPORT
+// ============================================================
+
+export type LostFoundStatus =
+  | 'DRAFT'
+  | 'FOUND'
+  | 'IN_CUSTODY'
+  | 'RETURNED'
+  | 'CLOSED'
+  | 'CANCELLED';
+
+export interface LostFoundPhoto {
+  id: string;
+  dataUrl: string;
+  fileName: string;
+  capturedAt: string;
+}
+
+export interface LostFoundReport {
+  id: string;
+  reportNumber: string;
+  type: 'LOST' | 'FOUND';
+  date: string;
+  time: string;
+  location: string;
+  area?: string;
+
+  reporterName: string;
+  reporterPhone?: string;
+  reporterEmail?: string;
+
+  officerId: string;
+  officerName: string;
+  badgeNumber?: string;
+
+  itemName: string;
+  itemCategory: string;
+  itemDescription: string;
+  itemColor?: string;
+  itemBrand?: string;
+  itemSerialNumber?: string;
+  itemQuantity?: number;
+
+  itemCondition: string;
+
+  photos: LostFoundPhoto[];
+
+  storageLocation?: string;
+  receivedBy?: string;
+  receivedAt?: string;
+
+  returnedTo?: string;
+  returnedPhone?: string;
+  returnedAt?: string;
+  returnNotes?: string;
+
+  status: LostFoundStatus;
+
+  notes?: string;
+
+  createdAt: string;
+  updatedAt: string;
+  closedAt?: string;
+}

@@ -36,8 +36,6 @@ import { SystemAuditView } from './components/SystemAuditView';
 import { ReportDetailModal } from './components/ReportDetailModal';
 import { StandaloneReportView } from './components/StandaloneReportView';
 import { HandoverView } from './components/HandoverView';
-import AnimalControlView from './components/AnimalControlView';
-import LostFoundView from './components/LostFoundView';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(() =>
@@ -191,13 +189,8 @@ export default function App() {
       roles: ['MANAGER', 'SUPERVISOR', 'OFFICER', 'ADMIN'],
     },
     {
-      id: 'lost-found',
-      label: 'BÁO CÁO LOST & FOUND',
-      icon: FileText,
-      roles: ['MANAGER', 'SUPERVISOR', 'OFFICER', 'ADMIN'],
-    },
-    {      id: 'animal-control',
-      label: 'B\u0042\u1eaeT / KI\u1ec2M SO\u00c1T \u0110\u1ed8NG V\u1eacT',
+      id: 'animal-control',
+      label: 'BẮT / KIỂM SOÁT ĐỘNG VẬT',
       icon: Shield,
       roles: ['MANAGER', 'SUPERVISOR', 'OFFICER', 'ADMIN'],
     },
@@ -208,7 +201,6 @@ export default function App() {
       roles: ['MANAGER', 'ADMIN'],
     },
   ];
-
   const permittedNavItems = navItems.filter((item) =>
     item.roles.includes(currentUser.role)
   );
@@ -235,7 +227,7 @@ export default function App() {
                 <button
                   key={tab.id}
                   id={`nav-btn-${tab.id}`}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => { console.log('CLICK MODULE:', tab.id); setActiveTab(tab.id); }}
                   className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition duration-150 cursor-pointer ${
                     isActive
                       ? tab.highlight
@@ -321,14 +313,9 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'lost-found' && (
-          <LostFoundView currentUser={currentUser} />
-        )}
-
         {activeTab === 'animal-control' && (
           <AnimalControlView currentUser={currentUser} />
         )}
-
         {activeTab === 'audit' && (
           <SystemAuditView
             currentUser={currentUser}

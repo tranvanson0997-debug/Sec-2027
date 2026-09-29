@@ -1,0 +1,629 @@
+﻿import React, { useMemo, useRef, useState } from 'react';
+import {
+  AnimalControlPhoto,
+  AnimalControlReport,
+} from '../types';
+import { AnimalControlStorage } from '../services/specialReportsStorage';
+
+const makeId = (prefix: string) =>
+  `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+const today = () => new Date().toISOString().slice(0, 10);
+
+const nowTime = () =>
+  new Date().toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+interface Props {
+  currentUser?: {
+    id?: string;
+    name?: string;
+    badgeNumber?: string;
+  };
+}
+
+const AnimalControlView: React.FC<Props> = ({ currentUser }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [reports, setReports] = useState<AnimalControlReport[]>(
+    () => AnimalControlStorage.getAll()
+  );
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const [form, setForm] = useState({
+    date: today(),
+    time: nowTime(),
+    location: '',
+    area: '',
+    animalType: '',
+    animalAppearance: '',
+    initialCondition: '',
+    guestImpact: '',
+    employeeImpact: '',
+    captureProcess: '',
+    captureTools: '',
+    postCaptureAction: '',
+    cause: '',
+    proposedMeasures: '',
+  });
+
+  const [photos, setPhotos] = useState<AnimalControlPhoto[]>([]);
+  const [message, setMessage] = useState('');
+
+  const selectedReport = useMemo(
+    () => reports.find((item) => item.id === selectedId),
+    [reports, selectedId]
+  );
+
+  const resetForm = () => {
+    setSelectedId(null);
+    setForm({
+      date: today(),
+      time: nowTime(),
+      location: '',
+      area: '',
+      animalType: '',
+      animalAppearance: '',
+      initialCondition: '',
+      guestImpact: '',
+      employeeImpact: '',
+      captureProcess: '',
+      captureTools: '',
+      postCaptureAction: '',
+      cause: '',
+      proposedMeasures: '',
+    });
+    setPhotos([]);
+    setMessage('');
+  };
+
+  const updateField = (key: keyof typeof form, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleFiles = (files: FileList | null) => {
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith('image/')) return;
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const dataUrl = String(reader.result || '');
+
+        setPhotos((prev) => [
+          ...prev,
+          {
+            id: makeId('animal-photo'),
+            dataUrl,
+            fileName: file.name,
+            capturedAt: new Date().toISOString(),
+          },
+        ]);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removePhoto = (id: string) => {
+    setPhotos((prev) => prev.filter((photo) => photo.id !== id));
+  };
+
+  const validateBasic = () => {
+    if (!form.date) return 'Vui lòng nhập ngày.';
+    if (!form.time) return 'Vui lòng nhập giờ.';
+    if (!form.location.trim()) return 'Vui lòng nhập vị trí xảy ra.';
+    if (!form.animalType.trim()) return 'Vui lòng nhập loại động vật.';
+    return '';
+  };
+
+  const saveReport = (status: 'DRAFT' | 'COMPLETED') => {
+    const basicError = validateBasic();
+
+    if (basicError) {
+      setMessage(basicError);
+      return;
+    }
+
+    if (status === 'COMPLETED' && photos.length < 3) {
+      setMessage('Báo cáo hoàn tất phải có ít nhất 3 hình ảnh.');
+      return;
+    }
+
+    const existing = selectedReport;
+
+    const report: AnimalControlReport = {
+      id: existing?.id || makeId('animal'),
+      reportNumber:
+        existing?.reportNumber ||
+        `DCV-${new Date().getFullYear()}-${String(
+          reports.length + 1
+        ).padStart(4, '0')}`,
+
+      date: form.date,
+      time: form.time,
+      location: form.location.trim(),
+      area: form.area.trim(),
+
+      officerId: currentUser?.id || '',
+      officerName: currentUser?.name || 'Chưa xác định',
+      badgeNumber: currentUser?.badgeNumber,
+
+      animalType: form.animalType.trim(),
+      animalAppearance: form.animalAppearance.trim(),
+      initialCondition: form.initialCondition.trim(),
+
+      guestImpact: form.guestImpact.trim(),
+      employeeImpact: form.employeeImpact.trim(),
+
+      captureProcess: form.captureProcess.trim(),
+      captureTools: form.captureTools.trim(),
+      postCaptureAction: form.postCaptureAction.trim(),
+
+      cause: form.cause.trim(),
+      proposedMeasures: form.proposedMeasures.trim(),
+
+      photos,
+
+      status,
+
+      createdAt: existing?.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      completedAt:
+        status === 'COMPLETED'
+          ? new Date().toISOString()
+          : existing?.completedAt,
+    };
+
+    AnimalControlStorage.save(report);
+
+    const updated = AnimalControlStorage.getAll();
+    setReports(updated);
+    setSelectedId(report.id);
+
+    setMessage(
+      status === 'COMPLETED'
+        ? 'Đã hoàn tất báo cáo.'
+        : 'Đã lưu bản nháp.'
+    );
+  };
+
+  const openReport = (report: AnimalControlReport) => {
+    setSelectedId(report.id);
+
+    setForm({
+      date: report.date,
+      time: report.time,
+      location: report.location,
+      area: report.area || '',
+      animalType: report.animalType,
+      animalAppearance: report.animalAppearance,
+      initialCondition: report.initialCondition,
+      guestImpact: report.guestImpact,
+      employeeImpact: report.employeeImpact,
+      captureProcess: report.captureProcess,
+      captureTools: report.captureTools,
+      postCaptureAction: report.postCaptureAction,
+      cause: report.cause,
+      proposedMeasures: report.proposedMeasures,
+    });
+
+    setPhotos(report.photos || []);
+    setMessage('');
+  };
+
+  const deleteReport = (id: string) => {
+    if (!window.confirm('Bạn có chắc muốn xóa báo cáo này?')) return;
+
+    AnimalControlStorage.delete(id);
+    setReports(AnimalControlStorage.getAll());
+
+    if (selectedId === id) {
+      resetForm();
+    }
+  };
+
+  return (
+    <div className="p-4 md:p-6 space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">
+            Bắt / Kiểm soát động vật
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Lập biên bản ghi nhận, bắt và xử lý động vật trong khu vực.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={resetForm}
+          className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold"
+        >
+          + Báo cáo mới
+        </button>
+      </div>
+
+      {message && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800">
+          {message}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6">
+        <div className="bg-white rounded-xl border shadow-sm p-4 md:p-6 space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="space-y-1">
+              <span className="text-sm font-semibold">Ngày *</span>
+              <input
+                type="date"
+                value={form.date}
+                onChange={(e) => updateField('date', e.target.value)}
+                className="w-full border rounded-lg px-3 py-2"
+              />
+            </label>
+
+            <label className="space-y-1">
+              <span className="text-sm font-semibold">Giờ *</span>
+              <input
+                type="time"
+                value={form.time}
+                onChange={(e) => updateField('time', e.target.value)}
+                className="w-full border rounded-lg px-3 py-2"
+              />
+            </label>
+
+            <label className="space-y-1">
+              <span className="text-sm font-semibold">Vị trí xảy ra *</span>
+              <input
+                value={form.location}
+                onChange={(e) => updateField('location', e.target.value)}
+                placeholder="Ví dụ: Sảnh chính, tầng 5..."
+                className="w-full border rounded-lg px-3 py-2"
+              />
+            </label>
+
+            <label className="space-y-1">
+              <span className="text-sm font-semibold">Khu vực</span>
+              <input
+                value={form.area}
+                onChange={(e) => updateField('area', e.target.value)}
+                placeholder="Khu vực / block / tầng..."
+                className="w-full border rounded-lg px-3 py-2"
+              />
+            </label>
+          </div>
+
+          <div className="border-t pt-5">
+            <h2 className="font-bold text-lg mb-4">
+              1. Thông tin động vật
+            </h2>
+
+            <div className="space-y-4">
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Loại động vật *
+                </span>
+                <input
+                  value={form.animalType}
+                  onChange={(e) =>
+                    updateField('animalType', e.target.value)
+                  }
+                  placeholder="Ví dụ: chó, mèo, rắn, khỉ..."
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Ngoại hình
+                </span>
+                <textarea
+                  value={form.animalAppearance}
+                  onChange={(e) =>
+                    updateField('animalAppearance', e.target.value)
+                  }
+                  rows={3}
+                  placeholder="Màu sắc, kích thước, đặc điểm nhận dạng..."
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Tình trạng ban đầu
+                </span>
+                <textarea
+                  value={form.initialCondition}
+                  onChange={(e) =>
+                    updateField('initialCondition', e.target.value)
+                  }
+                  rows={3}
+                  placeholder="Tình trạng sức khỏe, mức độ hung dữ, bị thương..."
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className="border-t pt-5">
+            <h2 className="font-bold text-lg mb-4">
+              2. Ảnh hưởng
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="space-y-1">
+                <span className="text-sm font-semibold">
+                  Ảnh hưởng khách
+                </span>
+                <textarea
+                  value={form.guestImpact}
+                  onChange={(e) =>
+                    updateField('guestImpact', e.target.value)
+                  }
+                  rows={4}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1">
+                <span className="text-sm font-semibold">
+                  Ảnh hưởng nhân viên
+                </span>
+                <textarea
+                  value={form.employeeImpact}
+                  onChange={(e) =>
+                    updateField('employeeImpact', e.target.value)
+                  }
+                  rows={4}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className="border-t pt-5">
+            <h2 className="font-bold text-lg mb-4">
+              3. Quá trình bắt và xử lý
+            </h2>
+
+            <div className="space-y-4">
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Diễn biến quá trình bắt và xử lý
+                </span>
+                <textarea
+                  value={form.captureProcess}
+                  onChange={(e) =>
+                    updateField('captureProcess', e.target.value)
+                  }
+                  rows={5}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Dụng cụ bắt
+                </span>
+                <textarea
+                  value={form.captureTools}
+                  onChange={(e) =>
+                    updateField('captureTools', e.target.value)
+                  }
+                  rows={3}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Phương án xử lý sau khi bắt
+                </span>
+                <textarea
+                  value={form.postCaptureAction}
+                  onChange={(e) =>
+                    updateField('postCaptureAction', e.target.value)
+                  }
+                  rows={4}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className="border-t pt-5">
+            <h2 className="font-bold text-lg mb-4">
+              4. Nguyên nhân & biện pháp
+            </h2>
+
+            <div className="space-y-4">
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Nguyên nhân
+                </span>
+                <textarea
+                  value={form.cause}
+                  onChange={(e) => updateField('cause', e.target.value)}
+                  rows={4}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+
+              <label className="space-y-1 block">
+                <span className="text-sm font-semibold">
+                  Biện pháp đề xuất
+                </span>
+                <textarea
+                  value={form.proposedMeasures}
+                  onChange={(e) =>
+                    updateField('proposedMeasures', e.target.value)
+                  }
+                  rows={4}
+                  className="w-full border rounded-lg px-3 py-2"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className="border-t pt-5">
+            <h2 className="font-bold text-lg mb-2">
+              5. Hình ảnh hiện trường
+            </h2>
+
+            <p className="text-sm text-gray-500 mb-4">
+              Có thể chọn hình ảnh từ điện thoại hoặc máy tính.
+              Báo cáo hoàn tất yêu cầu tối thiểu 3 hình ảnh.
+            </p>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={(e) => {
+                handleFiles(e.target.files);
+                e.currentTarget.value = '';
+              }}
+            />
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="px-4 py-2 rounded-lg border bg-gray-50 font-semibold"
+            >
+              + Chọn hình ảnh
+            </button>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+              {photos.map((photo) => (
+                <div
+                  key={photo.id}
+                  className="relative border rounded-lg overflow-hidden bg-gray-50"
+                >
+                  <img
+                    src={photo.dataUrl}
+                    alt={photo.fileName}
+                    className="w-full h-36 object-cover"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(photo.id)}
+                    className="absolute top-2 right-2 bg-black/70 text-white rounded-full px-2 py-1 text-xs"
+                  >
+                    X
+                  </button>
+
+                  <div className="p-2 text-xs truncate">
+                    {photo.fileName}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-sm mt-3">
+              Hình ảnh đã chọn: <b>{photos.length}</b>
+            </div>
+          </div>
+
+          <div className="border-t pt-5 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => saveReport('DRAFT')}
+              className="flex-1 px-4 py-3 rounded-lg border font-semibold"
+            >
+              Lưu bản nháp
+            </button>
+
+            <button
+              type="button"
+              onClick={() => saveReport('COMPLETED')}
+              className="flex-1 px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold"
+            >
+              Hoàn tất báo cáo
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border shadow-sm p-4 h-fit">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold">
+              Báo cáo đã lập
+            </h2>
+
+            <span className="text-sm text-gray-500">
+              {reports.length}
+            </span>
+          </div>
+
+          {reports.length === 0 ? (
+            <div className="text-sm text-gray-500 py-8 text-center">
+              Chưa có báo cáo.
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {reports.map((report) => (
+                <div
+                  key={report.id}
+                  className="border rounded-lg p-3"
+                >
+                  <button
+                    type="button"
+                    onClick={() => openReport(report)}
+                    className="w-full text-left"
+                  >
+                    <div className="font-semibold">
+                      {report.reportNumber}
+                    </div>
+
+                    <div className="text-sm text-gray-600 mt-1">
+                      {report.animalType} — {report.location}
+                    </div>
+
+                    <div className="text-xs text-gray-500 mt-1">
+                      {report.date} {report.time}
+                    </div>
+
+                    <div className="mt-2">
+                      <span
+                        className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
+                          report.status === 'COMPLETED'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-yellow-100 text-yellow-700'
+                        }`}
+                      >
+                        {report.status === 'COMPLETED'
+                          ? 'Đã hoàn tất'
+                          : 'Bản nháp'}
+                      </span>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => deleteReport(report.id)}
+                    className="mt-3 text-xs text-red-600"
+                  >
+                    Xóa báo cáo
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AnimalControlView;
