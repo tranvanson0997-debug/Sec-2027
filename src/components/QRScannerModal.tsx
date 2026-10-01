@@ -124,12 +124,10 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
 
       await scanner.start(
         {
-          facingMode: {
-            ideal: 'environment',
-          },
+          facingMode: 'environment',
         },
         {
-          fps: 15,
+          fps: 25,
 
           // Khung QR lớn hơn trên điện thoại.
           qrbox: (viewfinderWidth, viewfinderHeight) => {
@@ -140,7 +138,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
 
             const boxSize = Math.max(
               220,
-              Math.min(320, Math.floor(shortestSide * 0.72))
+              Math.min(420, Math.floor(shortestSide * 0.82))
             );
 
             return {
@@ -149,7 +147,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             };
           },
 
-          aspectRatio: 1,
+          aspectRatio: 1.7777778,
 
           disableFlip: false,
         },
@@ -162,6 +160,19 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
       );
 
       if (mountedRef.current && isOpen) {
+        try {
+          const video = element.querySelector('video') as HTMLVideoElement | null;
+          const stream = video?.srcObject as MediaStream | null;
+          const track = stream?.getVideoTracks()[0];
+          const capabilities = track?.getCapabilities?.() as MediaTrackCapabilities & { torch?: boolean } | undefined;
+
+          if (track && capabilities?.torch) {
+            await track.applyConstraints({ advanced: [{ torch: true } as MediaTrackConstraintSet] });
+          }
+        } catch (flashError) {
+          console.warn('Không thể tự động bật flash:', flashError);
+        }
+
         setCameraActive(true);
       }
     } catch (err) {
@@ -224,6 +235,21 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     scannerRef.current = null;
 
     try {
+      try {
+        const element = document.getElementById(qrRegionId);
+        const video = element?.querySelector('video') as HTMLVideoElement | null;
+        const stream = video?.srcObject as MediaStream | null;
+        const track = stream?.getVideoTracks()[0];
+        if (track) {
+          const capabilities = track.getCapabilities?.() as MediaTrackCapabilities & { torch?: boolean };
+          if (capabilities?.torch) {
+            await track.applyConstraints({ advanced: [{ torch: false } as MediaTrackConstraintSet] });
+          }
+        }
+      } catch (flashError) {
+        console.warn('Không thể tắt flash:', flashError);
+      }
+
       if (scanner.isScanning) {
         await scanner.stop();
       }
@@ -449,3 +475,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     </div>
   );
 };
+
+
+
+
