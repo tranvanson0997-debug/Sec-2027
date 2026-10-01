@@ -29,6 +29,8 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
   const mountedRef = useRef(false);
   const processingScanRef = useRef(false);
   const startingRef = useRef(false);
+  const brightnessTimerRef = useRef<number | null>(null);
+  const torchStateRef = useRef(false);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -127,7 +129,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
           facingMode: 'environment',
         },
         {
-          fps: 25,
+          fps: 30,
 
           // Khung QR lớn hơn trên điện thoại.
           qrbox: (viewfinderWidth, viewfinderHeight) => {
@@ -138,7 +140,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
 
             const boxSize = Math.max(
               220,
-              Math.min(420, Math.floor(shortestSide * 0.82))
+              Math.min(340, Math.floor(shortestSide * 0.62))
             );
 
             return {
@@ -147,7 +149,6 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
             };
           },
 
-          aspectRatio: 1.7777778,
 
           disableFlip: false,
         },
@@ -159,22 +160,9 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
         }
       );
 
-      if (mountedRef.current && isOpen) {
-        try {
-          const video = element.querySelector('video') as HTMLVideoElement | null;
-          const stream = video?.srcObject as MediaStream | null;
-          const track = stream?.getVideoTracks()[0];
-          const capabilities = track?.getCapabilities?.() as MediaTrackCapabilities & { torch?: boolean } | undefined;
 
-          if (track && capabilities?.torch) {
-            await track.applyConstraints({ advanced: [{ torch: true } as MediaTrackConstraintSet] });
-          }
-        } catch (flashError) {
-          console.warn('Không thể tự động bật flash:', flashError);
-        }
-
-        setCameraActive(true);
-      }
+      setCameraActive(true);
+      monitorBrightness();
     } catch (err) {
       console.error('QR camera failed:', err);
 
@@ -224,7 +212,65 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     }
   };
 
+  const monitorBrightness = () => {
+    if (brightnessTimerRef.current !== null) {
+      window.clearInterval(brightnessTimerRef.current);
+    }
+
+    const checkBrightness = () => {
+      const element = document.getElementById(qrRegionId);
+      const video = element?.querySelector('video') as HTMLVideoElement | null;
+      if (!video || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 64;
+      canvas.height = 36;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+
+      try {
+        ctx.drawImage(video, 0, 0, 64, 36);
+        const data = ctx.getImageData(0, 0, 64, 36).data;
+        let total = 0;
+        for (let i = 0; i < data.length; i += 4) {
+          total += (0.299 * data[i]) + (0.587 * data[i + 1]) + (0.114 * data[i + 2]);
+        }
+        const brightness = total / (data.length / 4);
+        const elementNow = document.getElementById(qrRegionId);
+        const videoNow = elementNow?.querySelector('video') as HTMLVideoElement | null;
+        const stream = videoNow?.srcObject as MediaStream | null;
+        const track = stream?.getVideoTracks()[0];
+        const capabilities = track?.getCapabilities?.() as MediaTrackCapabilities & { torch?: boolean } | undefined;
+        if (!track || !capabilities?.torch) return;
+
+        if (brightness < 55 && !torchStateRef.current) {
+          void track.applyConstraints({ advanced: [{ torch: true } as MediaTrackConstraintSet] }).then(() => {
+            torchStateRef.current = true;
+          }).catch(() => {});
+        } else if (brightness > 85 && torchStateRef.current) {
+          void track.applyConstraints({ advanced: [{ torch: false } as MediaTrackConstraintSet] }).then(() => {
+            torchStateRef.current = false;
+          }).catch(() => {});
+        }
+      } catch {
+        // Bỏ qua lỗi đọc độ sáng.
+      }
+    };
+
+    checkBrightness();
+    brightnessTimerRef.current = window.setInterval(checkBrightness, 700);
+  };
+
+  const stopBrightnessMonitor = () => {
+    if (brightnessTimerRef.current !== null) {
+      window.clearInterval(brightnessTimerRef.current);
+      brightnessTimerRef.current = null;
+    }
+  };
+
   const stopCamera = async () => {
+    stopBrightnessMonitor();
+    torchStateRef.current = false;
     const scanner = scannerRef.current;
 
     if (!scanner) {
@@ -475,7 +521,6 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({
     </div>
   );
 };
-
 
 
 
